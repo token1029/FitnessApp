@@ -397,6 +397,8 @@ def bmi_calci():
     
     return render_template("bmi_cal.html", bmi=bmi, bmi_category=bmi_category)
 
+
+
 def calc_bmi(weight, height):
     return round((weight / ((height / 100) ** 2)), 2)
 
@@ -409,6 +411,8 @@ def get_bmi_category(bmi):
         return 'Overweight'
     else:
         return 'Obese'
+
+
 
 
 @app.route("/send_email", methods=['GET','POST'])
@@ -549,6 +553,24 @@ def dashboard():
         ]
     return render_template('dashboard.html', title='Dashboard', exercises=exercises)
 
+@app.route('/water', methods=['GET'])
+def water():
+    # if request.method == 'POST':
+    #     intake = request.form.get('intake')
+    #     # Record the current time along with the intake
+    #     current_time = datetime.now()
+    #     email = session.get('email')
+    #     intakes = mongo.db.intake_collection.find({"email": email})
+    #     intakes.insert_one({'intake': intake, 'time': current_time})
+    #     return redirect(url_for('water_intake'))
+    
+    # records = intakes.find().sort("time", -1)  # Sorting by time, most recent first
+    #return render_template('water_intake.html')
+    exercises = [
+        {"id": 1, "name": "Yoga"},
+        {"id": 2, "name": "Swimming"},
+        ]
+    return render_template('dashboard.html', title='Dashboard', exercises=exercises)
 
 @app.route('/add_favorite', methods=['POST'])
 def add_favorite():

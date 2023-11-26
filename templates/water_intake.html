@@ -1,0 +1,24 @@
+{% extends "layout.html" %} {% block content %}
+<div class="container">
+    <h1 style="color: white">Water Intake tracker</h1>
+    <div class="main-content">
+
+        <form method="POST" action="/">
+            <input type="number" name="intake" placeholder="Enter water intake in ml" required
+                style="padding: 5px; margin-right: 10px;">
+            <button type="submit"
+                style="padding: 5px 10px; background-color: #f8f8f8; border: 1px solid #ccc; cursor: pointer;">Record
+                Intake</button>
+        </form>
+
+        <h2 style="color: white">Intake Records</h2>
+        <ul>
+            {% for record in records %}
+            <li style="margin-bottom: 5px; color: white;">{{ record['intake'] }} ml at
+                {{ record['time'].strftime('%Y-%m-%d %H:%M:%S') }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock content %}

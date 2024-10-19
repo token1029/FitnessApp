@@ -38,6 +38,8 @@ def create_app(test_config=None):
     app.config['GOOGLE_CLIENT_ID'] = os.environ.get("GOOGLE_CLIENT_ID", None)
     app.config['GOOGLE_CLIENT_SECRET'] = os.environ.get("GOOGLE_CLIENT_SECRET", None)
     app.config['GOOGLE_DISCOVERY_URL'] = os.environ.get("GOOGLE_DISCOVERY_URL", None)
+    app.config['GOOGLE_SIGN_IN_REDIRECT_URI'] = os.environ.get("GOOGLE_SIGN_IN_REDIRECT_URI", None)
+
 
 
     mail = Mail(app)

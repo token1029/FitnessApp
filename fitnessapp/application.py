@@ -53,6 +53,51 @@ def google_login():
     return redirect(request_uri)
 
 
+@bp.route("/login/callback")
+def google_loign_callback():
+    # Get authorization code from url returned by google
+    code = request.args.get("code")
+    google_provider_cfg = get_google_provider_cfg()
+    token_endpoint = google_provider_cfg["token_endpoint"]
+
+    token_url, headers, body = current_app.oauthclient.prepare_token_request(
+        token_endpoint,
+        authorization_response=request.url,
+        redirect_url=request.base_url,
+        code=code,
+    )
+
+    token_response = requests.post(
+        token_url,
+        headers=headers,
+        data=body,
+        auth=(current_app.config['GOOGLE_CLIENT_ID'],
+              current_app.config['GOOGLE_CLIENT_SECRET'],
+              ),
+    )
+
+    # parse the tokens
+    current_app.oauthclient.parse_request_body_response(json.dumps(token_response.json()))
+
+    userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
+    uri, headers, body = current_app.oauthclient.add_token(userinfo_endpoint)
+    userinfo_response = requests.get(uri, headers=headers, data=body)
+
+    if userinfo_response.json().get("email_verified"):
+        unique_id = userinfo_response.json()["sub"]
+        users_email = userinfo_response.json()["email"]
+        picture = userinfo_response.json()["picture"]
+        users_name = userinfo_response.json()["given_name"]
+        print(unique_id, users_email, picture, users_email)
+
+        # create new profile for the user it does not exists.
+        return "login success"
+
+    else:
+        return "User email not available or not verified by Google.", 400
+
+
+
 def reminder_email():
     """
     reminder_email() will send a reminder to users for doing their workout.

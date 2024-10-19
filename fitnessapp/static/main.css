@@ -1,0 +1,154 @@
+.nav-color {
+  background: #d8b26e;
+  font-family: Verdana, sans-serif;
+  color: #bde2bd;
+}
+
+body {
+  background: #343434;
+  color: #333333;
+  margin-top: 5rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+footer {
+  margin-top: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #444444;
+}
+
+.bg-steel {
+  background-color: #5f788a;
+}
+
+.site-header .navbar-nav .nav-link {
+  color: #cbd5db;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+
+.content-section {
+  background: #ffffff;
+  width: 800px;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+.account-img {
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+
+.account-heading {
+  font-size: 2.5rem;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.side-bar {
+  margin-top: 20px;
+  color: #99979c;
+}
+
+.side-bar-li {
+  margin-bottom: 10px;
+}
+
+.side-bar-link {
+  color: #99979c;
+}
+
+.vl {
+  border-left: 1px solid #d2d1d3;
+  border-radius: 0.2px;
+  height: 100%;
+  position: absolute;
+  left: 20%;
+  margin-left: -3px;
+  top: 0;
+}
+
+details {
+  border: 0.5px solid #aaa;
+  border-radius: 4px;
+  padding: 0.5em 0.5em 0;
+}
+
+summary {
+  font-weight: bold;
+  margin: -0.5em -0.5em 0;
+  padding: 0.5em;
+}
+
+details[open] {
+  padding: 0.5em;
+}
+
+details[open] summary {
+  margin-bottom: 0.5em;
+}
+
+/* body {
+      font-family: Georgia,"Times New Roman",TImes,serif;
+    } */
+
+.site-section {
+  text-align: center;
+  padding: 60px 0;
+}
+
+.site-section {
+  text-align: center;
+  padding: 60px 0;
+}
+
+#yoga p {
+  font-weight: normal;
+  margin-bottom: 30px;
+  text-align: center;
+}
+h1 {
+  text-align: center;
+}
+
+img {
+  text-align: center;
+  /* padding: 0 350px; */
+}
+
+.carousel-fade .carousel-item,
+.carousel-item img {
+  max-height: 100vh;
+}
+
+.btn {
+  text-align: center;
+}
+
+.img-thumbnail {
+  width: 100%;
+  height: 35vh;
+  object-fit: contain;
+}

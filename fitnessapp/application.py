@@ -15,6 +15,9 @@ https://github.com/VibhavDeo/FitnessApp
 import smtplib
 import time
 from datetime import datetime
+from threading import Thread
+
+import bcrypt
 from tkinter import NO
 from threading import Thread
 

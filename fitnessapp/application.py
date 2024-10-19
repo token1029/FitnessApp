@@ -28,8 +28,29 @@ from .insert_db_data import insertfooddata, insertexercisedata
 import schedule
 from threading import Thread
 import time
+import requests
+
+
+def get_google_provider_cfg():
+    return requests.get(current_app.config['GOOGLE_DISCOVERY_URL']).json()
+
 
 bp = Blueprint('', __name__, url_prefix='')
+
+
+@bp.route("/google-login")
+def google_login():
+    # get the url to hit for google login
+    google_provider_cfg = get_google_provider_cfg()
+    authorization_endpoint = google_provider_cfg["authorization_endpoint"]
+
+    # construct request for google login and specify the fields on the account we want
+    request_uri = current_app.oauthclient.prepare_request_uri(
+        authorization_endpoint,
+        redirect_uri=current_app.config['GOOGLE_SIGN_IN_REDIRECT_URI'],
+        scope=["openid", "email", "profile"],
+    )
+    return redirect(request_uri)
 
 
 def reminder_email():

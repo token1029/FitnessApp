@@ -85,13 +85,26 @@ def google_loign_callback():
 
     if userinfo_response.json().get("email_verified"):
         unique_id = userinfo_response.json()["sub"]
-        users_email = userinfo_response.json()["email"]
+        user_email = userinfo_response.json()["email"]
         picture = userinfo_response.json()["picture"]
-        users_name = userinfo_response.json()["given_name"]
-        print(unique_id, users_email, picture, users_email)
+        username = userinfo_response.json()["given_name"]
 
-        # create new profile for the user it does not exists.
-        return "login success"
+        user_from_db = current_app.mongo.db.user.find_one({'email': user_email})
+        if user_from_db is None:
+            # create new profile for the user it does not exists.
+            current_app.mongo.db.user.insert({
+                'name': username,
+                'email': user_email,
+                'pwd': '',
+            })
+            session['email'] = user_email
+            session['name'] = username
+        else:
+            # user already exists, set session info to log them in
+            session['email'] = user_from_db['email']
+            session['name'] = user_from_db['name']
+
+        return redirect(url_for('dashboard'))
 
     else:
         return "User email not available or not verified by Google.", 400

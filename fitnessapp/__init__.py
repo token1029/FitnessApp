@@ -52,5 +52,7 @@ def create_app(test_config=None):
     insertexercisedata()
 
     from . import application
+    from .views import auth
     app.register_blueprint(application.bp)
+    app.register_blueprint(auth.bp)
     return app

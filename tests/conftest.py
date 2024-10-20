@@ -1,7 +1,7 @@
 import pytest
 from fitnessapp import create_app
 from unittest.mock import patch, MagicMock
-
+import mongomock
 
 class OAuth:
     def prepare_token_request(grant_type, body='', include_client_id=True, code_verifier=None, **kwargs):
@@ -18,6 +18,10 @@ class OAuth:
     def add_token(a, b):
         return ('uri', {'headers': 'value'}, "body")
 
+    def prepare_request_uri(self, uri, redirect_uri=None, scope=None,
+                            state=None, code_challenge=None, code_challenge_method='plain', **kwargs):
+        return "/"
+
 
 @pytest.fixture()
 def app():
@@ -29,6 +33,7 @@ def app():
     oauthclient = OAuth()
     # oauthclient['prepare_token_request'] = prepare_token_request
     app.oauthclient = oauthclient
+    app.mongo = mongomock.MongoClient()
     # other setup can go here
 
     yield app

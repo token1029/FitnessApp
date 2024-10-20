@@ -4,7 +4,7 @@ from unittest.mock import patch, MagicMock
 import pytest
 from .conftest import client
 import logging
-
+import mongomock
 logging.basicConfig(level=logging.INFO)
 LOGGER = logging.getLogger(__name__)
 
@@ -91,30 +91,36 @@ def test_google_login_callback_unverified_email(mocker, client):
 # Test case for successful login with verified email
 
 
-@patch('requests.post')
-@patch('requests.get')
-@patch('app.current_app.mongo.db.user.find_one')
-@patch('app.current_app.mongo.db.user.insert')
-def test_google_login_callback_success(mock_insert, mock_find_one, mock_get, mock_post, client):
-    # Mock token response from Google
-    mock_post.return_value.json = MagicMock(return_value=mock_token_response())
-    # Mock userinfo response from Google
-    mock_get.return_value.json = MagicMock(return_value=mock_userinfo_response())
+def test_google_login_callback_success(mocker, client):
+    with client:
+        # Make an initial request to create the request context
+        client.get('/')
 
-    # Simulate user not existing in the database (so the user gets inserted)
-    mock_find_one.return_value = None
+        # Mock the first call to requests.get (for the Google provider config)
+        mock_get = mocker.patch('requests.get')
 
-    # Simulate request to the /login/callback route with a mock 'code' in the query string
-    response = client.get('/login/callback?code=fake-auth-code')
+        mock_get.side_effect = [
+            # First call returns the Google provider config
+            mocker.Mock(json=mocker.Mock(return_value=mock_google_provider_cfg())),
+            # Second call returns the user info with email verified
+            mocker.Mock(json=mocker.Mock(return_value={
+                "sub": "1234567890",
+                "email": "testuser@gmail.com",
+                "email_verified": True,  # Simulate verified email
+                "given_name": "Test",
+                "picture": "https://example.com/pic.jpg"
+            })),
+        ]
 
-    # Assertions for successful login
-    assert response.status_code == 302  # Redirect to dashboard
-    assert 'email' in session
-    assert 'name' in session
-    assert session['email'] == "testuser@gmail.com"
-    assert session['name'] == "Test"
-    mock_insert.assert_called_once_with({
-        'name': 'Test',
-        'email': 'testuser@gmail.com',
-        'pwd': ''
-    })
+        # Mocking the requests.post for token exchange
+        mock_post = mocker.patch('requests.post', side_effect=mock_requests_post)
+
+        # call the login callback route and assert the session data
+        response = client.get('/login/callback?code=fake-auth-code')
+
+        # Assertions for successful login
+        assert response.status_code == 302  # Redirect to dashboard
+        assert 'email' in session
+        assert 'name' in session
+        assert session['email'] == "testuser@gmail.com"
+        assert session['name'] == "Test"

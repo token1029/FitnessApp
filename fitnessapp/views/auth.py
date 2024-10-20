@@ -77,6 +77,7 @@ def google_loign_callback():
 
         user_from_db = current_app.mongo.db.user.find_one({'email': user_email})
         LOGGER.info(user_from_db)
+        # return redirect(url_for('dashboard'))
         if user_from_db is None:
             # create new profile for the user it does not exists.
             current_app.mongo.db.user.insert({
@@ -86,12 +87,16 @@ def google_loign_callback():
             })
             session['email'] = user_email
             session['name'] = username
+            LOGGER.info("new user created")
         else:
             # user already exists, set session info to log them in
             session['email'] = user_from_db['email']
             session['name'] = user_from_db['name']
+            LOGGER.info("user already existed")
 
         return redirect(url_for('dashboard'))
 
     else:
+        LOGGER.info("email not verified")
+
         return "User email not available or not verified by Google.", 400

@@ -6,28 +6,20 @@
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">Create an event and invite your friends!!</legend>
             <div class="form-group">
-            <label for="sel1">Select an exercise:</label>
-            <select class="form-control" id="sel1" name="sellist1">
-                <option>Tennis</option>
-                <option>Badminton</option>
-                <option>Table Tennis</option>
-                <option>Hiking</option>
-                <option>Jogging</option>
-                <option>Basketball</option>
-            </select>
-            <label class="form-control-label">Date:</label>
-            <div class="input-group date" id="datepicker">
-                <input type="date" name="date" class="form-control" placeholder="MM/DD/YYYY" required />
-            </div>
-            <label class="form-control-label">Time:</label>
-            <div class="input-group time" id="datepicker">
-                <input type="time" name="time" class="form-control" required />
-            </div>
-            <label>Invite a friend:</label>
-            <select class="form-control" id="sel1" name="sellist1">
-                <option>User1</option>
-                <option>User2</option>
-            </select>
+                {{ form.exercise.label(class="form-control-label") }}
+                {{ form.exercise(class="form-control") }}
+
+                {{ form.date.label(class="form-control-label") }}
+                {{ form.date(class="form-control", placeholder="MM/DD/YYYY", type="date", required=True) }}
+                
+                {{ form.start_time.label(class="form-control-label") }}
+                {{ form.start_time(class="form-control", type="time", required=True) }}
+
+                {{ form.end_time.label(class="form-control-label") }}
+                {{ form.end_time(class="form-control", type="time", required=True) }}
+                
+                {{ form.friend.label(class="form-control-label") }}
+                {{ form.friend(class="form-control") }}
             </div>
         </fieldset>
         <div class="form-group">

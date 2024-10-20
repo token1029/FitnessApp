@@ -1,5 +1,6 @@
 import smtplib
 import time
+import logging
 from threading import Thread
 
 import requests
@@ -9,7 +10,7 @@ from flask import (Blueprint, Flask, current_app, flash, json, jsonify,
 from flask_mail import Mail, Message
 from flask_pymongo import PyMongo
 from tabulate import tabulate
-
+LOGGER = logging.getLogger(__name__)
 
 def get_google_provider_cfg():
     return requests.get(current_app.config['GOOGLE_DISCOVERY_URL']).json()
@@ -40,13 +41,15 @@ def google_loign_callback():
     google_provider_cfg = get_google_provider_cfg()
     token_endpoint = google_provider_cfg["token_endpoint"]
 
+    # return "User email not available or not verified by Google.", 400
+    LOGGER.info(request.url)
     token_url, headers, body = current_app.oauthclient.prepare_token_request(
         token_endpoint,
         authorization_response=request.url,
         redirect_url=request.base_url,
         code=code,
     )
-
+    # return "User email not available or not verified by Google.", 400
     token_response = requests.post(
         token_url,
         headers=headers,
@@ -56,8 +59,11 @@ def google_loign_callback():
               ),
     )
 
+
     # parse the tokens
+
     current_app.oauthclient.parse_request_body_response(json.dumps(token_response.json()))
+
 
     userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
     uri, headers, body = current_app.oauthclient.add_token(userinfo_endpoint)
@@ -70,6 +76,7 @@ def google_loign_callback():
         username = userinfo_response.json()["given_name"]
 
         user_from_db = current_app.mongo.db.user.find_one({'email': user_email})
+        LOGGER.info(user_from_db)
         if user_from_db is None:
             # create new profile for the user it does not exists.
             current_app.mongo.db.user.insert({

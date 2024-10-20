@@ -1,6 +1,6 @@
-# Link to new features video:
+# Link to demo/walkthrough video:
 
-https://www.youtube.com/watch?v=e3Jg1mSQiNs
+https://youtu.be/CvR6jDlQnB8
 <br>
 <br>
 
@@ -46,7 +46,7 @@ https://www.youtube.com/watch?v=e3Jg1mSQiNs
 
 # BurnOut - Your Wellness Companion
 
-BurnOut is an easy-to-use application designed to help users manage their daily calorie intake and expenditure as well as drinking habits, and it has now been enhanced with additional features. This all-in-one wellness app is not only a user-friendly calorie tracker but also offers a comprehensive suite of tools to support individuals in achieving their fitness and weight management goals.
+BurnOut is an easy-to-use application designed to help users manage their daily calorie intake and expenditure, and it has now been enhanced with additional features. This all-in-one wellness app is not only a user-friendly calorie tracker but also offers a comprehensive suite of tools to support individuals in achieving their fitness and weight management goals.
 
 <img src = "https://github.com/VibhavDeo/FitnessApp/assets/145216300/e4fc29ea-253c-4bfc-803c-80bf55193044" width="700px">
 
@@ -63,40 +63,40 @@ BurnOut is an easy-to-use application designed to help users manage their daily 
 
 5. **Favorite Workouts:** Users can now add their favorite workouts to a dedicated list for quick and easy access, making it convenient to stick to their preferred exercise routines.
 
-6. **Water Intake:** Users can now record their daiy water intake to keep track of their drinking habits.
+6. **BMI Calculator:** The newly added BMI (Body Mass Index) calculator helps users understand their current physical health status and aids in setting realistic weight management goals.
 
-7. **Blog:** Introduce the beginner with the fitness and how to make effectively workout plan.
+7. **Tracking User History:** BurnOut enables users to maintain a history of their fitness and dietary activities, providing insights into their progress over time and allowing for data-driven adjustments.
 
-8. **Shop:** Places where user can shop for workout gears.
-
-9. **BMI Calculator:** The newly added BMI (Body Mass Index) calculator helps users understand their current physical health status and aids in setting realistic weight management goals.
-
-10. **Tracking User History:** BurnOut enables users to maintain a history of their fitness and dietary activities, providing insights into their progress over time and allowing for data-driven adjustments.
-
-11. **Reviews:** Users can leave reviews and feedback on the fitness programs they've participated in, sharing their experiences with the community and helping others make informed choices.
+8. **Reviews:** Users can leave reviews and feedback on the fitness programs they've participated in, sharing their experiences with the community and helping others make informed choices.
 
 This document serves as a comprehensive reference point for users, giving them insight into the functionalities of BurnOut and encouraging them to participate in its development as an open-source software project. As an open-source project, the community can contribute additional features and enhancements to make BurnOut even more robust and tailored to individual needs before its official market release. Furthermore, it assists developers by providing a clear understanding of the codebase and serves as a valuable resource for the project's continued development.
 
 # Table of Contents
 
+- [Link to demo/walkthrough video:](#link-to-demowalkthrough-video)
+- [BurnOut](#burnout)
+- [BurnOut - Your Wellness Companion](#burnout---your-wellness-companion)
+  - [Key Features:](#key-features)
+- [Table of Contents](#table-of-contents)
 - [Why use BurnOut?](#why-use-burnout)
-- [TechStack Used for the Development of Project:](#techstack-used-for-the-development-of-project)
-- [Core Functionalities of the Application:](#core-functionalities)
+- [TechStack Used for the Development of Project](#techstack-used-for-the-development-of-project)
+- [Core Functionalities of the Application](#core-functionalities-of-the-application)
   - [Register](#register)
   - [Login](#login)
-  - [Set User Profile](#set-user-profile)
-  - [Enter Calories in and burnt](#enter-calories-in-and-burnt)
-  - [Enter Water Intakes](#enter-water-intakes)
-  - [Blog](#blog)
-  - [Shop](#shop)
+  - [Dashboard](#dashboard)
+  - [Excercise Section](#excercise-section)
+  - [Must Try Workout Section](#must-try-workout-section)
+  - [Popular Workout Section](#popular-workout-section)
+  - [Enter Calories](#enter-calories)
   - [Check History](#check-history)
-  - [Adding Friends](#adding-friends)
+  - [Add Friends](#add-friends)
+  - [Calculate BMI](#calculate-bmi)
   - [Add an Excercise to Favourites](#add-an-excercise-to-favourites)
   - [Submit a Review](#submit-a-review)
   - [View User Profile](#view-user-profile)
-  - [View User Profile 2.0](#view-user-profile-2.0)
+  - [View User Profile 2.0](#view-user-profile-20)
   - [Update Your Profile](#update-your-profile)
-- [Steps for Execution:](#steps-for-execution)
+- [Steps for execution](#steps-for-execution)
 - [Source Code](#source-code)
 - [Future Scope](#future-scope)
 - [Team Members](#team-members)
@@ -105,11 +105,10 @@ This document serves as a comprehensive reference point for users, giving them i
 
 # Why use BurnOut?
 
-- User can keep a track of their calorie intake and drinking habits.
+- User can keep a track of their calorie intake.
 - User just needs to input the food they've had, calories get calculated automatically.
 - Displays a record of calories in and calories burnt out day wise in History tab.
-- Users can connect with their friends and keep track of each other's progress.
-- Provide users with places to shop workout gears.
+- Users can connect with their friends and keep track of each other's progress
 - Enrollment into numerous yoga and workout sessions.
 - Daily automated reminders for working out and exercising.
 - Accessible to everyone and easy to use.
@@ -147,25 +146,9 @@ This document serves as a comprehensive reference point for users, giving them i
 
 <img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/popularworkoutPic.PNG>
 
-## Spirit Curation Section
-
-<img src=https://github.com/token1029/FitnessApp/blob/main/static/img/spirit.PNG>
-
 ## Enter Calories
 
 <img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/historyPic.PNG>
-
-## Enter water intakes
-
-<img src=https://github.com/token1029/FitnessApp/blob/main/static/img/water.PNG>
-
-## Blog
-
-<img src=https://github.com/token1029/FitnessApp/blob/main/static/img/blog.PNG>
-
-## Shop workout gears
-
-<img src=https://github.com/token1029/FitnessApp/blob/main/static/img/shop.PNG>
 
 ## Check History
 
@@ -223,7 +206,7 @@ Install the required packages by running the following command in the terminal
 Step 4:
 Run the following command in the terminal
 
-    python application.py
+    export FLASK_APP=FLASK_APP=fitnessapp && export FLASK_ENV=development && FLASK_DEBUG=1 && flask run
 
 Step 5:
 Open the URL in your browser:  
@@ -239,34 +222,34 @@ If you get error regarding any of the following packages - pymongo and bson, the
 # Source Code
 
 Link to the repository:
-https://github.com/token1029/FitnessApp
+https://github.com/VibhavDeo/FitnessApp
 
 # Future Scope
 
 1. Bug fixes
-2. Show the enrollment lists for all the courses
-3. Email verification for loggin
-4. Use openAI api to enhance bot performance.
+2. Timer for every workout
+3. Email verification
+4. Login with social media
+5. Bot updates
 
 # Team Members
 
-<table>
-  <tr>
-    <td align="center"><a href="https://github.com/WeizhiGao"><img src="https://avatars.githubusercontent.com/u/57804858?v=4" width="75px;" alt=""/><br /><sub><b>Weizhi Gao</b></sub></a><br /></td>
-    <td align="center"><a href="https://github.com/Itaru-Shin"><img src="https://avatars.githubusercontent.com/u/143905092?v=4" width="75px;" alt=""/><br /><sub><b>Fucheng Guo</b></sub></a><br /></td>
-    <td align="center"><a href="https://github.com/KingBanshou"><img src="https://avatars.githubusercontent.com/u/143905049?v=4" width="75px;" alt=""/><br /><sub><b>Zikang Wang</b></sub></a><br /></td>
-    <td align="center"><a href="https://github.com/token1029"><img src="https://avatars.githubusercontent.com/u/38797209?v=4" width="75px;" alt=""/><br /><sub><b>Dongming Wu</b></sub></a></td>
-  </tr>
-</table>
+<center>
+  <table>
+    <tr>
+        <td align="center"><img src="https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/IMG-8118.jpg" width="300px;" alt=""/><br /><sub><b>Left to Right -  <a href="https://github.com/nayaksyndrome">Chinmay Nayak</a>,  <a href="https://github.com/Shubham-Saboo">Shubham Saboo</a>, <a href="https://github.com/RajatChandak2000">  Rajat Chandak</a>,  <a href="https://github.com/VibhavDeo">Vibhav Deo</a></b></sub><br /></td>
+    </tr>
+  </table>
+</center>
 
 # Contribution
 
-Please refer the [CONTRIBUTING.md](https://github.com/token1029/FitnessApp/blob/main/CONTRIBUTING.md) file for instructions on how to contribute to our repository.
+Please refer the [CONTRIBUTING.md](https://github.com/VibhavDeo/FitnessApp/blob/main/CONTRIBUTING.md) file for instructions on how to contribute to our repository.
 
   <p align="center">
-    <a href="https://github.com/token1029/FitnessApp/issues/new/choose">Report Bug</a>
+    <a href="https://github.com/VibhavDeo/FitnessApp/issues/new/choose">Report Bug</a>
     /
-    <a href="https://github.com/token1029/FitnessApp/issues/new/choose">Request Feature</a>
+    <a href="https://github.com/VibhavDeo/FitnessApp/issues/new/choose">Request Feature</a>
   </p>
 
 # License

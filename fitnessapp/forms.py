@@ -21,8 +21,8 @@ https://github.com/VibhavDeo/FitnessApp
 
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.fields.core import DateField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, HiddenField
+from wtforms.fields.core import DateField, SelectField, TimeField, SelectMultipleField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from .apps import App
 class RegistrationForm(FlaskForm):
@@ -153,12 +153,18 @@ class ReviewForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class EventForm(FlaskForm):
-    review = StringField(
-        'Review', validators=[
-            DataRequired(), Length(
-                min=2, max=200)])
-    name = StringField(
-        'Name', validators=[
-            DataRequired(), Length(
-                min=2, max=200)])
+    exercise_choices = [('tennis', 'Tennis'), ('badminton', 'Badminton'), ('table_tennis', 'Table Tennis'), ('yoga', 'Yoga'), 
+                        ('hiking', 'Hiking'), ('jogging', 'Jogging'), ('basketball', 'Basketball'), ('dance', 'Dance')]
+    exercise = SelectField('Select an exercise', choices=exercise_choices)
+
+    date = DateField('Select a Date', validators=[DataRequired()])
+    
+    start_time = TimeField('From', validators=[DataRequired()])
+
+    end_time = TimeField('To', validators=[DataRequired()])
+
+    friend_choices = [('user1', 'User 1'), ('user2', 'User 2')]
+    
+    friend = SelectField('Invite a friend', choices=friend_choices)
+    
     submit = SubmitField('Submit')

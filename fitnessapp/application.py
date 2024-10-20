@@ -880,7 +880,30 @@ def submit_reviews():
 
 @bp.route("/events", methods=['GET', 'POST'])
 def events():
-    form = EventForm()
-    if request.method == 'POST':  # Check if it's a POST request
-        form = EventForm(request.form)
-    return render_template('fitness/events.html', form=form)
+
+    # TODO: get friends data from mongo db
+    # TODO: store event data into mongo db
+    # TODO: show existing events
+    # TODO: invitation pending
+    # TODO: add more friends into an event
+    # TODO: format time input field
+
+    if session.get('email'):
+        print("logged in")
+        if request.method == 'POST':
+            print("/events: posted")
+            form = EventForm(request.form)
+            if form.validate_on_submit():
+                print("validated input")
+                exercise = request.form.get('exercise')
+                date = request.form.get('date')
+                start_time = request.form.get('start_time')
+                end_time = request.form.get('end_time')
+                print(end_time)
+                friend = request.form.get('friend')
+                return render_template("fitness/events.html", form=form)
+        else:
+            form = EventForm()
+        return render_template('fitness/events.html', form=form)
+    else:
+        return "User not logged in"

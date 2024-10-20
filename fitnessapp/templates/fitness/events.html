@@ -1,12 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>this is a pagesdsds</h1>
-    
-</body>
-</html>
+{% extends "layout.html" %}
+{% block content %}
+<div class="content-section">
+    <form method="POST" action="{{ url_for('events') }}" name="EventForm()">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Create an event and invite your friends!!</legend>
+            <div class="form-group">
+            <label for="sel1">Select an exercise:</label>
+            <select class="form-control" id="sel1" name="sellist1">
+                <option>Tennis</option>
+                <option>Badminton</option>
+                <option>Table Tennis</option>
+                <option>Hiking</option>
+                <option>Jogging</option>
+                <option>Basketball</option>
+            </select>
+            <label class="form-control-label">Date:</label>
+            <div class="input-group date" id="datepicker">
+                <input type="date" name="date" class="form-control" placeholder="MM/DD/YYYY" required />
+            </div>
+            <label class="form-control-label">Time:</label>
+            <div class="input-group time" id="datepicker">
+                <input type="time" name="time" class="form-control" required />
+            </div>
+            <label>Invite a friend:</label>
+            <select class="form-control" id="sel1" name="sellist1">
+                <option>User1</option>
+                <option>User2</option>
+            </select>
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+</div>
+{% endblock content %}

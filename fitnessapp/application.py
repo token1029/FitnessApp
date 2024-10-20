@@ -23,7 +23,7 @@ from flask import render_template, session, url_for, flash, redirect, request, F
 from flask_mail import Mail, Message
 from flask_pymongo import PyMongo
 from tabulate import tabulate
-from .forms import HistoryForm, RegistrationForm, LoginForm, CalorieForm, UserProfileForm, EnrollForm, ReviewForm
+from .forms import HistoryForm, RegistrationForm, LoginForm, CalorieForm, UserProfileForm, EnrollForm, ReviewForm, EventForm
 from .insert_db_data import insertfooddata, insertexercisedata
 import schedule
 from threading import Thread
@@ -877,3 +877,10 @@ def submit_reviews():
         return render_template('review.html', form=form, existing_reviews=existing_reviews)
     else:
         return "User not logged in"
+
+@bp.route("/events", methods=['GET', 'POST'])
+def events():
+    form = EventForm()
+    if request.method == 'POST':  # Check if it's a POST request
+        form = EventForm(request.form)
+    return render_template('fitness/events.html', form=form)

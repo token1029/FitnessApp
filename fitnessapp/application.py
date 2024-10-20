@@ -30,7 +30,7 @@ from flask_pymongo import PyMongo
 from tabulate import tabulate
 
 from .forms import (CalorieForm, EnrollForm, HistoryForm, LoginForm,
-                    RegistrationForm, ReviewForm, UserProfileForm)
+                    RegistrationForm, ReviewForm, UserProfileForm), EventForm
 from .insert_db_data import insertexercisedata, insertfooddata
 
 bp = Blueprint('', __name__, url_prefix='')
@@ -881,3 +881,10 @@ def submit_reviews():
         return render_template('review.html', form=form, existing_reviews=existing_reviews)
     else:
         return "User not logged in"
+
+@bp.route("/events", methods=['GET', 'POST'])
+def events():
+    form = EventForm()
+    if request.method == 'POST':  # Check if it's a POST request
+        form = EventForm(request.form)
+    return render_template('fitness/events.html', form=form)

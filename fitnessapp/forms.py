@@ -151,3 +151,14 @@ class ReviewForm(FlaskForm):
             DataRequired(), Length(
                 min=2, max=200)])
     submit = SubmitField('Submit')
+
+class EventForm(FlaskForm):
+    review = StringField(
+        'Review', validators=[
+            DataRequired(), Length(
+                min=2, max=200)])
+    name = StringField(
+        'Name', validators=[
+            DataRequired(), Length(
+                min=2, max=200)])
+    submit = SubmitField('Submit')

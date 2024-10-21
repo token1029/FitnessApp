@@ -64,13 +64,9 @@ def mock_prepare_token_request(token_endpoint, authorization_response, redirect_
 
 
 def test_google_login_callback_unverified_email(mocker, client):
-    # Mock the first call to requests.get (for the Google provider config)
     mock_get = mocker.patch('requests.get')
-
     mock_get.side_effect = [
-        # First call returns the Google provider config
         MagicMock(json=MagicMock(return_value=mock_google_provider_cfg())),
-        # Second call returns the user info with email verified
         MagicMock(json=MagicMock(return_value={
             "sub": "1234567890",
             "email": "testuser@gmail.com",
@@ -96,13 +92,9 @@ def test_google_login_callback_success(mocker, client):
         # Make an initial request to create the request context
         client.get('/')
 
-        # Mock the first call to requests.get (for the Google provider config)
         mock_get = mocker.patch('requests.get')
-
         mock_get.side_effect = [
-            # First call returns the Google provider config
             mocker.Mock(json=mocker.Mock(return_value=mock_google_provider_cfg())),
-            # Second call returns the user info with email verified
             mocker.Mock(json=mocker.Mock(return_value={
                 "sub": "1234567890",
                 "email": "testuser@gmail.com",
@@ -112,14 +104,13 @@ def test_google_login_callback_success(mocker, client):
             })),
         ]
 
-        # Mocking the requests.post for token exchange
-        mock_post = mocker.patch('requests.post', side_effect=mock_requests_post)
+        mocker.patch('requests.post', side_effect=mock_requests_post)
 
-        # call the login callback route and assert the session data
+
         response = client.get('/login/callback?code=fake-auth-code')
 
         # Assertions for successful login
-        assert response.status_code == 302  # Redirect to dashboard
+        assert response.status_code == 302
         assert 'email' in session
         assert 'name' in session
         assert session['email'] == "testuser@gmail.com"

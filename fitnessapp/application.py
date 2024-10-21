@@ -34,7 +34,7 @@ from flask_pymongo import PyMongo
 from tabulate import tabulate
 
 from .forms import (CalorieForm, EnrollForm, HistoryForm, LoginForm,
-                    RegistrationForm, ReviewForm, UserProfileForm), EventForm
+                    RegistrationForm, ReviewForm, UserProfileForm, EventForm)
 from .insert_db_data import insertexercisedata, insertfooddata
 
 bp = Blueprint('', __name__, url_prefix='')

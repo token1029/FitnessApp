@@ -21,6 +21,8 @@ bp = Blueprint('auth', __name__, url_prefix='')
 
 @bp.route("/google-login")
 def google_login():
+    # current_app.extensions["celery"].send_task('fitnessapp.tasks.send_task_reminder_email')
+    # return redirect(url_for('login'))
     # get the url to hit for google login
     google_provider_cfg = get_google_provider_cfg()
     authorization_endpoint = google_provider_cfg["authorization_endpoint"]

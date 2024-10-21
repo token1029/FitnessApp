@@ -124,3 +124,40 @@ def test_google_login_callback_success(mocker, client):
         assert 'name' in session
         assert session['email'] == "testuser@gmail.com"
         assert session['name'] == "Test"
+
+
+def test_google_login_does_not_create_multiple_accounts(mocker, app, client):
+    with client:
+        client.get('/')
+        mock_get = mocker.patch('requests.get')
+
+        mock_get.side_effect = [
+            mocker.Mock(json=mocker.Mock(return_value=mock_google_provider_cfg())),
+            mocker.Mock(json=mocker.Mock(return_value={
+                "sub": "1234567890",
+                "email": "testuser@gmail.com",
+                "email_verified": True,  # Simulate verified email
+                "given_name": "Test",
+                "picture": "https://example.com/pic.jpg"
+            })),
+
+            # repeats the mocks for the 3rd and 4th call since we are calling the enpoint twice
+            mocker.Mock(json=mocker.Mock(return_value=mock_google_provider_cfg())),
+            mocker.Mock(json=mocker.Mock(return_value={
+                "sub": "1234567890",
+                "email": "testuser@gmail.com",
+                "email_verified": True,  # Simulate verified email
+                "given_name": "Test",
+                "picture": "https://example.com/pic.jpg"
+            })),
+        ]
+
+        mocker.patch('requests.post', side_effect=mock_requests_post)
+
+        # attempt to login twice
+        response = client.get('/login/callback?code=fake-auth-code')
+
+        response2 = client.get('/login/callback?code=fake-auth-code')
+        LOGGER.info(app.mongo)
+
+        assert app.mongo.db.user.count_documents({}) == 1

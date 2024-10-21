@@ -36,7 +36,9 @@ def app():
     app.mongo = mongomock.MongoClient()
     # other setup can go here
 
-    yield app
+    with app.test_client() as client:
+        app.client = client
+        yield app
 
     # clean up / reset resources here
 

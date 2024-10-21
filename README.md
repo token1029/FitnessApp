@@ -187,11 +187,20 @@ This document serves as a comprehensive reference point for users, giving them i
 
 - Install MongoDB using the following link:
 
+- Install MongoDB using the following link:
+
 https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows
 
 
 - Git Clone the Repository
 
+- Git Clone the Repository
+
+  `git clone https://github.com/VibhavDeo/FitnessApp.git`
+ 
+  
+
+- Install the required packages by running the following command in the terminal
   `git clone https://github.com/VibhavDeo/FitnessApp.git`
  
   
@@ -204,10 +213,17 @@ https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows
 - Create a `.env` file in the root folder and paste the content as found in `.env.example`. Populate the fields with your own credentials
   
 - Run the following command in the terminal
+  `pip install -r requirements.txt`
+
+
+- Create a `.env` file in the root folder and paste the content as found in `.env.example`. Populate the fields with your own credentials
+  
+- Run the following command in the terminal
 
   ```
   export FLASK_APP=fitnessapp && export FLASK_ENV=development && FLASK_DEBUG=1 && flask run
   ```
+    export FLASK_APP=fitnessapp && export FLASK_ENV=development && FLASK_DEBUG=1 && flask run
 
 - Open the URL in your browser:  ` http://127.0.0.1:5000/`
 

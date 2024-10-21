@@ -9,9 +9,6 @@ logging.basicConfig(level=logging.INFO)
 LOGGER = logging.getLogger(__name__)
 
 
-def test_redirect_to_google_page(client):
-    response = client.get('/google-login')
-    assert response.status_code == 302
 
 
 def mock_token_response():
@@ -61,6 +58,11 @@ def mock_prepare_token_request(token_endpoint, authorization_response, redirect_
         {"Content-Type": "application/x-www-form-urlencoded"},  # Headers
         f"code=4223"  # Body of the request
     )
+
+
+def test_redirect_to_google_page(client):
+    response = client.get('/google-login')
+    assert response.status_code == 302
 
 
 def test_google_login_callback_unverified_email(mocker, client):

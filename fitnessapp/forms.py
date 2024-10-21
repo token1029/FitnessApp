@@ -22,7 +22,7 @@ https://github.com/VibhavDeo/FitnessApp
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.fields.core import DateField, SelectField
+from wtforms.fields.core import DateField, SelectField, TimeField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from .apps import App
 class RegistrationForm(FlaskForm):
@@ -150,4 +150,19 @@ class ReviewForm(FlaskForm):
         'Name', validators=[
             DataRequired(), Length(
                 min=2, max=200)])
+    submit = SubmitField('Submit')
+
+class EventForm(FlaskForm):
+    exercise_choices = [('Tennis', 'Tennis'), ('Badminton', 'Badminton'), ('Table Tennis', 'Table Tennis'), ('Yoga', 'Yoga'), 
+                        ('Hiking', 'Hiking'), ('Jogging', 'Jogging'), ('Basketball', 'Basketball'), ('Dance', 'Dance')]
+    exercise = SelectField('Select an exercise', choices=exercise_choices)
+
+    date = DateField('Select a Date', validators=[DataRequired()])
+    
+    start_time = TimeField('From', validators=[DataRequired()])
+
+    end_time = TimeField('To', validators=[DataRequired()])
+    
+    invited_friend = SelectField('Invite a friend', choices=[])
+    
     submit = SubmitField('Submit')

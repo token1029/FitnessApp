@@ -206,7 +206,7 @@ Install the required packages by running the following command in the terminal
 Step 4:
 Run the following command in the terminal
 
-    export FLASK_APP=FLASK_APP=fitnessapp && export FLASK_ENV=development && FLASK_DEBUG=1 && flask run
+    export FLASK_APP=fitnessapp && export FLASK_ENV=development && FLASK_DEBUG=1 && flask run
 
 Step 5:
 Open the URL in your browser:  

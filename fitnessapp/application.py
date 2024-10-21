@@ -13,6 +13,7 @@ https://github.com/VibhavDeo/FitnessApp
 
 """
 from datetime import datetime
+from tkinter import NO
 import plotly.express as px
 import plotly.graph_objects as go
 from bson import ObjectId
@@ -23,7 +24,7 @@ from flask import render_template, session, url_for, flash, redirect, request, F
 from flask_mail import Mail, Message
 from flask_pymongo import PyMongo
 from tabulate import tabulate
-from .forms import HistoryForm, RegistrationForm, LoginForm, CalorieForm, UserProfileForm, EnrollForm, ReviewForm
+from .forms import HistoryForm, RegistrationForm, LoginForm, CalorieForm, UserProfileForm, EnrollForm, ReviewForm, EventForm
 from .insert_db_data import insertfooddata, insertexercisedata
 import schedule
 from threading import Thread
@@ -877,3 +878,53 @@ def submit_reviews():
         return render_template('review.html', form=form, existing_reviews=existing_reviews)
     else:
         return "User not logged in"
+
+def getFriends(email):
+    friend_requests = list(current_app.mongo.db.friends.find(
+        {'sender': email, 'accept': True}, {'sender', 'receiver', 'accept'}))
+    my_friends = list()
+
+    for friend_req in friend_requests:
+        my_friends.append(friend_req['receiver'])
+    
+    return my_friends
+
+@bp.route("/events", methods=['GET', 'POST'])
+def events():
+
+    # TODO: invitation pending
+    # TODO: add more friends into an event
+    # TODO: format time input field
+    email = session.get('email')
+    if email is None:
+        return "User not logged in"
+
+    existing_events = current_app.mongo.db.events.find({
+        "$or": [
+            {"host": email},
+            {"invited_friend": email}
+        ]
+    })
+    friends = getFriends(email)
+
+    if request.method == 'POST':
+        form = EventForm(request.form)
+        form.invited_friend.choices = [(friend, friend) for friend in friends]
+        if form.validate_on_submit():
+            exercise = request.form.get('exercise')
+            date = request.form.get('date')
+            start_time = request.form.get('start_time')
+            end_time = request.form.get('end_time')
+            invited_friend = request.form.get('invited_friend')
+            current_app.mongo.db.events.insert_one({'exercise': exercise, 
+                                                    'host': email,
+                                                    'date': date,
+                                                    'start_time': start_time,
+                                                    'end_time': end_time,
+                                                    'invited_friend': invited_friend})
+            return render_template("fitness/events.html", form=form, existing_events=existing_events)
+    else:
+        form = EventForm()
+        form.invited_friend.choices = [(friend, friend) for friend in friends]
+    return render_template('fitness/events.html', form=form, existing_events=existing_events)
+    

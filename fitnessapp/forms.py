@@ -153,8 +153,8 @@ class ReviewForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class EventForm(FlaskForm):
-    exercise_choices = [('tennis', 'Tennis'), ('badminton', 'Badminton'), ('table_tennis', 'Table Tennis'), ('yoga', 'Yoga'), 
-                        ('hiking', 'Hiking'), ('jogging', 'Jogging'), ('basketball', 'Basketball'), ('dance', 'Dance')]
+    exercise_choices = [('Tennis', 'Tennis'), ('Badminton', 'Badminton'), ('Table Tennis', 'Table Tennis'), ('Yoga', 'Yoga'), 
+                        ('Hiking', 'Hiking'), ('Jogging', 'Jogging'), ('Basketball', 'Basketball'), ('Dance', 'Dance')]
     exercise = SelectField('Select an exercise', choices=exercise_choices)
 
     date = DateField('Select a Date', validators=[DataRequired()])

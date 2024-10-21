@@ -899,7 +899,6 @@ def events():
     if email is None:
         return "User not logged in"
 
-    print("logged in")
     existing_events = current_app.mongo.db.events.find({
         "$or": [
             {"host": email},
@@ -909,17 +908,14 @@ def events():
     friends = getFriends(email)
 
     if request.method == 'POST':
-        print("/events: posted")
         form = EventForm(request.form)
         form.invited_friend.choices = [(friend, friend) for friend in friends]
         if form.validate_on_submit():
-            print("validated input")
             exercise = request.form.get('exercise')
             date = request.form.get('date')
             start_time = request.form.get('start_time')
             end_time = request.form.get('end_time')
             invited_friend = request.form.get('invited_friend')
-            print(exercise, date, start_time, end_time, invited_friend)
             current_app.mongo.db.events.insert_one({'exercise': exercise, 
                                                     'host': email,
                                                     'date': date,

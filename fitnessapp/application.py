@@ -13,6 +13,7 @@ https://github.com/VibhavDeo/FitnessApp
 
 """
 from datetime import datetime
+from tkinter import NO
 import plotly.express as px
 import plotly.graph_objects as go
 from bson import ObjectId
@@ -878,32 +879,46 @@ def submit_reviews():
     else:
         return "User not logged in"
 
+def getFriends(email):
+    friend_requests = list(current_app.mongo.db.friends.find(
+        {'sender': email, 'accept': True}, {'sender', 'receiver', 'accept'}))
+    my_friends = list()
+
+    for friend_req in friend_requests:
+        my_friends.append(friend_req['receiver'])
+    
+    return my_friends
+
 @bp.route("/events", methods=['GET', 'POST'])
 def events():
 
-    # TODO: get friends data from mongo db
     # TODO: store event data into mongo db
     # TODO: show existing events
     # TODO: invitation pending
     # TODO: add more friends into an event
     # TODO: format time input field
-
-    if session.get('email'):
-        print("logged in")
-        if request.method == 'POST':
-            print("/events: posted")
-            form = EventForm(request.form)
-            if form.validate_on_submit():
-                print("validated input")
-                exercise = request.form.get('exercise')
-                date = request.form.get('date')
-                start_time = request.form.get('start_time')
-                end_time = request.form.get('end_time')
-                print(end_time)
-                friend = request.form.get('friend')
-                return render_template("fitness/events.html", form=form)
-        else:
-            form = EventForm()
-        return render_template('fitness/events.html', form=form)
-    else:
+    email = session.get('email')
+    if email is None:
         return "User not logged in"
+
+    print("logged in")
+    friends = getFriends(email)
+
+    if request.method == 'POST':
+        print("/events: posted")
+        form = EventForm(request.form)
+        form.invited_friend.choices = [(friend, friend) for friend in friends]
+        if form.validate_on_submit():
+            print("validated input")
+            exercise = request.form.get('exercise')
+            date = request.form.get('date')
+            start_time = request.form.get('start_time')
+            end_time = request.form.get('end_time')
+            invited_friend = request.form.get('invited_friend')
+            print(exercise, date, start_time, end_time, invited_friend)
+            return render_template("fitness/events.html", form=form, friends=friends)
+    else:
+        form = EventForm()
+        form.invited_friend.choices = [(friend, friend) for friend in friends]
+    return render_template('fitness/events.html', form=form, friends=friends)
+    

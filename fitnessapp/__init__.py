@@ -39,11 +39,11 @@ def create_app(test_config=None):
     app.mongo = mongo
 
     # Mail Configuration
-    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-    app.config['MAIL_PORT'] = 465
-    app.config['MAIL_USE_SSL'] = True
-    app.config['MAIL_USERNAME'] = "burnoutapp2023@gmail.com"
-    app.config['MAIL_PASSWORD'] = "jgny mtda gguq shnw"
+    app.config['MAIL_SERVER'] = os.environ.get("MAIL_SERVER", None)
+    app.config['MAIL_PORT'] = os.environ.get("MAIL_PORT", None)
+    app.config['MAIL_USE_SSL'] = os.environ.get("MAIL_USE_SSL", True)
+    app.config['MAIL_USERNAME'] = os.environ.get("MAIL_USERNAME", None)
+    app.config['MAIL_PASSWORD'] = os.environ.get("MAIL_PASSWORD", None)
 
     # Google OAuth Configuration
     app.config['GOOGLE_CLIENT_ID'] = os.environ.get("GOOGLE_CLIENT_ID", None)
@@ -52,6 +52,7 @@ def create_app(test_config=None):
     app.config['GOOGLE_SIGN_IN_REDIRECT_URI'] = os.environ.get("GOOGLE_SIGN_IN_REDIRECT_URI", None)
 
     mail = Mail(app)
+    app.mail = mail
 
     # OAuth Client Setup
     oauthclient = WebApplicationClient(app.config['GOOGLE_CLIENT_ID'])
@@ -82,12 +83,12 @@ def create_app(test_config=None):
     celery.conf.update(app.config)
 
     celery.conf.timezone = 'America/New_York'
-    celery.conf.beat_schedule = {
-        'send-task-reminder-email-every-5-seconds': {
-            'task': 'fitnessapp.tasks.send_task_reminder_email',  # Adjust the path as needed
-            'schedule': 5.0,  # Runs every 5 seconds
-        },
-    }
+    # celery.conf.beat_schedule = {
+    #     'send-task-reminder-email-every-5-seconds': {
+    #         'task': 'fitnessapp.tasks.send_task_reminder_email',  # Adjust the path as needed
+    #         'schedule': 5.0,  # Runs every 5 seconds
+    #     },
+    # }
 
 
     return app

@@ -184,33 +184,32 @@ This document serves as a comprehensive reference point for users, giving them i
 
 # Steps for execution
 
-Step 1:
-Install MongoDB using the following link:
+
+- Install MongoDB using the following link:
 
 https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows
 
-Step 2:
-Git Clone the Repository
 
-    git clone https://github.com/VibhavDeo/FitnessApp.git
+- Git Clone the Repository
 
-(OR) Download the .zip file on your local machine
+  `git clone https://github.com/VibhavDeo/FitnessApp.git`
+ 
+  
 
-    https://github.com/VibhavDeo/FitnessApp.git
+- Install the required packages by running the following command in the terminal
 
-Step 3:
-Install the required packages by running the following command in the terminal
+  `pip install -r requirements.txt`
 
-    pip install -r requirements.txt
 
-Step 4:
-Run the following command in the terminal
+- Create a `.env` file in the root folder and paste the content as found in `.env.example`. Populate the fields with your own credentials
+  
+- Run the following command in the terminal
 
-    export FLASK_APP=FLASK_APP=fitnessapp && export FLASK_ENV=development && FLASK_DEBUG=1 && flask run
+  ```
+  export FLASK_APP=FLASK_APP=fitnessapp && export FLASK_ENV=development && FLASK_DEBUG=1 && flask run
+  ```
 
-Step 5:
-Open the URL in your browser:  
- http://127.0.0.1:5000/
+- Open the URL in your browser:  ` http://127.0.0.1:5000/`
 
 NOTE!!:
 If you get error regarding any of the following packages - pymongo and bson, then dont worry we have also been there. Run the following commands to resolve the error :

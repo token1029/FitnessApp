@@ -206,7 +206,7 @@ https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows
 - Run the following command in the terminal
 
   ```
-  export FLASK_APP=FLASK_APP=fitnessapp && export FLASK_ENV=development && FLASK_DEBUG=1 && flask run
+  export FLASK_APP=fitnessapp && export FLASK_ENV=development && FLASK_DEBUG=1 && flask run
   ```
 
 - Open the URL in your browser:  ` http://127.0.0.1:5000/`

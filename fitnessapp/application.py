@@ -896,8 +896,6 @@ def getFriends(email):
 @bp.route("/events", methods=['GET', 'POST'])
 def events():
 
-    # TODO: store event data into mongo db
-    # TODO: show existing events
     # TODO: invitation pending
     # TODO: add more friends into an event
     # TODO: format time input field
@@ -906,6 +904,12 @@ def events():
         return "User not logged in"
 
     print("logged in")
+    existing_events = current_app.mongo.db.events.find({
+        "$or": [
+            {"host": email},
+            {"invited_friend": email}
+        ]
+    })
     friends = getFriends(email)
 
     if request.method == 'POST':
@@ -920,9 +924,15 @@ def events():
             end_time = request.form.get('end_time')
             invited_friend = request.form.get('invited_friend')
             print(exercise, date, start_time, end_time, invited_friend)
-            return render_template("fitness/events.html", form=form, friends=friends)
+            current_app.mongo.db.events.insert_one({'exercise': exercise, 
+                                                    'host': email,
+                                                    'date': date,
+                                                    'start_time': start_time,
+                                                    'end_time': end_time,
+                                                    'invited_friend': invited_friend})
+            return render_template("fitness/events.html", form=form, existing_events=existing_events)
     else:
         form = EventForm()
         form.invited_friend.choices = [(friend, friend) for friend in friends]
-    return render_template('fitness/events.html', form=form, friends=friends)
+    return render_template('fitness/events.html', form=form, existing_events=existing_events)
     

@@ -26,5 +26,31 @@
             {{ form.submit(class="btn btn-outline-info") }}
         </div>
     </form>
+
+    <!-- Display Events -->
+    <div id="existing-reviews">
+        <h2>Upcoming Events:</h2>
+        <ul>
+            {% for event in existing_events %}
+                <li class="quote">
+                    <p>Exercise: {{ event.exercise }}</p>
+                    <p>Host: {{ event.host }}</p>
+                    <p>Date: {{ event.date }}</p>
+                    <p>From: {{ event.start_time }}</p>
+                    <p>To: {{ event.end_time }}</p>
+                    <p>Invited Friend: {{ event.invited_friend }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
+<style>
+    /* CSS Styles for Existing Events */
+    .quote {
+        background-color: #f9f9f9;
+        border-left: 10px solid #ccc;
+        margin: 10px 0;
+        padding: 10px 20px;
+    }
+</style>
 {% endblock content %}

@@ -15,13 +15,13 @@ jobs:
         mongodb-version: ['7.0']
     steps:
       - uses: actions/checkout@v4
-      - name: Install Python 3.10
+      - name: Install Python 3.9
         uses: actions/setup-python@v4
         with:
           python-version: 3.9
       - name: Install dependencies
         run: |
-          pip install pytest-cov pytest
+          pip install pytest-cov
           pip install -r requirements.txt
           echo requirements installed
         # pip uninstall bson
@@ -33,4 +33,4 @@ jobs:
           mongodb-version: ${{ matrix.mongodb-version }}
       - name: Run tests
         run: |
-          python -m pytests tests
+          python -m pytest tests

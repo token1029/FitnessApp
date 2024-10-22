@@ -5,6 +5,7 @@ login()
 - This function is used for login by the user
 - Using email ID and passoword is validated and the user is directed to home
 
+
 logout()
 - This function is used for logout by the user
 - logout() function just clears the session

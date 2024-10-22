@@ -21,43 +21,72 @@
 </head>
 <body>
     <header class="site-header">
-      <nav class="navbar navbar-expand-lg bg-dark fixed-top nav-dark">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
-         {% if not session.get("email") %}
-            <a class="navbar-brand fs-4 mr-4 text-white" href="{{url_for('login')}}">BURNOUT</a>
-          {% else %}
-            <a class="navbar-brand mr-4 text-white" href="{{url_for('dashboard')}}">
-              <img src="static\img\fire.gif" alt="Computer man" style="width:98px;height:38px;">
-              BURNOUT</a>
-          {% endif %}
-
-          <div class="collapse navbar-collapse" id="navbarToggle">
-            <!-- Navbar Right Side -->
-            {% if not session.get("email"): %}
-            <div class="navbar-nav ml-auto">
-              <a class="nav-item nav-link" href="{{ url_for('login') }}" id="login">Login</a>
-              <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
-            </div>
+            {% if not session.get("email") %}
+            <a class="navbar-brand fs-4 text-white" href="{{url_for('login')}}">BURNOUT</a>
             {% else %}
-            <div class="navbar-nav ml-auto d-flex justify-content-start align-items-start gap-3">
-              <a class="nav-item nav-link" href="{{ url_for('calories') }}">Enter Calories</a>
-              <a class="nav-item nav-link" href="{{ url_for('history') }}">History</a>
-              <a class="nav-item nav-link" href="{{url_for('friends')}}">Friends</a>
-              <a class="nav-item nav-link" href="{{url_for('bmi_calci')}}">BMI Calculator</a>
-              <a class="nav-item nav-link" href="{{url_for('favorites')}}">Favorites</a>
-              <a class="nav-item nav-link" href="{{url_for('submit_reviews')}}">Reviews</a>
-              <a class="nav-item nav-link btn btn-link" href="{{ url_for('display_profile') }}">Profile</button>
-              <a class="nav-item nav-link" href="{{ url_for('events') }}">Events</a>
-            </div>
-            </div>
-            <div class="navbar-nav ml-auto d-flex justify-content-center align-items-center gap-3">
-              <a class="nav-item nav-link">Welcome, {{ session.get("name") }}</a>
-              <button class="nav-item nav-link btn btn-link text-white text-decoration-none px-3 py-1 rounded-4" style="background-color: #FFC107;" onclick="logout()">Log Out</button>
-            </div>
+            <a class="navbar-brand d-flex align-items-center text-white" href="{{url_for('dashboard')}}">
+                <img src="static/img/fire.gif" alt="Logo" style="width:98px; height:38px;" class="me-2">
+                BURNOUT
+            </a>
             {% endif %}
-          </div>
+    
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="collapse navbar-collapse" id="navbarToggle">
+                <ul class="navbar-nav ms-auto">
+                    {% if not session.get("email") %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('calories') }}">Enter Calories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('history') }}">History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('friends') }}">Friends</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('bmi_calci') }}">BMI Calculator</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('favorites') }}">Favorites</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('submit_reviews') }}">Reviews</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('display_profile') }}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('events') }}">Events</a>
+                    </li>
+                    {% endif %}
+                </ul>
+    
+                {% if session.get("email") %}
+                <ul class="navbar-nav ms-auto d-flex align-items-center gap-3">
+                    <li class="nav-item">
+                        <span class="navbar-text text-white">Welcome, {{ session.get("name") }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-warning text-white px-3 py-1 rounded-4" onclick="logout()">Log Out</button>
+                    </li>
+                </ul>
+                {% endif %}
+            </div>
         </div>
-      </nav>
+    </nav>
+    
     </header>
     <main role="main" class="container">
       <div class="row">

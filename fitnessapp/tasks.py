@@ -9,7 +9,7 @@ LOGGER = logging.getLogger(__name__)
 
 @shared_task()
 def send_task_reminder_email():
-    
+    LOGGER.info("sending")
     
 
     # today's date in "YYYY-MM-DD" format
@@ -32,5 +32,6 @@ def send_task_reminder_email():
         
         msg.body = f"Dear User, you have an upcoming event ({event['exercise']}) today at {event['start_time']}"
         current_app.mail.send(msg)
+        LOGGER.info("sending9999")
 
     

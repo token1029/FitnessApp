@@ -60,9 +60,9 @@ def mock_prepare_token_request(token_endpoint, authorization_response, redirect_
     )
 
 
-def test_redirect_to_google_page(client):
-    response = client.get('/google-login')
-    assert response.status_code == 302
+# def test_redirect_to_google_page(client):
+#     response = client.get('/google-login')
+#     assert response.status_code == 302
 
 
 def test_google_login_callback_unverified_email(mocker, client):

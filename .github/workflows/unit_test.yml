@@ -33,7 +33,4 @@ jobs:
           mongodb-version: ${{ matrix.mongodb-version }}
       - name: Run tests
         run: |
-          python application.py &
-          sleep 5
-          cd tests
           python -m pytests tests

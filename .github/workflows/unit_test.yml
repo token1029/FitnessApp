@@ -2,10 +2,10 @@ name: Tests
 on:
   push:
     branches:
-      - main
+      - feature/ci-actions
   pull_request:
     branches:
-      - main
+      - feature/ci-actions
 
 jobs:
   build:
@@ -15,13 +15,13 @@ jobs:
         mongodb-version: ['7.0']
     steps:
       - uses: actions/checkout@v4
-      - name: Install Python 3.9
+      - name: Install Python 3.10
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: 3.10
       - name: Install dependencies
         run: |
-          pip install pytest-cov
+          pip install pytest-cov pytest
           pip install -r requirements.txt
           echo requirements installed
         # pip uninstall bson
@@ -36,4 +36,4 @@ jobs:
           python application.py &
           sleep 5
           cd tests
-          python -m unittest test_module
+          python -m pytests tests

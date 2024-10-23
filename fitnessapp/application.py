@@ -12,23 +12,37 @@ For more information about the Burnout project, visit:
 https://github.com/VibhavDeo/FitnessApp
 
 """
+import smtplib
+import time
 from datetime import datetime
+
+from threading import Thread
+
+import bcrypt
 from tkinter import NO
+
+
+import bcrypt
+
+from tkinter import NO
+
 import plotly.express as px
 import plotly.graph_objects as go
+import requests
+import schedule
 from bson import ObjectId
-import bcrypt
-import smtplib
-from flask import json, jsonify, Flask, Blueprint, current_app
-from flask import render_template, session, url_for, flash, redirect, request, Flask
+from flask import (Blueprint, Flask, current_app, flash, json, jsonify,
+                   redirect, render_template, request, session, url_for)
 from flask_mail import Mail, Message
 from flask_pymongo import PyMongo
 from tabulate import tabulate
+
 from .forms import HistoryForm, RegistrationForm, LoginForm, CalorieForm, UserProfileForm, EnrollForm, ReviewForm, EventForm
 from .insert_db_data import insertfooddata, insertexercisedata
 import schedule
 from threading import Thread
 import time
+
 
 bp = Blueprint('', __name__, url_prefix='')
 

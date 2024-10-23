@@ -97,6 +97,9 @@ This document serves as a comprehensive reference point for users, giving them i
   - [View User Profile 2.0](#view-user-profile-20)
   - [Update Your Profile](#update-your-profile)
 - [Steps for execution](#steps-for-execution)
+      - [Set up Project](#set-up-project)
+      - [Create Google Client Credentials](#create-google-client-credentials)
+      - [Start the application](#start-the-application)
 - [Source Code](#source-code)
 - [Future Scope](#future-scope)
 - [Team Members](#team-members)
@@ -182,9 +185,9 @@ This document serves as a comprehensive reference point for users, giving them i
 
 <img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/updateProfile.jpeg>
 
+
 # Steps for execution
-
-
+#### Set up Project 
 - Install MongoDB using the following link:
 
 https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows
@@ -206,7 +209,19 @@ https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows
 
 
 - Create a `.env` file in the root folder and paste the content as found in `.env.example`. Populate the fields with your own credentials
-  
+#### Create Google Client Credentials
+- First, note that you will need a Google Account. You already have one if you use Gmail.
+
+- Go to the [Google developers credentials page](https://console.developers.google.com/apis/credentials).
+
+- Once in, you may be prompted to agree to their terms of service. Should you agree to those, press the Create credentials button on the next page. Select the option for OAuth client ID:
+![Google Credentials Page](docs/google_crendentials.jpg)
+- Select the Web application option at the top. You can provide a name for the client in the Name field as well. The name you provide will be displayed to users when they are consenting to your application acting on their behalf.
+
+- if you’ll be running your web application locally for now, so you can set the Authorized JavaScript origins to https://127.0.0.1:5000 and Authorized redirect URIs to https://127.0.0.1:5000/login/callback. This will allow your local Flask application to communicate with Google.
+
+- Finally, hit Create and take note of the client ID and client secret. You’ll need both later. You may also download the config file as json and update you `.env` file with the required fields
+  #### Start the application
 - Run the following command in the terminal
 
   ```
@@ -217,6 +232,7 @@ https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows
 
 - Open the URL in your browser:  ` http://127.0.0.1:5000/`
 
+```
 NOTE!!:
 If you get error regarding any of the following packages - pymongo and bson, then dont worry we have also been there. Run the following commands to resolve the error :
 
@@ -224,6 +240,7 @@ If you get error regarding any of the following packages - pymongo and bson, the
     pip uninstall pymongo
     pip install pymongo
 
+```
 # Source Code
 
 Link to the repository:

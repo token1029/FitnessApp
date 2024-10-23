@@ -2,10 +2,10 @@ name: Tests
 on:
   push:
     branches:
-      - main
+      - develop
   pull_request:
     branches:
-      - main
+      - develop
 
 jobs:
   build:
@@ -15,10 +15,28 @@ jobs:
         mongodb-version: ['7.0']
     steps:
       - uses: actions/checkout@v4
-      - name: Install Python 3.9
+        with:
+          ref: develop
+      - name: Merge changes into develop
+        run: |
+          # Get the branch that the pull request is based on or the current push branch
+          if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
+            PR_BRANCH=${{ github.head_ref }}  # Get the branch for PRs
+          else
+            PR_BRANCH=${{ github.head_ref }}
+          fi
+
+          echo "Merging changes from branch $PR_BRANCH into develop"
+
+          # Fetch the branch
+          git fetch origin $PR_BRANCH
+
+          # Merge the branch into develop
+          git merge origin/$PR_BRANCH
+      - name: Install Python 3.10
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: 3.10.15
       - name: Install dependencies
         run: |
           pip install pytest-cov
@@ -33,7 +51,4 @@ jobs:
           mongodb-version: ${{ matrix.mongodb-version }}
       - name: Run tests
         run: |
-          python application.py &
-          sleep 5
-          cd tests
-          python -m unittest test_module
+          python -m pytest tests

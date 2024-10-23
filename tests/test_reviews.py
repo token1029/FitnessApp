@@ -69,3 +69,4 @@ def test_existing_reviews_displayed(client):
 
     assert 'This is an existing review.' in soup.text
     assert 'Existing User' in soup.text
+

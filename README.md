@@ -187,22 +187,11 @@ This document serves as a comprehensive reference point for users, giving them i
 
 - Install MongoDB using the following link:
 
-- Install MongoDB using the following link:
-
 https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows
 
-
-- Git Clone the Repository
-
 - Git Clone the Repository
 
   `git clone https://github.com/VibhavDeo/FitnessApp.git`
- 
-  
-
-- Install the required packages by running the following command in the terminal
-  `git clone https://github.com/VibhavDeo/FitnessApp.git`
- 
   
 
 - Install the required packages by running the following command in the terminal

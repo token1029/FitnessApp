@@ -28,6 +28,7 @@ class OAuth:
 def app():
     app = create_app()
     app.config['SECRET_KEY'] = 'sessionkey!@'
+    app.config['WTF_CSRF_ENABLED'] = False 
     app.config.update({
         "TESTING": True,
     })

@@ -392,7 +392,11 @@ def friends():
     # Input: Email
     # Output: My friends, Pending Approvals, Sent Requests and Add new friends
     # ##########################
+
+
     email = session.get('email')
+    if not email:
+        return redirect(url_for('login'))
 
     myFriends = list(current_app.mongo.db.friends.find(
         {'sender': email, 'accept': True}, {'sender', 'receiver', 'accept'}))

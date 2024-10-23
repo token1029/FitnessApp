@@ -1,6 +1,7 @@
 amqp==5.2.0
 amqp==5.2.0
 bcrypt==3.2.0
+beautifulsoup4==4.12.3
 billiard==4.2.1
 billiard==4.2.1
 blinker==1.4
@@ -57,6 +58,7 @@ schedule==1.2.1
 sentinels==1.0.0
 setuptools==75.1.0
 six==1.16.0
+soupsieve==2.6
 tabulate==0.8.9
 tenacity==9.0.0
 tomli==2.0.2

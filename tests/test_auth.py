@@ -7,6 +7,7 @@ import logging
 import mongomock
 from werkzeug.security import generate_password_hash
 from bcrypt import hashpw, gensalt
+from bs4 import BeautifulSoup
 
 
 logging.basicConfig(level=logging.INFO)

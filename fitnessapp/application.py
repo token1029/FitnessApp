@@ -133,13 +133,13 @@ def login():
                 flash(
                     'Login Unsuccessful. Please check username and password',
                     'danger')
-                return render_template(
-                    'login.html', title='Login', form=form), 400
+                return render_template('login.html', title='Login', form=form), 400
         else:
             LOGGER.info("okaaayyyy")
             return render_template('login.html', title='Login', form=form), 400
     else:
         return redirect(url_for('home'))
+    
 
 
 @bp.route("/logout", methods=['GET', 'POST'])

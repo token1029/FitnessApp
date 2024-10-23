@@ -75,6 +75,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 
+
 class CalorieForm(FlaskForm):
     """Form to rcord the calorie intake details of the user"""
     app = App()
@@ -173,5 +174,5 @@ class EventForm(FlaskForm):
 
 class ProgramEnrollmentForm(FlaskForm):
     invited_friend = SelectField('Invite a friend', choices=[])
-    
+
     submit = SubmitField('Submit')

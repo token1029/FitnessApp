@@ -20,10 +20,14 @@ jobs:
           ref: develop
       - name: Merge changes into develop
         run: |
-          # Get the name of the branch that triggered the workflow
-          echo "Merging changes from ${GITHUB_REF#refs/heads/} into develop"
-          git fetch origin ${GITHUB_REF#refs/heads/}
-          git merge origin/${GITHUB_REF#refs/heads/}
+          PR_BRANCH=${GITHUB_REF##*/}
+          echo "Merging changes from branch $PR_BRANCH into develop"
+          
+          # Fetch the pull request branch
+          git fetch origin $PR_BRANCH
+
+          # Merge the branch
+          git merge origin/$PR_BRANCH
       - name: Install Python 3.10
         uses: actions/setup-python@v4
         with:

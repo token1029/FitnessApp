@@ -1,10 +1,15 @@
 import flask  # Assuming your Flask app is defined in app.py
-from flask import session
+from flask import session, url_for
 from unittest.mock import patch, MagicMock
 import pytest
 from .conftest import client
 import logging
 import mongomock
+from werkzeug.security import generate_password_hash
+from bcrypt import hashpw, gensalt
+from bs4 import BeautifulSoup
+
+
 logging.basicConfig(level=logging.INFO)
 LOGGER = logging.getLogger(__name__)
 
@@ -51,13 +56,93 @@ def mock_requests_post(url, headers=None, data=None, auth=None):
 
 
 def mock_prepare_token_request(token_endpoint, authorization_response, redirect_url, code):
-    # Custom logic can be added here if needed
-    # For demonstration, we are just returning mock values
     return (
         token_endpoint,  # Return the original token endpoint
         {"Content-Type": "application/x-www-form-urlencoded"},  # Headers
         f"code=4223"  # Body of the request
     )
+
+
+def test_email_password_login_success_given_valid_credentials(mocker, app, client):
+    # Mock session and form
+    with client:
+        with client.session_transaction() as sess:
+            sess.clear()
+
+        mock_user = {
+                'email': 'test@gmail.com',
+                'pwd': hashpw("correctpassword".encode('utf-8'), gensalt()),
+                'name': 'Test User',
+            }
+        app.mongo.db.user.insert_one({
+                'name': mock_user['email'], 
+                'email': mock_user['email'], 
+                'pwd': mock_user['pwd']
+                })
+            
+        app.mongo.db.profile.insert_one({'email': mock_user['email'],
+                                        'date': "2022-02-18",
+                                                        'height': 20,
+                                                        'weight': 30,
+                                                        'goal': 90,
+                                                        'target_weight': 123})
+       
+        response = client.get('/login')  # Adjust to your endpoint
+        soup = BeautifulSoup(response.data, 'html.parser')
+        csrf_token = soup.find('input', {'name': 'csrf_token'})['value']  # Adjust the name based on your setup
+
+
+
+       
+        client.post('/login', data={
+                'email':'test@gmail.com', # mock_user['email'],
+                'password': 'correctpassword',
+                'csrf_token': csrf_token
+            })
+
+        
+        with client.session_transaction() as sess:
+            assert sess['email'] == 'test@gmail.com'
+            assert sess['name'] == 'test@gmail.com'
+            #pass
+
+def test_email_password_login_failure_given_invalid_email(mocker, app, client):
+    # Mock session and form
+    with client:
+        with client.session_transaction() as sess:
+            sess.clear()
+
+        response = client.post('/login', data={
+            'email':"invalid@gmail.com", 
+            'password':"wrongpassword",
+        })
+        
+        assert response.status_code == 400
+
+
+def test_email_password_login_failure_given_incorrect_password(mocker, app, client):
+    with client:
+        with client.session_transaction() as sess:
+            sess.clear()
+            
+        mock_user = {
+            'email': 'test@gmail.com',
+            'pwd': hashpw("correctpassword".encode("utf-8"), gensalt()),
+            'name': 'Test User',
+        }
+        app.mongo.db.user.insert_one({
+            'name': mock_user['name'], 
+            'email': mock_user['email'], 
+            'pwd': mock_user['pwd'],
+            'temp': mock_user['pwd']
+        })
+        
+        response = client.post('/login', data={
+            'email': mock_user['email'],
+            'password': "wrongpassword"
+        })
+
+        assert response.status_code == 400
 
 
 # def test_redirect_to_google_page(client):

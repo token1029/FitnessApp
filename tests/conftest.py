@@ -27,6 +27,7 @@ class OAuth:
 @pytest.fixture()
 def app():
     app = create_app()
+    app.config['SECRET_KEY'] = 'sessionkey!@'
     app.config.update({
         "TESTING": True,
     })

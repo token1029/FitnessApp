@@ -112,13 +112,14 @@ def login():
     """
     if not session.get('email'):
         form = LoginForm()
-        if form.validate_on_submit():
+        isvalid = form.validate_on_submit()
+        LOGGER.info(f"valiting is {isvalid}")
+        if isvalid:
             temp = current_app.mongo.db.user.find_one({'email': form.email.data}, {
                 'email', 'pwd', 'name'})
-            if temp is not None and temp['email'] == form.email.data and (
-                bcrypt.checkpw(
+            if temp is not None and temp['email'] == form.email.data and bcrypt.checkpw(
                     form.password.data.encode("utf-8"),
-                    temp['pwd']) or temp['temp'] == form.password.data):
+                    temp['pwd']) :
                 flash('You have been logged in!', 'success')
                 print(temp)
                 session['email'] = temp['email']
@@ -129,12 +130,13 @@ def login():
                 flash(
                     'Login Unsuccessful. Please check username and password',
                     'danger')
+                return render_template('login.html', title='Login', form=form), 400
+        else:
+            LOGGER.info("okaaayyyy")
+            return render_template('login.html', title='Login', form=form), 400
     else:
         return redirect(url_for('home'))
-    return render_template(
-        'login.html',
-        title='Login',
-        form=form)
+    
 
 
 @bp.route("/logout", methods=['GET', 'POST'])

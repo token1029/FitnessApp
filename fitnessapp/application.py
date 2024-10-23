@@ -429,10 +429,14 @@ def bmi_calci():
     bmi_category = ''
 
     if request.method == 'POST' and 'weight' in request.form:
-        weight = float(request.form.get('weight'))
-        height = float(request.form.get('height'))
-        bmi = calc_bmi(weight, height)
-        bmi_category = get_bmi_category(bmi)
+        try:
+            weight = float(request.form.get('weight'))
+            height = float(request.form.get('height'))
+            bmi = calc_bmi(weight, height)
+            bmi_category = get_bmi_category(bmi)
+        except ValueError:
+            bmi = ''
+            bmi_category = 'Invalid Category'
 
     return render_template("bmi_cal.html", bmi=bmi, bmi_category=bmi_category)
 

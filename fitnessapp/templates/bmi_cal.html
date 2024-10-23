@@ -55,6 +55,10 @@
       <span class="obese display-6; text-align: center display-6"
         >{{ bmi_category }}</span
       >
+      {% elif bmi_category == 'Invalid Category' %}
+      <span class="obese display-6; text-align: center display-6"
+        >{{ bmi_category }}</span
+      >
       {% endif %}
     </p>
   </div>

@@ -186,9 +186,11 @@ def register():
                                                      'target_weight': target_weight})
             flash(f'Account created for {form.username.data}!', 'success')
             return redirect(url_for('home'))
+        else:
+            return render_template('register.html', title='Register', form=form), 400
+            
     else:
         return redirect(url_for('home'))
-    return render_template('register.html', title='Register', form=form)
 
 
 @bp.route("/calories", methods=['GET', 'POST'])

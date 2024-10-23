@@ -7,7 +7,7 @@ import logging
 import mongomock
 from werkzeug.security import generate_password_hash
 from bcrypt import hashpw, gensalt
-from bs4 import BeautifulSoup
+
 
 
 logging.basicConfig(level=logging.INFO)
@@ -87,17 +87,10 @@ def test_email_password_login_success_given_valid_credentials(mocker, app, clien
                                                         'goal': 90,
                                                         'target_weight': 123})
        
-        response = client.get('/login')  # Adjust to your endpoint
-        soup = BeautifulSoup(response.data, 'html.parser')
-        csrf_token = soup.find('input', {'name': 'csrf_token'})['value']  # Adjust the name based on your setup
-
-
-
-       
         client.post('/login', data={
                 'email':'test@gmail.com', # mock_user['email'],
                 'password': 'correctpassword',
-                'csrf_token': csrf_token
+
             })
 
         
@@ -239,3 +232,83 @@ def test_google_login_does_not_create_multiple_accounts(mocker, app, client):
         LOGGER.info(app.mongo)
 
         assert app.mongo.db.user.count_documents({}) == 1
+
+
+def test_register_success(mocker, app, client):
+    with client:
+        with client.session_transaction() as sess:
+            sess.clear()
+
+        mock_bcrypt = mocker.patch('bcrypt.hashpw', return_value=b'mockedhashedpassword')
+        
+
+        response = client.post('/register', data={
+            'username': 'testuser',
+            'email': 'test@example.com',
+            'password': 'correctpassword',
+            'confirm_password': 'correctpassword',
+            'weight': 70,
+            'height': 175,
+            'goal': 80,
+            'target_weight': 75
+        })
+
+        assert response.status_code == 302
+        assert response.headers['Location'] == url_for('home', _external=True)
+
+        with client.session_transaction() as sess:
+            assert 'Account created for testuser!' in sess['_flashes'][0][1]  
+
+
+        user = app.mongo.db.user.find_one({'email': 'test@example.com'})
+        assert user is not None
+        assert user['name'] == 'testuser'
+        assert user['pwd'] == b'mockedhashedpassword'
+
+        profile = app.mongo.db.profile.find_one({'email': 'test@example.com'})
+        # test profile values againts stringes because sessions contain string
+        assert profile is not None
+        assert profile['weight'] == str(70)
+        assert profile['height'] == str(175)
+        assert profile['goal'] == str(80)
+        assert profile['target_weight'] == str(75)
+
+def test_register_invalid_email(client):
+
+    response = client.post('/register', data={
+        'username': 'testuser',
+        'email': 'invalid_email',
+        'password': 'password',
+        'confirm_password': 'password'
+    })
+
+    assert response.status_code == 400
+    assert b'Invalid email address' in response.data  
+
+def test_register_password_mismatch(client):
+    with client:
+        response = client.post('/register', data={
+            'username': 'testuser',
+            'email': 'test@example.com',
+            'password': 'password1',
+            'confirm_password': 'password2'
+        })
+        assert response.status_code == 400
+
+
+def test_register_user_already_exists(client):
+    client.post('/register', data={
+        'username': 'testuser',
+        'email': 'test@example.com',
+        'password': 'correctpassword',
+        'confirm_password': 'correctpassword'
+    })
+
+    response = client.post('/register', data={
+        'username': 'testuser',
+        'email': 'test@example.com',
+        'password': 'newpassword',
+        'confirm_password': 'newpassword'
+    })
+
+    assert response.status_code == 400

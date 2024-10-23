@@ -2,10 +2,11 @@ name: Tests
 on:
   push:
     branches:
-      - feature/ci-actions
+      - develop
+      - feature/*
   pull_request:
     branches:
-      - feature/ci-actions
+      - develop
 
 jobs:
   build:
@@ -15,6 +16,14 @@ jobs:
         mongodb-version: ['7.0']
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: develop
+      - name: Merge changes into develop
+        run: |
+          # Get the name of the branch that triggered the workflow
+          echo "Merging changes from ${GITHUB_REF#refs/heads/} into develop"
+          git fetch origin ${GITHUB_REF#refs/heads/}
+          git merge origin/${GITHUB_REF#refs/heads/}
       - name: Install Python 3.10
         uses: actions/setup-python@v4
         with:

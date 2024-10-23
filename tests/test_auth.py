@@ -312,3 +312,28 @@ def test_register_user_already_exists(client):
     })
 
     assert response.status_code == 400
+
+
+def test_logout_clears_session(client):
+    with client.session_transaction() as sess:
+        sess['email'] = 'test@example.com'
+        sess['name'] = 'Test User'
+
+    response = client.get('/logout')  
+
+
+    assert response.data == b'success'  
+    assert response.status_code == 200 
+
+    with client.session_transaction() as sess:
+        assert 'email' not in sess  
+        assert 'name' not in sess 
+
+def test_logout_response(client):
+    with client.session_transaction() as sess:
+        sess['email'] = 'test@example.com'
+
+    response = client.get('/logout')
+
+    assert response.data == b'success'
+    assert response.status_code == 200

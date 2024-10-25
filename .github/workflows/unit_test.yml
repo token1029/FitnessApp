@@ -22,8 +22,6 @@ jobs:
           # Get the branch that the pull request is based on or the current push branch
           if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
             PR_BRANCH=${{ github.head_ref }}  # Get the branch for PRs
-          else
-            PR_BRANCH=${{ github.head_ref }}
           fi
 
           echo "Merging changes from branch $PR_BRANCH into develop"

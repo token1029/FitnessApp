@@ -83,12 +83,12 @@ def create_app(test_config=None):
     celery.conf.update(app.config)
 
     celery.conf.timezone = 'America/New_York'
-    # celery.conf.beat_schedule = {
-    #     'send-task-reminder-email-every-5-seconds': {
-    #         'task': 'fitnessapp.tasks.send_task_reminder_email',  # Adjust the path as needed
-    #         'schedule': 5.0,  # Runs every 5 seconds
-    #     },
-    # }
+    celery.conf.beat_schedule = {
+        'send-task-reminder-email-every-5-seconds': {
+            'task': 'fitnessapp.tasks.send_task_reminder_email',  # Adjust the path as needed
+            'schedule': 5.0,  # Runs every 5 seconds
+        },
+    }
 
 
     return app

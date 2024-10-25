@@ -231,7 +231,7 @@ https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows
 - Open the URL in your browser:  ` http://127.0.0.1:5000/`
   
 #### Backgroun Tasks
-- Make sure you have RabitMQ install on your system
+- Make sure you have RabitMQ installed and running on your system
 - Run the following command to start celery worker and beat for email-reminders
 
   ```

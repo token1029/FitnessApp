@@ -20,6 +20,8 @@ jobs:
       - name: Merge changes into develop
         if: github.event_name == 'pull_request'
         run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
           PR_BRANCH=${{ github.head_ref }}
           echo "Merging changes from branch $PR_BRANCH into develop"
           git fetch origin $PR_BRANCH

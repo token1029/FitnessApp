@@ -18,19 +18,12 @@ jobs:
         with:
           ref: develop
       - name: Merge changes into develop
+        if: github.event_name == 'pull_request'
         run: |
-          # Get the branch that the pull request is based on or the current push branch
-          if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
-            PR_BRANCH=${{ github.head_ref }}  # Get the branch for PRs
-          fi
-
+          PR_BRANCH=${{ github.head_ref }}
           echo "Merging changes from branch $PR_BRANCH into develop"
-
-          # Fetch the branch
           git fetch origin $PR_BRANCH
-
-          # Merge the branch into develop
-          git merge origin/$PR_BRANCH
+          git merge --no-ff origin/$PR_BRANCH
       - name: Install Python 3.10
         uses: actions/setup-python@v4
         with:

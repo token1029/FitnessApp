@@ -1,10 +1,15 @@
 import flask  # Assuming your Flask app is defined in app.py
-from flask import session
+from flask import session, url_for
 from unittest.mock import patch, MagicMock
 import pytest
 from .conftest import client
 import logging
 import mongomock
+from werkzeug.security import generate_password_hash
+from bcrypt import hashpw, gensalt
+
+
+
 logging.basicConfig(level=logging.INFO)
 LOGGER = logging.getLogger(__name__)
 
@@ -51,13 +56,86 @@ def mock_requests_post(url, headers=None, data=None, auth=None):
 
 
 def mock_prepare_token_request(token_endpoint, authorization_response, redirect_url, code):
-    # Custom logic can be added here if needed
-    # For demonstration, we are just returning mock values
     return (
         token_endpoint,  # Return the original token endpoint
         {"Content-Type": "application/x-www-form-urlencoded"},  # Headers
         f"code=4223"  # Body of the request
     )
+
+
+def test_email_password_login_success_given_valid_credentials(mocker, app, client):
+    # Mock session and form
+    with client:
+        with client.session_transaction() as sess:
+            sess.clear()
+
+        mock_user = {
+                'email': 'test@gmail.com',
+                'pwd': hashpw("correctpassword".encode('utf-8'), gensalt()),
+                'name': 'Test User',
+            }
+        app.mongo.db.user.insert_one({
+                'name': mock_user['email'], 
+                'email': mock_user['email'], 
+                'pwd': mock_user['pwd']
+                })
+            
+        app.mongo.db.profile.insert_one({'email': mock_user['email'],
+                                        'date': "2022-02-18",
+                                                        'height': 20,
+                                                        'weight': 30,
+                                                        'goal': 90,
+                                                        'target_weight': 123})
+       
+        client.post('/login', data={
+                'email':'test@gmail.com', # mock_user['email'],
+                'password': 'correctpassword',
+
+            })
+
+        
+        with client.session_transaction() as sess:
+            assert sess['email'] == 'test@gmail.com'
+            assert sess['name'] == 'test@gmail.com'
+            #pass
+
+def test_email_password_login_failure_given_invalid_email(mocker, app, client):
+    # Mock session and form
+    with client:
+        with client.session_transaction() as sess:
+            sess.clear()
+
+        response = client.post('/login', data={
+            'email':"invalid@gmail.com", 
+            'password':"wrongpassword",
+        })
+        
+        assert response.status_code == 400
+
+
+def test_email_password_login_failure_given_incorrect_password(mocker, app, client):
+    with client:
+        with client.session_transaction() as sess:
+            sess.clear()
+            
+        mock_user = {
+            'email': 'test@gmail.com',
+            'pwd': hashpw("correctpassword".encode("utf-8"), gensalt()),
+            'name': 'Test User',
+        }
+        app.mongo.db.user.insert_one({
+            'name': mock_user['name'], 
+            'email': mock_user['email'], 
+            'pwd': mock_user['pwd'],
+            'temp': mock_user['pwd']
+        })
+        
+        response = client.post('/login', data={
+            'email': mock_user['email'],
+            'password': "wrongpassword"
+        })
+
+        assert response.status_code == 400
 
 
 # def test_redirect_to_google_page(client):
@@ -154,3 +232,108 @@ def test_google_login_does_not_create_multiple_accounts(mocker, app, client):
         LOGGER.info(app.mongo)
 
         assert app.mongo.db.user.count_documents({}) == 1
+
+
+def test_register_success(mocker, app, client):
+    with client:
+        with client.session_transaction() as sess:
+            sess.clear()
+
+        mock_bcrypt = mocker.patch('bcrypt.hashpw', return_value=b'mockedhashedpassword')
+        
+
+        response = client.post('/register', data={
+            'username': 'testuser',
+            'email': 'test@example.com',
+            'password': 'correctpassword',
+            'confirm_password': 'correctpassword',
+            'weight': 70,
+            'height': 175,
+            'goal': 80,
+            'target_weight': 75
+        })
+
+        assert response.status_code == 302
+        assert response.headers['Location'] == url_for('home', _external=True)
+
+        with client.session_transaction() as sess:
+            assert 'Account created for testuser!' in sess['_flashes'][0][1]  
+
+
+        user = app.mongo.db.user.find_one({'email': 'test@example.com'})
+        assert user is not None
+        assert user['name'] == 'testuser'
+        assert user['pwd'] == b'mockedhashedpassword'
+
+        profile = app.mongo.db.profile.find_one({'email': 'test@example.com'})
+        # test profile values againts stringes because sessions contain string
+        assert profile is not None
+        assert profile['weight'] == str(70)
+        assert profile['height'] == str(175)
+        assert profile['goal'] == str(80)
+        assert profile['target_weight'] == str(75)
+
+def test_register_invalid_email(client):
+
+    response = client.post('/register', data={
+        'username': 'testuser',
+        'email': 'invalid_email',
+        'password': 'password',
+        'confirm_password': 'password'
+    })
+
+    assert response.status_code == 400
+    assert b'Invalid email address' in response.data  
+
+def test_register_password_mismatch(client):
+    with client:
+        response = client.post('/register', data={
+            'username': 'testuser',
+            'email': 'test@example.com',
+            'password': 'password1',
+            'confirm_password': 'password2'
+        })
+        assert response.status_code == 400
+
+
+def test_register_user_already_exists(client):
+    client.post('/register', data={
+        'username': 'testuser',
+        'email': 'test@example.com',
+        'password': 'correctpassword',
+        'confirm_password': 'correctpassword'
+    })
+
+    response = client.post('/register', data={
+        'username': 'testuser',
+        'email': 'test@example.com',
+        'password': 'newpassword',
+        'confirm_password': 'newpassword'
+    })
+
+    assert response.status_code == 400
+
+
+def test_logout_clears_session(client):
+    with client.session_transaction() as sess:
+        sess['email'] = 'test@example.com'
+        sess['name'] = 'Test User'
+
+    response = client.get('/logout')  
+
+
+    assert response.data == b'success'  
+    assert response.status_code == 200 
+
+    with client.session_transaction() as sess:
+        assert 'email' not in sess  
+        assert 'name' not in sess 
+
+def test_logout_response(client):
+    with client.session_transaction() as sess:
+        sess['email'] = 'test@example.com'
+
+    response = client.get('/logout')
+
+    assert response.data == b'success'
+    assert response.status_code == 200

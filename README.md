@@ -243,6 +243,8 @@ https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows
 
 ```
 NOTE!!:
+Make sure you have redis install on your local machine for background tasks with celery to work. see https://redis.io/docs/latest/operate/oss_and_stack/install/
+
 If you get error regarding any of the following packages - pymongo and bson, then dont worry we have also been there. Run the following commands to resolve the error :
 
     pip uninstall bson

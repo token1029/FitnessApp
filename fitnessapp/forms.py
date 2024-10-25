@@ -25,6 +25,11 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.fields.core import DateField, SelectField, TimeField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from .apps import App
+
+import logging
+logging.basicConfig(level=logging.INFO)
+LOGGER = logging.getLogger(__name__)
+
 class RegistrationForm(FlaskForm):
     """Form to collect the registration data of the user"""
     username = StringField('Username',
@@ -70,6 +75,7 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
+
 
 
 class CalorieForm(FlaskForm):

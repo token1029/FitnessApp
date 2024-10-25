@@ -2,10 +2,10 @@ name: Tests
 on:
   push:
     branches:
-      - develop
+      - develop-test
   pull_request:
     branches:
-      - develop
+      - develop-test
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: develop
+          ref: develop-test
       - name: Merge changes into develop
         if: github.event_name == 'pull_request'
         run: |

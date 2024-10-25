@@ -100,6 +100,7 @@ This document serves as a comprehensive reference point for users, giving them i
       - [Set up Project](#set-up-project)
       - [Create Google Client Credentials](#create-google-client-credentials)
       - [Start the application](#start-the-application)
+      - [Backgroun Tasks](#backgroun-tasks)
 - [Source Code](#source-code)
 - [Future Scope](#future-scope)
 - [Team Members](#team-members)
@@ -227,10 +228,18 @@ https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows
   ```
   export FLASK_APP=fitnessapp && export FLASK_ENV=development && FLASK_DEBUG=1 && flask run
   ```
-
-   
-
 - Open the URL in your browser:  ` http://127.0.0.1:5000/`
+  
+#### Backgroun Tasks
+- Make sure you have RabitMQ installed and running on your system
+- Run the following command to start celery worker and beat for email-reminders
+
+  ```
+  celery -A make_celery worker -B --loglevel=info
+  ```   
+- Note that for email reminders to work, make sure you have created an events in your database and their date is equalt to date of current date. 
+
+
 
 ```
 NOTE!!:
@@ -239,6 +248,7 @@ If you get error regarding any of the following packages - pymongo and bson, the
     pip uninstall bson
     pip uninstall pymongo
     pip install pymongo
+
 
 ```
 # Source Code

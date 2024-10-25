@@ -2,6 +2,7 @@ import pytest
 from fitnessapp import create_app
 from unittest.mock import patch, MagicMock
 import mongomock
+from flask_mail import Mail
 
 class OAuth:
     def prepare_token_request(grant_type, body='', include_client_id=True, code_verifier=None, **kwargs):
@@ -35,6 +36,10 @@ def app():
     app.oauthclient = oauthclient
     app.mongo = mongomock.MongoClient()
     # other setup can go here
+    
+    mail = Mail(app)
+    mail.testing = True
+    app.mail = mail
 
     with app.test_client() as client:
         app.client = client

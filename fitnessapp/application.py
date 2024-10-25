@@ -42,7 +42,10 @@ from .insert_db_data import insertfooddata, insertexercisedata
 import schedule
 from threading import Thread
 import time
+import logging
 
+logging.basicConfig(level=logging.INFO)
+LOGGER = logging.getLogger(__name__)
 
 bp = Blueprint('', __name__, url_prefix='')
 

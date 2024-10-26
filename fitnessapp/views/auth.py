@@ -12,6 +12,7 @@ from flask_pymongo import PyMongo
 from tabulate import tabulate
 LOGGER = logging.getLogger(__name__)
 
+
 def get_google_provider_cfg():
     return requests.get(current_app.config['GOOGLE_DISCOVERY_URL']).json()
 
@@ -27,7 +28,8 @@ def google_login():
     google_provider_cfg = get_google_provider_cfg()
     authorization_endpoint = google_provider_cfg["authorization_endpoint"]
 
-    # construct request for google login and specify the fields on the account we want
+    # construct request for google login and specify the fields on the account
+    # we want
     request_uri = current_app.oauthclient.prepare_request_uri(
         authorization_endpoint,
         redirect_uri=current_app.config['GOOGLE_SIGN_IN_REDIRECT_URI'],
@@ -61,11 +63,10 @@ def google_loign_callback():
               ),
     )
 
-
     # parse the tokens
 
-    current_app.oauthclient.parse_request_body_response(json.dumps(token_response.json()))
-
+    current_app.oauthclient.parse_request_body_response(
+        json.dumps(token_response.json()))
 
     userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
     uri, headers, body = current_app.oauthclient.add_token(userinfo_endpoint)
@@ -77,7 +78,8 @@ def google_loign_callback():
         picture = userinfo_response.json()["picture"]
         username = userinfo_response.json()["given_name"]
 
-        user_from_db = current_app.mongo.db.user.find_one({'email': user_email})
+        user_from_db = current_app.mongo.db.user.find_one(
+            {'email': user_email})
         LOGGER.info(user_from_db)
         # return redirect(url_for('dashboard'))
         if user_from_db is None:

@@ -4,8 +4,10 @@ from unittest.mock import patch, MagicMock
 import mongomock
 from flask_mail import Mail
 
+
 class OAuth:
-    def prepare_token_request(grant_type, body='', include_client_id=True, code_verifier=None, **kwargs):
+    def prepare_token_request(
+            grant_type, body='', include_client_id=True, code_verifier=None, **kwargs):
         # Your function logic
         return (
             "something to do ",  # Return the original token endpoint
@@ -28,7 +30,7 @@ class OAuth:
 def app():
     app = create_app()
     app.config['SECRET_KEY'] = 'sessionkey!@'
-    app.config['WTF_CSRF_ENABLED'] = False 
+    app.config['WTF_CSRF_ENABLED'] = False
     app.config.update({
         "TESTING": True,
     })
@@ -38,7 +40,7 @@ def app():
     app.oauthclient = oauthclient
     app.mongo = mongomock.MongoClient()
     # other setup can go here
-    
+
     mail = Mail(app)
     mail.testing = True
     app.mail = mail

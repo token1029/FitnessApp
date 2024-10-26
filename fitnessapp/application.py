@@ -122,7 +122,7 @@ def login():
                 'email', 'pwd', 'name'})
             if temp is not None and temp['email'] == form.email.data and bcrypt.checkpw(
                     form.password.data.encode("utf-8"),
-                    temp['pwd']) :
+                    temp['pwd']):
                 flash('You have been logged in!', 'success')
                 print(temp)
                 session['email'] = temp['email']
@@ -133,13 +133,13 @@ def login():
                 flash(
                     'Login Unsuccessful. Please check username and password',
                     'danger')
-                return render_template('login.html', title='Login', form=form), 400
+                return render_template(
+                    'login.html', title='Login', form=form), 400
         else:
             LOGGER.info("okaaayyyy")
             return render_template('login.html', title='Login', form=form), 400
     else:
         return redirect(url_for('home'))
-    
 
 
 @bp.route("/logout", methods=['GET', 'POST'])
@@ -180,7 +180,8 @@ def register():
                 height = request.form.get('height')
                 goal = request.form.get('goal')
                 target_weight = request.form.get('target_weight')
-                temp = current_app.mongo.db.profile.find_one({'email': email, 'date': now}, {'height', 'weight', 'goal', 'target_weight'})
+                temp = current_app.mongo.db.profile.find_one({'email': email, 'date': now}, {
+                                                             'height', 'weight', 'goal', 'target_weight'})
                 current_app.mongo.db.profile.insert({'email': email,
                                                      'date': now,
                                                      'height': height,
@@ -190,8 +191,9 @@ def register():
             flash(f'Account created for {form.username.data}!', 'success')
             return redirect(url_for('home'))
         else:
-            return render_template('register.html', title='Register', form=form), 400
-            
+            return render_template(
+                'register.html', title='Register', form=form), 400
+
     else:
         return redirect(url_for('home'))
 
@@ -219,11 +221,14 @@ def calories():
                 cals = int(cals[-1][1:-1])
                 burn = request.form.get('burnout')
 
-                temp = current_app.mongo.db.calories.find_one({'email': email}, {'email', 'calories', 'burnout', 'date'})
+                temp = current_app.mongo.db.calories.find_one(
+                    {'email': email}, {'email', 'calories', 'burnout', 'date'})
                 if temp is not None and temp['date'] == str(now):
-                    current_app.mongo.db.calories.update_many({'email': email}, {'$set': {'calories': temp['calories'] + cals, 'burnout': temp['burnout'] + int(burn)}})
+                    current_app.mongo.db.calories.update_many({'email': email}, {'$set': {
+                                                              'calories': temp['calories'] + cals, 'burnout': temp['burnout'] + int(burn)}})
                 else:
-                    current_app.mongo.db.calories.insert({'date': now, 'email': email, 'calories': cals, 'burnout': int(burn)})
+                    current_app.mongo.db.calories.insert(
+                        {'date': now, 'email': email, 'calories': cals, 'burnout': int(burn)})
                 flash(f'Successfully updated the data', 'success')
                 return redirect(url_for('calories'))
     else:
@@ -243,7 +248,8 @@ def display_profile():
         email = session.get('email')
         user_data = current_app.mongo.db.profile.find_one({'email': email})
         target_weight = float(user_data['target_weight'])
-        user_data_hist = list(current_app.mongo.db.profile.find({'email': email}))
+        user_data_hist = list(
+            current_app.mongo.db.profile.find({'email': email}))
 
         for entry in user_data_hist:
             entry['date'] = datetime.strptime(entry['date'], '%Y-%m-%d').date()
@@ -254,16 +260,36 @@ def display_profile():
         weights = [float(entry['weight']) for entry in sorted_user_data_hist]
 
         # Plotting Graph
-        fig = px.line(x=dates, y=weights, labels={'x': 'Date', 'y': 'Weight'}, title='Progress', markers=True, line_shape='spline')
-        fig.add_trace(go.Scatter(x=dates, y=[target_weight] * len(dates), mode='lines', line=dict(color='green', width=1, dash='dot'), name='Target Weight'))
-        fig.update_yaxes(range=[min(min(weights), target_weight) - 5, max(max(weights), target_weight) + 5])
+        fig = px.line(
+            x=dates,
+            y=weights,
+            labels={
+                'x': 'Date',
+                'y': 'Weight'},
+            title='Progress',
+            markers=True,
+            line_shape='spline')
+        fig.add_trace(
+            go.Scatter(
+                x=dates,
+                y=[target_weight] *
+                len(dates),
+                mode='lines',
+                line=dict(
+                    color='green',
+                    width=1,
+                    dash='dot'),
+                name='Target Weight'))
+        fig.update_yaxes(
+            range=[min(min(weights), target_weight) - 5, max(max(weights), target_weight) + 5])
         fig.update_xaxes(range=[min(dates), now])
         # Converting to JSON
         graph_html = fig.to_html(full_html=False)
 
         last_10_entries = sorted_user_data_hist[-10:]
 
-        return render_template('display_profile.html', status=True, user_data=user_data, graph_html=graph_html, last_10_entries=last_10_entries)
+        return render_template('display_profile.html', status=True, user_data=user_data,
+                               graph_html=graph_html, last_10_entries=last_10_entries)
     else:
         return redirect(url_for('login'))
     # return render_template('user_profile.html', status=True, form=form)#
@@ -292,7 +318,8 @@ def user_profile():
                 height = request.form.get('height')
                 goal = request.form.get('goal')
                 target_weight = request.form.get('target_weight')
-                temp = current_app.mongo.db.profile.find_one({'email': email, 'date': now}, {'height', 'weight', 'goal', 'target_weight'})
+                temp = current_app.mongo.db.profile.find_one({'email': email, 'date': now}, {
+                                                             'height', 'weight', 'goal', 'target_weight'})
                 if temp is not None:
                     current_app.mongo.db.profile.update_one({'email': email, 'date': now},
                                                             {'$set': {
@@ -435,7 +462,8 @@ def send_email():
     # ##########################
     email = session.get('email')
     temp = current_app.mongo.db.user.find_one({'email': email}, {'name'})
-    data = list(current_app.mongo.db.calories.find({'email': email}, {'date', 'email', 'calories', 'burnout'}))
+    data = list(current_app.mongo.db.calories.find(
+        {'email': email}, {'date', 'email', 'calories', 'burnout'}))
     table = [['Date', 'Email ID', 'Calories', 'Burnout']]
     for a in data:
         tmp = [a['date'], a['email'], a['calories'], a['burnout']]
@@ -450,7 +478,10 @@ def send_email():
 
     # Logging in with sender details
     server.login(sender_email, sender_password)
-    message = 'Subject: Calorie History\n\n Your Friend '+str(temp['name'])+' has shared their calorie history with you!\n {}'.format(tabulate(table))
+    message = 'Subject: Calorie History\n\n Your Friend ' + \
+        str(temp['name']) + \
+        ' has shared their calorie history with you!\n {}'.format(
+            tabulate(table))
     for e in friend_email:
         print(e)
         server.sendmail(sender_email, e, message)
@@ -560,7 +591,8 @@ def dashboard():
         {"id": 1, "name": "Yoga"},
         {"id": 2, "name": "Swimming"},
     ]
-    return render_template('dashboard.html', title='Dashboard', exercises=exercises)
+    return render_template(
+        'dashboard.html', title='Dashboard', exercises=exercises)
 
 
 @bp.route('/add_favorite', methods=['POST'])
@@ -571,11 +603,13 @@ def add_favorite():
         exercise_id = data.get('exercise_id')
         print(exercise_id)
         action = data.get('action')
-        exercise = current_app.mongo.db.your_exercise_collection.find_one({"exercise_id": exercise_id})
+        exercise = current_app.mongo.db.your_exercise_collection.find_one(
+            {"exercise_id": exercise_id})
         print(exercise)
         if exercise:
             if action == "add":
-                # Create a new document in the favorites schema (you can customize this schema)
+                # Create a new document in the favorites schema (you can
+                # customize this schema)
                 favorite = {
                     "exercise_id": exercise.get("exercise_id"),
                     "email": email,
@@ -592,11 +626,13 @@ def add_favorite():
             elif action == "remove":
                 print(exercise.get("exercise_id"))
                 print("iamhere1")
-                current_app.mongo.db.favorites.delete_one({"email": email, "exercise_id": exercise.get("exercise_id")})
+                current_app.mongo.db.favorites.delete_one(
+                    {"email": email, "exercise_id": exercise.get("exercise_id")})
                 return jsonify({"status": "success"})
 
         else:
-            return jsonify({"status": "error", "message": "Exercise not found"})
+            return jsonify(
+                {"status": "error", "message": "Exercise not found"})
     else:
         return redirect(url_for('login'))
 
@@ -615,7 +651,8 @@ def favorites():
     # Query MongoDB to get the user's favorite exercises
     favorite_exercises = current_app.mongo.db.favorites.find({"email": email})
 
-    return render_template('favorites.html', favorite_exercises=favorite_exercises)
+    return render_template(
+        'favorites.html', favorite_exercises=favorite_exercises)
 
 
 @bp.route("/yoga", methods=['GET', 'POST'])
@@ -633,7 +670,8 @@ def yoga():
         if form.validate_on_submit():
             if request.method == 'POST':
                 enroll = "yoga"
-                current_app.mongo.db.user.insert({'Email': email, 'Status': enroll})
+                current_app.mongo.db.user.insert(
+                    {'Email': email, 'Status': enroll})
             flash(
                 f' You have succesfully enrolled in our {enroll} plan!',
                 'success')
@@ -659,7 +697,8 @@ def swim():
         if form.validate_on_submit():
             if request.method == 'POST':
                 enroll = "swimming"
-                current_app.mongo.db.user.insert({'Email': email, 'Status': enroll})
+                current_app.mongo.db.user.insert(
+                    {'Email': email, 'Status': enroll})
             flash(
                 f' You have succesfully enrolled in our {enroll} plan!',
                 'success')
@@ -685,7 +724,8 @@ def abbs():
         if form.validate_on_submit():
             if request.method == 'POST':
                 enroll = "abbs"
-                current_app.mongo.db.user.insert({'Email': email, 'Status': enroll})
+                current_app.mongo.db.user.insert(
+                    {'Email': email, 'Status': enroll})
             flash(
                 f' You have succesfully enrolled in our {enroll} plan!',
                 'success')
@@ -710,7 +750,8 @@ def belly():
         if form.validate_on_submit():
             if request.method == 'POST':
                 enroll = "belly"
-                current_app.mongo.db.user.insert({'Email': email, 'Status': enroll})
+                current_app.mongo.db.user.insert(
+                    {'Email': email, 'Status': enroll})
             flash(
                 f' You have succesfully enrolled in our {enroll} plan!',
                 'success')
@@ -736,7 +777,8 @@ def core():
         if form.validate_on_submit():
             if request.method == 'POST':
                 enroll = "core"
-                current_app.mongo.db.user.insert({'Email': email, 'Status': enroll})
+                current_app.mongo.db.user.insert(
+                    {'Email': email, 'Status': enroll})
             flash(
                 f' You have succesfully enrolled in our {enroll} plan!',
                 'success')
@@ -761,7 +803,8 @@ def gym():
         if form.validate_on_submit():
             if request.method == 'POST':
                 enroll = "gym"
-                current_app.mongo.db.user.insert({'Email': email, 'Status': enroll})
+                current_app.mongo.db.user.insert(
+                    {'Email': email, 'Status': enroll})
             flash(
                 f' You have succesfully enrolled in our {enroll} plan!',
                 'success')
@@ -787,7 +830,8 @@ def walk():
         if form.validate_on_submit():
             if request.method == 'POST':
                 enroll = "walk"
-                current_app.mongo.db.user.insert({'Email': email, 'Status': enroll})
+                current_app.mongo.db.user.insert(
+                    {'Email': email, 'Status': enroll})
             flash(
                 f' You have succesfully enrolled in our {enroll} plan!',
                 'success')
@@ -813,7 +857,8 @@ def dance():
         if form.validate_on_submit():
             if request.method == 'POST':
                 enroll = "dance"
-                current_app.mongo.db.user.insert({'Email': email, 'Status': enroll})
+                current_app.mongo.db.user.insert(
+                    {'Email': email, 'Status': enroll})
             flash(
                 f' You have succesfully enrolled in our {enroll} plan!',
                 'success')
@@ -839,7 +884,8 @@ def hrx():
         if form.validate_on_submit():
             if request.method == 'POST':
                 enroll = "hrx"
-                current_app.mongo.db.user.insert({'Email': email, 'Status': enroll})
+                current_app.mongo.db.user.insert(
+                    {'Email': email, 'Status': enroll})
             flash(
                 f' You have succesfully enrolled in our {enroll} plan!',
                 'success')
@@ -885,20 +931,25 @@ def submit_reviews():
     if session.get('email'):
         print("Imhere2")
         if request.method == 'POST':  # Check if it's a POST request
-            form = ReviewForm(request.form)  # Initialize the form with form data
+            # Initialize the form with form data
+            form = ReviewForm(request.form)
             if form.validate_on_submit():
                 print("imehere1")
                 email = session.get('email')
                 user = current_app.mongo.db.user.find_one({'email': email})
                 name = request.form.get('name')
                 review = request.form.get('review')  # Correct the field name
-                current_app.mongo.db.reviews.insert_one({'name': name, 'review': review})
-                return render_template("review.html", form=form, existing_reviews=existing_reviews)
+                current_app.mongo.db.reviews.insert_one(
+                    {'name': name, 'review': review})
+                return render_template(
+                    "review.html", form=form, existing_reviews=existing_reviews)
         else:
             form = ReviewForm()  # Create an empty form for GET requests
-        return render_template('review.html', form=form, existing_reviews=existing_reviews)
+        return render_template('review.html', form=form,
+                               existing_reviews=existing_reviews)
     else:
         return "User not logged in"
+
 
 def getFriends(email):
     friend_requests = list(current_app.mongo.db.friends.find(
@@ -907,8 +958,9 @@ def getFriends(email):
 
     for friend_req in friend_requests:
         my_friends.append(friend_req['receiver'])
-    
+
     return my_friends
+
 
 @bp.route("/events", methods=['GET', 'POST'])
 def events():
@@ -937,15 +989,16 @@ def events():
             start_time = request.form.get('start_time')
             end_time = request.form.get('end_time')
             invited_friend = request.form.get('invited_friend')
-            current_app.mongo.db.events.insert_one({'exercise': exercise, 
+            current_app.mongo.db.events.insert_one({'exercise': exercise,
                                                     'host': email,
                                                     'date': date,
                                                     'start_time': start_time,
                                                     'end_time': end_time,
                                                     'invited_friend': invited_friend})
-            return render_template("fitness/events.html", form=form, existing_events=existing_events)
+            return render_template("fitness/events.html",
+                                   form=form, existing_events=existing_events)
     else:
         form = EventForm()
         form.invited_friend.choices = [(friend, friend) for friend in friends]
-    return render_template('fitness/events.html', form=form, existing_events=existing_events)
-    
+    return render_template('fitness/events.html', form=form,
+                           existing_events=existing_events)

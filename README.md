@@ -13,6 +13,7 @@ https://youtu.be/CvR6jDlQnB8
 [![Pylint](https://github.com/VibhavDeo/FitnessApp/actions/workflows/pylint.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/pylint.yml)
 [![Tests On Push](http://github.com/VibhavDeo/FitnessApp/actions/workflows/unit_test.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/unit_test.yml)
 [![Code Coverage](https://github.com/VibhavDeo/FitnessApp/actions/workflows/code_cov.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/code_cov.yml)
+[![Coverage Status](https://coveralls.io/repos/github/CSC510-GROUP-40/FitnessApp/badge.svg?branch=develop)](https://coveralls.io/github/CSC510-GROUP-40/FitnessApp?branch=develop)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/VibhavDeo/FitnessApp)
 
 <!--Badges-->

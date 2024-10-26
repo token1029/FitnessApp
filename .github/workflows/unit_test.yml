@@ -32,7 +32,7 @@ jobs:
           python-version: 3.10.15
       - name: Install dependencies
         run: |
-          pip install genbadge[coverage]
+          pip install pytest-cov coveralls
           pip install coverage
           pip install -r requirements.txt
           echo requirements installed

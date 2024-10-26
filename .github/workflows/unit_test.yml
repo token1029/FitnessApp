@@ -2,10 +2,10 @@ name: Tests
 on:
   push:
     branches:
-      - develop
+      - feature/update-ci-functionalitieslop
   pull_request:
     branches:
-      - develop
+      - feature/update-ci-functionalities
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: develop
+          ref: feature/update-ci-functionalities
       - name: Merge changes into develop
         if: github.event_name == 'pull_request'
         run: |

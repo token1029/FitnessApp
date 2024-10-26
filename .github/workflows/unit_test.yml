@@ -72,5 +72,5 @@ jobs:
       - name: set up pylint badge
         uses: Silleellie/pylint-github-action@v2
         with:
-          lint-path: rand.py
+          lint-path: fitnessapp
           python-version: '3.10.15' 

@@ -1,4 +1,5 @@
 name: Tests
+permissions: write-all
 on:
   push:
     branches:

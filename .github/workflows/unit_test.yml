@@ -68,3 +68,9 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git commit -am "Automated autopep8 fixes and Update README.md with the latest run ID"
           git push
+
+      - name: set up pylint badge
+        uses: Silleellie/pylint-github-action@v2
+        with:
+          lint-path: rand.py
+          python-version: '3.10.15' 

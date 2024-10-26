@@ -36,9 +36,7 @@ jobs:
           pip install coverage
           pip install -r requirements.txt
           echo requirements installed
-        # pip uninstall bson
-        # pip uninstall pymongo
-        # pip install pymongo
+
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.10.0
         with:
@@ -49,3 +47,23 @@ jobs:
           coveralls --service=github-actions
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+      
+      - name: Run autopep8
+        if: github.ref == 'refs/heads/feature/update-ci-functionalities'
+        id: autopep8
+        uses: peter-evans/autopep8@v2
+        with:
+          args: --exit-code --recursive --in-place --aggressive .
+
+      - name: Update README.md with latest run
+        if: github.ref == 'refs/heads/feature/update-ci-functionalities'
+        run: |
+          sed -i "s|(https://github.com/CSC510-GROUP-40/FitnessApp/actions/runs.*)|(https://github.com/CSC510-GROUP-40/FitnessApp/actions/runs/${{ github.run_id }})|" README.md
+
+      - name: Commit autopep8 changes
+        if: github.ref == 'refs/heads/feature/update-ci-functionalities'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git commit -am "Automated autopep8 fixes and Update README.md with the latest run ID"
+          git push

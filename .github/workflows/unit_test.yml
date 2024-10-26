@@ -55,7 +55,10 @@ jobs:
         uses: peter-evans/autopep8@v2
         with:
           args: --exit-code --recursive --in-place --aggressive .
-
+      - name: set up pylint badge
+        uses: Silleellie/pylint-github-action@v2
+        with:
+          lint-path: fitnessapp 
       - name: Update README.md with latest run and commit autopep 8 changes
         if: github.ref == 'refs/heads/feature/update-ci-functionalities'
         run: |
@@ -66,7 +69,3 @@ jobs:
           git commit -am "Automated autopep8 fixes and Update README.md with the latest run ID"
           git push -f
 
-      - name: set up pylint badge
-        uses: Silleellie/pylint-github-action@v2
-        with:
-          lint-path: fitnessapp 

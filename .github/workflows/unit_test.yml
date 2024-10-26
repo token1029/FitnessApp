@@ -64,7 +64,7 @@ jobs:
           git pull --rebase
           sed -i "s|(https://github.com/CSC510-GROUP-40/FitnessApp/actions/runs.*)|(https://github.com/CSC510-GROUP-40/FitnessApp/actions/runs/${{ github.run_id }})|" README.md
           git commit -am "Automated autopep8 fixes and Update README.md with the latest run ID"
-          git push
+          git push -f
 
       - name: set up pylint badge
         uses: Silleellie/pylint-github-action@v2

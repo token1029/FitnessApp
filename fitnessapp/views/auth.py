@@ -84,7 +84,7 @@ def google_loign_callback():
         # return redirect(url_for('dashboard'))
         if user_from_db is None:
             # create new profile for the user it does not exists.
-            current_app.mongo.db.user.insert({
+            current_app.mongo.db.user.insert_one({
                 'name': username,
                 'email': user_email,
                 'pwd': '',

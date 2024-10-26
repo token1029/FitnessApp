@@ -59,10 +59,10 @@ jobs:
       - name: Update README.md with latest run and commit autopep 8 changes
         if: github.ref == 'refs/heads/feature/update-ci-functionalities'
         run: |
-          git pull
-          sed -i "s|(https://github.com/CSC510-GROUP-40/FitnessApp/actions/runs.*)|(https://github.com/CSC510-GROUP-40/FitnessApp/actions/runs/${{ github.run_id }})|" README.md
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git pull
+          sed -i "s|(https://github.com/CSC510-GROUP-40/FitnessApp/actions/runs.*)|(https://github.com/CSC510-GROUP-40/FitnessApp/actions/runs/${{ github.run_id }})|" README.md
           git commit -am "Automated autopep8 fixes and Update README.md with the latest run ID"
           git push
 

@@ -2,7 +2,7 @@ name: Tests
 on:
   push:
     branches:
-      - feature/update-ci-functionalitieslop
+      - feature/update-ci-functionalities
   pull_request:
     branches:
       - feature/update-ci-functionalities

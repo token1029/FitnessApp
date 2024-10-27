@@ -587,12 +587,10 @@ def dashboard():
     # dashboard() called and displays the list of activities
     # Output: redirected to dashboard.html
     # ##########################
-    exercises = [
-        {"id": 1, "name": "Yoga"},
-        {"id": 2, "name": "Swimming"},
-    ]
-    return render_template(
-        'dashboard.html', title='Dashboard', exercises=exercises)
+
+    exercises = list(current_app.mongo.db.your_exercise_collection.find())
+    
+    return render_template('dashboard.html', title='Dashboard', exercises=exercises)
 
 
 @bp.route('/add_favorite', methods=['POST'])

@@ -54,5 +54,5 @@ add_favorite()
 favorites()
 - This function displays the favourite exercises of the users
 
-yoga()/swim()/abbs()/belly()/core()/gym()/walk()/dance()/hrx()
+yoga()/swim()/abs_smash()/belly()/core()/gym()/walk()/dance()/hrx()
 - This function allows user to enroll in different plans

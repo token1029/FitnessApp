@@ -40,21 +40,21 @@
         "dates": ["2024-12-04", "2024-12-07", "2024-12-11", "2024-12-14", "2024-12-18", "2024-12-21", "2024-12-25", "2024-12-28"]
     },
     {
-        "title": "One Week Abbs Smash Program",
-        "exercise": "abbs",
+        "title": "One Week Abs Smash Program",
+        "exercise": "abs_smash",
         "month": "Oct",
         "dates": ["2024-10-27", "2024-10-28", "2024-10-29", "2024-10-30", "2024-10-31", "2024-11-01", "2024-11-02"]
     },
     {
-        "title": "November Abbs Smash Program",
-        "exercise": "abbs",
+        "title": "November Abs Smash Program",
+        "exercise": "abs_smash",
         "month": "Nov",
         "days": ["Tue", "Thu", "Sat"],
         "dates": ["2024-11-02", "2024-11-05", "2024-11-07", "2024-11-09", "2024-11-12", "2024-11-14", "2024-11-16", "2024-11-19", "2024-11-21", "2024-11-23", "2024-11-26", "2024-11-28", "2024-11-30"]
     },
     {
-        "title": "December Abbs Smash Program",
-        "exercise": "abbs",
+        "title": "December Abs Smash Program",
+        "exercise": "abs_smash",
         "month": "Dec",
         "days": ["Tue", "Thu", "Sat"],
         "dates": ["2024-12-03", "2024-12-05", "2024-12-07", "2024-12-10", "2024-12-12", "2024-12-14", "2024-12-17", "2024-12-19", "2024-12-21", "2024-12-24", "2024-12-26", "2024-12-28", "2024-12-31"]

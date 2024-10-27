@@ -149,7 +149,7 @@ class TestApplication(unittest.TestCase):
             exercise_routes = [
                 '/yoga',
                 '/swim',
-                '/abbs',
+                '/abs',
                 '/belly',
                 '/core',
                 '/gym',

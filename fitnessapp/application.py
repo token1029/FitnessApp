@@ -709,12 +709,12 @@ def swim():
     return render_template('swim.html', title='Swim', form=form)
 
 
-@bp.route("/abbs", methods=['GET', 'POST'])
-def abbs():
+@bp.route("/abs_smash", methods=['GET', 'POST'])
+def abs_smash():
     # ############################
-    # abbs() function displays the abbs.html template
-    # route "/abbs" will redirect to abbs() function.
-    # A page showing details about abbs workout is shown and if clicked on enroll then DB updation done and redirected to new_dashboard
+    # abs_smash() function displays the abs_smash.html template
+    # route "/abs_smash" will redirect to abs_smash() function.
+    # A page showing details about abs workout is shown and if clicked on enroll then DB updation done and redirected to new_dashboard
     # Input: Email
     # Output: DB entry about enrollment and redirected to new dashboard
     # ##########################
@@ -723,7 +723,7 @@ def abbs():
         form = EnrollForm()
         if form.validate_on_submit():
             if request.method == 'POST':
-                enroll = "abbs"
+                enroll = "abs_smash"
                 current_app.mongo.db.user.insert(
                     {'Email': email, 'Status': enroll})
             flash(
@@ -732,7 +732,7 @@ def abbs():
             return render_template('new_dashboard.html', form=form)
     else:
         return redirect(url_for('dashboard'))
-    return render_template('abbs.html', title='Abbs Smash!', form=form)
+    return render_template('abs_smash.html', title='Abs Smash!', form=form)
 
 
 @bp.route("/belly", methods=['GET', 'POST'])

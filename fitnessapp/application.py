@@ -655,6 +655,8 @@ def favorites():
         'favorites.html', favorite_exercises=favorite_exercises)
 
 
+# TODO: store user's enrollment plan
+# TODO: think about how to organize hyper links
 @bp.route("/yoga", methods=['GET', 'POST'])
 def yoga():
     # ############################

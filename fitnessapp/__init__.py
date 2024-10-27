@@ -5,7 +5,7 @@ from flask_mail import Mail
 from flask_pymongo import PyMongo
 from oauthlib.oauth2 import WebApplicationClient
 
-from .insert_db_data import insertexercisedata, insertfooddata
+from .insert_db_data import insertexercisedata, insertfooddata, insert_program_plan_data
 from dotenv import load_dotenv
 from celery import Celery, Task
 
@@ -64,6 +64,7 @@ def create_app(test_config=None):
     # Insert Data into Database
     insertfooddata()
     insertexercisedata()
+    insert_program_plan_data()
 
     # Register Blueprints
     from . import application

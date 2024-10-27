@@ -15,6 +15,8 @@ https://github.com/VibhavDeo/FitnessApp
 
 """"Importing app from apps.py"""
 from .apps import App
+import json
+
 app = App()
 mongo = app.mongo
 
@@ -128,4 +130,17 @@ def insertexercisedata():
     for exercise in exercise_data:
         query = {"exercise_id": exercise["exercise_id"]}
         update = {"$set": exercise}
+        collection.update_one(query, update, upsert=True)
+
+def insert_program_plan_data():
+    # Connect to MongoDB
+    collection = mongo.db["program_plan"]
+
+    with open("program_plan/program_plan.json") as f:
+        program_plan_data = json.load(f)
+    
+    # Insert program plan data into MongoDB
+    for program_plan in program_plan_data:
+        query = {"title": program_plan["title"]}
+        update = {"$set": program_plan}
         collection.update_one(query, update, upsert=True)

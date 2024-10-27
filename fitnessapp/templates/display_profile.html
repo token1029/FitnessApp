@@ -6,41 +6,43 @@
     <title>Your Data</title>
 </head>
 <body>
-    <h1 style="color: white;">Your Data</h1>
+    <h1 class="my-4" style="color: white;">Your Data</h1>
 
 </body>
-<section class="container-fluid ">
-    <div class="container site-section" id="yoga-1">
-        <div class="row">
-            <div class="col-4">
-                <div class="card"><img class="img-thumbnail img-fluid" src="../static/img/height.jpg">
-                    <div class="card-body">
-                        <h4 class="card-title">Your Height</h4>
-                        <p class="card-text">{{ user_data.height }} cms<br><br></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="card"><img class="img-thumbnail img-fluid" src="../static/img/weight.png">
-                    <div class="card-body">
-                        <h4 class="card-title">Your Weight</h4>
-                        <p class="card-text">{{ user_data.weight }} kgs<br><br></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="card"><img class="img-thumbnail img-fluid" src="../static/img/weightgoal.jpg"></a>
-                    <div class="card-body">
-                        <h4 class="card-title">Your Target Weight</h4>
-                        <p class="card-text">{{ user_data.target_weight }} Kgs<br><br></p>
-                    </div>
-                </div>
+
+<div class="row">
+    <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <div class="card"><img class="img-thumbnail img-fluid" src="../static/img/height.jpg">
+            <div class="card-body">
+                <h4 class="card-title">Your Height</h4>
+                <p class="card-text">{{ user_data.height }} cms<br><br></p>
             </div>
         </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <div class="card"><img class="img-thumbnail img-fluid" src="../static/img/weight.png">
+            <div class="card-body">
+                <h4 class="card-title">Your Weight</h4>
+                <p class="card-text">{{ user_data.weight }} kgs<br><br></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <div class="card"><img class="img-thumbnail img-fluid" src="../static/img/weightgoal.jpg"></a>
+            <div class="card-body">
+                <h4 class="card-title">Your Target Weight</h4>
+                <p class="card-text">{{ user_data.target_weight }} Kgs<br><br></p>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="container-fluid ">
+    <div class="container site-section" id="yoga-1">
+        
         <div>
             {{ graph_html|safe }}
 
-            <h2 style="color: white;">Last 10 Entries</h2>
+            <h2 class="my-4" style="color: white;">Last 10 Entries</h2>
             <table class="table">
                 <thead>
                     <tr>

@@ -655,6 +655,15 @@ def favorites():
 
 # TODO: store user's enrollment plan
 # TODO: think about how to organize hyper links
+@bp.route("/program", methods=['GET', 'POST'])
+def program():
+    exercise_href = request.args.get('exercise')
+    exercise = current_app.mongo.db.your_exercise_collection.find_one({"href": exercise_href})
+    # TODO: need program plan data
+    # TODO: form???
+    form = EnrollForm()
+    return render_template('program.html', exercise=exercise, form=form)
+
 @bp.route("/yoga", methods=['GET', 'POST'])
 def yoga():
     # ############################

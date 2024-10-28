@@ -84,7 +84,7 @@
                 <p class="card-text">
                     <br />&nbsp;{{ exercise.intro }}<br /><br />
                 </p>
-                <a class="btn btn-secondary btn-sm" href="{{ url_for(exercise.href) }}" role="button">More info</a>
+                <a class="btn btn-secondary btn-sm" href="{{ url_for('program', exercise=exercise.href) }}" role="button">More info</a>
                 <a class="btn btn-secondary btn-sm" href="{{ exercise.video_link }}" role="button">Tutorial</a>
             </div>
         </div>
@@ -108,7 +108,7 @@
             text-align: center;
           "
         >
-          <a href="{{ url_for('abs_smash') }}"
+          <a href="{{ url_for('program', exercise='abs_smash') }}"
             ><img class="img-thumbnail" src="../static/img/R31.jpg"
           /></a>
           <div class="card-body">
@@ -126,7 +126,7 @@
             text-align: center;
           "
         >
-          <a href="{{ url_for('core') }}"
+          <a href="{{ url_for('program', exercise='core') }}"
             ><img class="img-thumbnail" src="../static/img/R32.jpg"
           /></a>
           <div class="card-body">
@@ -144,11 +144,11 @@
             text-align: center;
           "
         >
-          <a href="{{ url_for('belly') }}"
-            ><img class="img-thumbnail" src="../static/img/R33.jpg"
+          <a href="{{ url_for('program', exercise='belly') }}"
+            ><img class="img-thumbnail" src="../static/img/R21.jpg"
           /></a>
           <div class="card-body">
-            <h4 class="card-title">HIIT: Belly Burn</h4>
+            <h4 class="card-title">Belly Burner</h4>
           </div>
         </div>
       </div>

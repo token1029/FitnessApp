@@ -3,10 +3,10 @@ permissions: write-all
 on:
   push:
     branches:
-      - feature/update-ci-functionalities
+      - develop
   pull_request:
     branches:
-      - feature/update-ci-functionalities
+      - develop
 
 jobs:
   build:
@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: feature/update-ci-functionalities
+          ref: develop
       - name: Merge changes into develop
         if: github.event_name == 'pull_request'
         run: |
@@ -50,7 +50,7 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
       
       - name: Run autopep8
-        if: github.ref == 'refs/heads/feature/update-ci-functionalities'
+        if: github.ref == 'refs/heads/develop'
         id: autopep8
         uses: peter-evans/autopep8@v2
         with:
@@ -60,7 +60,7 @@ jobs:
         with:
           lint-path: fitnessapp 
       - name: Update README.md with latest run and commit autopep 8 changes
-        if: github.ref == 'refs/heads/feature/update-ci-functionalities'
+        if: github.ref == 'refs/heads/develop'
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'

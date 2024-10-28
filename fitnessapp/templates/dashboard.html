@@ -82,7 +82,7 @@
                 <button class="btn btn-secondary btn-sm add-favorite" data-exercise-id="{{ exercise.exercise_id }}">Add to Favorites</button>
                 <button class="btn btn-secondary btn-sm remove-favorite" data-exercise-id="{{ exercise.exercise_id }}">Remove from Favorites</button>
                 <p class="card-text">
-                    <br />&nbsp;{{ exercise.description }}<br /><br />
+                    <br />&nbsp;{{ exercise.intro }}<br /><br />
                 </p>
                 <a class="btn btn-secondary btn-sm" href="{{ url_for(exercise.href) }}" role="button">More info</a>
                 <a class="btn btn-secondary btn-sm" href="{{ exercise.video_link }}" role="button">Tutorial</a>

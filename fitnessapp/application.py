@@ -655,23 +655,48 @@ def favorites():
 
 @bp.route("/program", methods=['GET', 'POST'])
 def program():
-    email = get_session = session.get('email')
-    if get_session is not None:
+    email = session.get('email')
+    if email is not None:
         exercise_href = request.args.get('exercise')
         exercise = current_app.mongo.db.your_exercise_collection.find_one({"href": exercise_href})
         program_plans = list(current_app.mongo.db.program_plan.find({"exercise": exercise_href}))
-        if request.method == 'POST':
-            program_id = request.form.get('program_id')
-            print(f"program_id: {program_id}")
-            enrolled_plan = current_app.mongo.db.program_plan.find_one({"_id": ObjectId(program_id)})
-            # TODO: invite friends
-            # TODO: add the link to new_dashboard
-            # TODO: show enrolled status in the program page
-            current_app.mongo.db.enrollment.insert({'email': email, 'program': program_id})
-            flash(f' You have succesfully enrolled in the {enrolled_plan.get("title")}!', 'success')
-        return render_template('program.html', exercise=exercise, program_plans=program_plans)
+        # TODO: invite friends
+        # TODO: add the link to new_dashboard
+        enrolled_programs = list(current_app.mongo.db.enrollment.find({"email": email}))
+        enrolled_program_ids = [program['program'] for program in enrolled_programs]
+        return render_template('program.html', exercise=exercise, program_plans=program_plans, enrolled_program_ids=enrolled_program_ids)
     else:
         return redirect(url_for('dashboard'))
+
+
+@bp.route('/enroll', methods=['POST'])
+def enroll():
+    email = session.get('email')
+    exercise = request.form.get('exercise')
+    
+    program_id = request.form.get('program_id')
+    enroll_plan = current_app.mongo.db.program_plan.find_one({"_id": ObjectId(program_id)}, {"title"})
+    
+    # Insert the enrollment entry
+    current_app.mongo.db.enrollment.insert({'email': email, 'program': ObjectId(program_id)})
+    flash(f' You have succesfully enrolled in the {enroll_plan.get("title")}!', "success")
+
+    return redirect(url_for('program', exercise=exercise))
+
+
+@bp.route('/cancel_enrollment', methods=['POST'])
+def cancel_enrollment():
+    email = session.get('email')
+    exercise = request.form.get('exercise')
+
+    program_id = request.form.get('program_id')
+    enroll_plan = current_app.mongo.db.program_plan.find_one({"_id": ObjectId(program_id)}, {"title"})
+    
+    # Remove the enrollment entry for this user and program
+    current_app.mongo.db.enrollment.delete_one({"email": email, "program": ObjectId(program_id)})
+    flash(f' You have cancelled the enrollment of {enroll_plan.get("title")}!', "warning")
+
+    return redirect(url_for('program', exercise=exercise))
 
 
 @bp.route("/yoga", methods=['GET', 'POST'])

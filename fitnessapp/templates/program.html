@@ -30,12 +30,22 @@
                             {% else %}
                                 <p><strong>From:</strong> {{ program_plan.dates[0] }} <strong>To:</strong> {{ program_plan.dates[-1] }}</p>
                             {% endif %}
-
-                            <!-- Enrollment Button -->
-                            <form action="" method="POST">
-                                <input type="hidden" name="program_id" value="{{ program_plan._id }}">
-                                <button type="submit" class="btn btn-outline-info">Enroll</button>
-                            </form>
+                            
+                            {% if program_plan._id in enrolled_program_ids %}
+                                <!-- Cancel Enrollment Button -->
+                                <form action="{{ url_for('cancel_enrollment') }}" method="POST">
+                                    <input type="hidden" name="program_id" value="{{ program_plan._id }}">
+                                    <input type="hidden" name="exercise" value="{{ exercise.href }}">
+                                    <button type="submit" class="btn btn-danger">Cancel</button>
+                                </form>
+                            {% else %}
+                                <!-- Enrollment Button -->
+                                <form action="{{ url_for('enroll') }}" method="POST">
+                                    <input type="hidden" name="program_id" value="{{ program_plan._id }}">
+                                    <input type="hidden" name="exercise" value="{{ exercise.href }}">
+                                    <button type="submit" class="btn btn-outline-info">Enroll</button>
+                                </form>
+                            {% endif %}
                         </div>
                     {% endfor %}
                 </div>

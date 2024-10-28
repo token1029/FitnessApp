@@ -653,16 +653,26 @@ def favorites():
         'favorites.html', favorite_exercises=favorite_exercises)
 
 
-# TODO: store user's enrollment plan
-# TODO: think about how to organize hyper links
 @bp.route("/program", methods=['GET', 'POST'])
 def program():
-    exercise_href = request.args.get('exercise')
-    exercise = current_app.mongo.db.your_exercise_collection.find_one({"href": exercise_href})
-    # TODO: need program plan data
-    # TODO: form???
-    form = EnrollForm()
-    return render_template('program.html', exercise=exercise, form=form)
+    email = get_session = session.get('email')
+    if get_session is not None:
+        exercise_href = request.args.get('exercise')
+        exercise = current_app.mongo.db.your_exercise_collection.find_one({"href": exercise_href})
+        program_plans = list(current_app.mongo.db.program_plan.find({"exercise": exercise_href}))
+        if request.method == 'POST':
+            program_id = request.form.get('program_id')
+            print(f"program_id: {program_id}")
+            enrolled_plan = current_app.mongo.db.program_plan.find_one({"_id": ObjectId(program_id)})
+            # TODO: invite friends
+            # TODO: add the link to new_dashboard
+            # TODO: show enrolled status in the program page
+            current_app.mongo.db.enrollment.insert({'email': email, 'program': program_id})
+            flash(f' You have succesfully enrolled in the {enrolled_plan.get("title")}!', 'success')
+        return render_template('program.html', exercise=exercise, program_plans=program_plans)
+    else:
+        return redirect(url_for('dashboard'))
+
 
 @bp.route("/yoga", methods=['GET', 'POST'])
 def yoga():

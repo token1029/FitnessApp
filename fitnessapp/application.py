@@ -614,7 +614,7 @@ def add_favorite():
                     "image": exercise.get("image"),
                     "video_link": exercise.get("video_link"),
                     "name": exercise.get("name"),
-                    "description": exercise.get("description"),
+                    "intro": exercise.get("intro"),
                     "href": exercise.get("href")
                 }
 

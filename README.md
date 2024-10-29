@@ -9,8 +9,8 @@ https://youtu.be/CvR6jDlQnB8
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/VibhavDeo/FitnessApp/main)
 [![Python application](https://github.com/VibhavDeo/FitnessApp/actions/workflows/python-app.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/python-app.yml)
-[![pylint](https://img.shields.io/badge/PyLint-6.54-orange?logo=python&logoColor=white)](https://github.com/CSC510-GROUP-40/FitnessApp/actions/runs/11578074144)
-[![autopep8](./autopep8.svg)](https://github.com/CSC510-GROUP-40/FitnessApp/actions/runs/11578074144)
+[![pylint](https://img.shields.io/badge/PyLint-7.11-orange?logo=python&logoColor=white)](https://github.com/CSC510-GROUP-40/FitnessApp/actions/runs/11578884171)
+[![autopep8](./autopep8.svg)](https://github.com/CSC510-GROUP-40/FitnessApp/actions/runs/11578884171)
 [![Tests On Push](http://github.com/VibhavDeo/FitnessApp/actions/workflows/unit_test.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/unit_test.yml)
 [![Coverage Status](https://coveralls.io/repos/github/CSC510-GROUP-40/FitnessApp/badge.svg?branch=develop)](https://coveralls.io/github/CSC510-GROUP-40/FitnessApp?branch=develop)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/VibhavDeo/FitnessApp)
@@ -229,7 +229,11 @@ https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows
   export FLASK_APP=fitnessapp && export FLASK_ENV=development && FLASK_DEBUG=1 && flask run
   ```
 - Open the URL in your browser:  ` http://127.0.0.1:5000/`
-  
+
+- For Google Sign In to work, run the app on `https` using the command below:
+```
+export FLASK_APP=fitnessapp && export FLASK_ENV=development && FLASK_DEBUG=1 && flask run --cert=adhoc
+```  
 #### Backgroun Tasks
 - Make sure you have RabitMQ installed and running on your system
 - Run the following command to start celery worker and beat for email-reminders

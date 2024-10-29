@@ -698,8 +698,6 @@ def cancel_enrollment():
     return redirect(url_for('program', exercise=exercise))
 
 # TODO: invite friends
-# TODO: UI design
-# TODO: render enrolled programs with DB data
 @bp.route('/my_programs', methods=['GET'])
 def my_programs():
     """
@@ -709,8 +707,13 @@ def my_programs():
     Output: Value update in database and redirected to home login page
     """
     email = session.get('email')
+    enrollment_list = current_app.mongo.db.enrollment.find({"email": email})
+    enrolled_programs = []
+    for enrollment in enrollment_list:
+        enrolled_programs.append(current_app.mongo.db.program_plan.find_one({"_id": enrollment.get("program")}, {"title", "exercise"}))
+    
     if email is not None:
-        return render_template('new_dashboard.html')
+        return render_template('new_dashboard.html', enrolled_programs=enrolled_programs)
     else:
         return redirect(url_for('dashboard'))
 

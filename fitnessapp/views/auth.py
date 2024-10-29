@@ -1,19 +1,15 @@
-import smtplib
-import time
 import logging
-from threading import Thread
+from datetime import datetime
 
 import requests
-import schedule
-from flask import (Blueprint, Flask, current_app, flash, json, jsonify,
-                   redirect, render_template, request, session, url_for)
-from flask_mail import Mail, Message
-from flask_pymongo import PyMongo
-from tabulate import tabulate
+from flask import (Blueprint, current_app, json, redirect, request, session, url_for)
 LOGGER = logging.getLogger(__name__)
 
 
 def get_google_provider_cfg():
+    '''
+    get the google oauth provider url
+    '''
     return requests.get(current_app.config['GOOGLE_DISCOVERY_URL']).json()
 
 
@@ -22,8 +18,9 @@ bp = Blueprint('auth', __name__, url_prefix='')
 
 @bp.route("/google-login")
 def google_login():
-    # current_app.extensions["celery"].send_task('fitnessapp.tasks.send_task_reminder_email')
-    # return redirect(url_for('login'))
+    '''
+    provides sign in with google
+    '''
     # get the url to hit for google login
     google_provider_cfg = get_google_provider_cfg()
     authorization_endpoint = google_provider_cfg["authorization_endpoint"]
@@ -40,20 +37,20 @@ def google_login():
 
 @bp.route("/login/callback")
 def google_loign_callback():
+    '''
+    handle callback data from google oauth and login user
+    '''
     # Get authorization code from url returned by google
     code = request.args.get("code")
     google_provider_cfg = get_google_provider_cfg()
     token_endpoint = google_provider_cfg["token_endpoint"]
 
-    # return "User email not available or not verified by Google.", 400
-    LOGGER.info(request.url)
     token_url, headers, body = current_app.oauthclient.prepare_token_request(
         token_endpoint,
         authorization_response=request.url,
         redirect_url=request.base_url,
         code=code,
     )
-    # return "User email not available or not verified by Google.", 400
     token_response = requests.post(
         token_url,
         headers=headers,
@@ -63,7 +60,6 @@ def google_loign_callback():
               ),
     )
 
-    # parse the tokens
 
     current_app.oauthclient.parse_request_body_response(
         json.dumps(token_response.json()))
@@ -78,17 +74,22 @@ def google_loign_callback():
         picture = userinfo_response.json()["picture"]
         username = userinfo_response.json()["given_name"]
 
-        user_from_db = current_app.mongo.db.user.find_one(
-            {'email': user_email})
-        LOGGER.info(user_from_db)
-        # return redirect(url_for('dashboard'))
+        user_from_db = current_app.mongo.db.user.find_one({'email': user_email})
         if user_from_db is None:
             # create new profile for the user it does not exists.
-            current_app.mongo.db.user.insert({
+            current_app.mongo.db.user.insert_one({
                 'name': username,
                 'email': user_email,
                 'pwd': '',
             })
+            now = datetime.now()
+            now = now.strftime('%Y-%m-%d')
+            current_app.mongo.db.profile.insert({'email': user_email,
+                                                     'date': now,
+                                                     'height': 0.0,
+                                                     'weight': 0.0,
+                                                     'goal': 0.0,
+                                                     'target_weight': 0.0})
             session['email'] = user_email
             session['name'] = username
             LOGGER.info("new user created")
@@ -102,5 +103,4 @@ def google_loign_callback():
 
     else:
         LOGGER.info("email not verified")
-
         return "User email not available or not verified by Google.", 400

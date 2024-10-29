@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1 class="text-white my-2"><strong><span>{{ exercise.name }}</span></strong></h1>
+    <div class="row justify-content-center align-items-center">
+        <div class="my-4">
+            <img src="{{ exercise.image }}">
+        </div>
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <p class="col-12 col-md-9 col-lg-6 text-white">{{ exercise.description|safe }}</p>
+    </div>
+    <div class="row justify-content-center align-items-center mb-4">
+        <div class="card col-12 col-md-9 col-lg-6">
+            <div class="card-body">
+                <h4 class="card-title text-center">Enroll in our {{ exercise.name }} Plan</h4>
+                <div class="col-12 mb-4">
+                    <img class="img-thumbnail" src="{{ exercise.plan_image }}">
+                </div>
+                <div class="col-12">
+                    {% for program_plan in program_plans %}
+                        <div class="card mb-2 p-2">
+                            <p><strong>{{ program_plan.title }}</strong></p>
+                            {% if program_plan.days %}
+                                <!-- <p>Mon: {{ program_plan.month }}</p> -->
+                                <p>Every 
+                                    {% for day in program_plan.days %}
+                                        {{day}}
+                                    {% endfor %}
+                                </p>
+                            {% else %}
+                                <p><strong>From:</strong> {{ program_plan.dates[0] }} <strong>To:</strong> {{ program_plan.dates[-1] }}</p>
+                            {% endif %}
+                            
+                            {% if program_plan._id in enrolled_program_ids %}
+                                <!-- Cancel Enrollment Button -->
+                                <form action="{{ url_for('cancel_enrollment') }}" method="POST">
+                                    <input type="hidden" name="program_id" value="{{ program_plan._id }}">
+                                    <input type="hidden" name="exercise" value="{{ exercise.href }}">
+                                    <button type="submit" class="btn btn-danger">Cancel</button>
+                                </form>
+                            {% else %}
+                                <!-- Enrollment Button -->
+                                <form action="{{ url_for('enroll') }}" method="POST">
+                                    <input type="hidden" name="program_id" value="{{ program_plan._id }}">
+                                    <input type="hidden" name="exercise" value="{{ exercise.href }}">
+                                    <button type="submit" class="btn btn-outline-info">Enroll</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock content %}

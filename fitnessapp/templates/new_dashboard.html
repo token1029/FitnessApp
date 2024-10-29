@@ -1,14 +1,18 @@
 {% extends "layout.html" %}
 {% block content %}
-
-<div id="dashboard-data card">
-    <h5 class="card-header">Your Activities</h5>
-    <div class="card-body">
-        <p class="border-bottom mb-4 h6" id="enroll_legend"></p>
-        <p class="card-text" id="enroll"></p> <br>
-        <p class="border-bottom mb-4 h6" id="calories_legend"></p>
+<div class="container mb-4">
+    <h1 style="color: white">Your Activities</h1>
+    <div class="row">
+        {% for enrolled_program in enrolled_programs %}
+            <div class="col-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ enrolled_program.title }}</h4>
+                        <a class="btn btn-secondary btn-sm" href="{{ url_for('program', exercise=enrolled_program.exercise) }}" role="button">More info</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 </div>
-
-
 {% endblock %}

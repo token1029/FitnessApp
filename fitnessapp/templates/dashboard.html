@@ -73,19 +73,19 @@
   
 
   <div class="row">
-    {% for i in range(3) %}
+    {% for exercise in exercises %}
     <div class="col-12 col-md-6 col-lg-4 mb-4">
         <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); text-align: center;">
-            <img class="img-thumbnail" src="../static/img/yoga.jpg" />
+            <img class="img-thumbnail" src="{{ exercise.image }}" />
             <div class="card-body">
-                <h4 class="card-title">Yoga for Beginners</h4>
-                <button class="btn btn-secondary btn-sm add-favorite" data-exercise-id="{{ i+1 }}">Add to Favorites</button>
-                <button class="btn btn-secondary btn-sm remove-favorite" data-exercise-id="{{ i+1 }}">Remove from Favorites</button>
+                <h4 class="card-title">{{ exercise.name }}</h4>
+                <button class="btn btn-secondary btn-sm add-favorite" data-exercise-id="{{ exercise.exercise_id }}">Add to Favorites</button>
+                <button class="btn btn-secondary btn-sm remove-favorite" data-exercise-id="{{ exercise.exercise_id }}">Remove from Favorites</button>
                 <p class="card-text">
-                    <br />&nbsp;New to Yoga? You are at the right place! Learn easy yoga poses to build strength, flexibility and mental clarity.<br /><br />
+                    <br />&nbsp;{{ exercise.intro }}<br /><br />
                 </p>
-                <a class="btn btn-secondary btn-sm" href="{{ url_for('yoga') }}" role="button">More info</a>
-                <a class="btn btn-secondary btn-sm" href="https://www.youtube.com/watch?v=c8hjhRqIwHE" role="button">Tutorial</a>
+                <a class="btn btn-secondary btn-sm" href="{{ url_for('program', exercise=exercise.href) }}" role="button">More info</a>
+                <a class="btn btn-secondary btn-sm" href="{{ exercise.video_link }}" role="button">Tutorial</a>
             </div>
         </div>
     </div>
@@ -108,7 +108,7 @@
             text-align: center;
           "
         >
-          <a href="{{ url_for('abbs') }}"
+          <a href="{{ url_for('program', exercise='abs_smash') }}"
             ><img class="img-thumbnail" src="../static/img/R31.jpg"
           /></a>
           <div class="card-body">
@@ -126,7 +126,7 @@
             text-align: center;
           "
         >
-          <a href="{{ url_for('core') }}"
+          <a href="{{ url_for('program', exercise='core') }}"
             ><img class="img-thumbnail" src="../static/img/R32.jpg"
           /></a>
           <div class="card-body">
@@ -144,11 +144,11 @@
             text-align: center;
           "
         >
-          <a href="{{ url_for('belly') }}"
-            ><img class="img-thumbnail" src="../static/img/R33.jpg"
+          <a href="{{ url_for('program', exercise='belly') }}"
+            ><img class="img-thumbnail" src="../static/img/R21.jpg"
           /></a>
           <div class="card-body">
-            <h4 class="card-title">HIIT: Belly Burn</h4>
+            <h4 class="card-title">Belly Burner</h4>
           </div>
         </div>
       </div>

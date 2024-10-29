@@ -170,3 +170,8 @@ class EventForm(FlaskForm):
     invited_friend = SelectField('Invite a friend', choices=[])
 
     submit = SubmitField('Submit')
+
+class ProgramEnrollmentForm(FlaskForm):
+    invited_friend = SelectField('Invite a friend', choices=[])
+    
+    submit = SubmitField('Submit')

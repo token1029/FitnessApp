@@ -660,8 +660,7 @@ def program():
         exercise_href = request.args.get('exercise')
         exercise = current_app.mongo.db.your_exercise_collection.find_one({"href": exercise_href})
         program_plans = list(current_app.mongo.db.program_plan.find({"exercise": exercise_href}))
-        # TODO: invite friends
-        # TODO: add the link to new_dashboard
+        
         enrolled_programs = list(current_app.mongo.db.enrollment.find({"email": email}))
         enrolled_program_ids = [program['program'] for program in enrolled_programs]
         return render_template('program.html', exercise=exercise, program_plans=program_plans, enrolled_program_ids=enrolled_program_ids)
@@ -679,7 +678,7 @@ def enroll():
     
     # Insert the enrollment entry
     current_app.mongo.db.enrollment.insert({'email': email, 'program': ObjectId(program_id)})
-    flash(f' You have succesfully enrolled in the {enroll_plan.get("title")}!', "success")
+    flash(f' You have succesfully enrolled in the {enroll_plan.get("title")}! Click <a href="{url_for("my_programs")}">here</a> to view your enrolled activities.', "success")
 
     return redirect(url_for('program', exercise=exercise))
 
@@ -697,6 +696,23 @@ def cancel_enrollment():
     flash(f' You have cancelled the enrollment of {enroll_plan.get("title")}!', "warning")
 
     return redirect(url_for('program', exercise=exercise))
+
+# TODO: invite friends
+# TODO: UI design
+# TODO: render enrolled programs with DB data
+@bp.route('/my_programs', methods=['GET'])
+def my_programs():
+    """
+    my_programs() function displays the user's Enrolled Programs (new_dashboard.html) template
+    route "/my_programs" will redirect to my_programs() function.
+    Input: Email
+    Output: Value update in database and redirected to home login page
+    """
+    email = session.get('email')
+    if email is not None:
+        return render_template('new_dashboard.html')
+    else:
+        return redirect(url_for('dashboard'))
 
 
 @bp.route("/yoga", methods=['GET', 'POST'])

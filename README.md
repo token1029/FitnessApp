@@ -100,7 +100,6 @@ This document serves as a comprehensive reference point for users, giving them i
       - [Set up Project](#set-up-project)
       - [Create Google Client Credentials](#create-google-client-credentials)
       - [Start the application](#start-the-application)
-      - [Backgroun Tasks](#backgroun-tasks)
 - [Source Code](#source-code)
 - [Future Scope](#future-scope)
 - [Team Members](#team-members)
@@ -229,6 +228,11 @@ https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows
   export FLASK_APP=fitnessapp && export FLASK_ENV=development && FLASK_DEBUG=1 && flask run
   ```
 - Open the URL in your browser:  ` http://127.0.0.1:5000/`
+
+- For Google Sign In to work, run the app on `https` using the command below:
+````
+export FLASK_APP=fitnessapp && export FLASK_ENV=development && FLASK_DEBUG=1 && flask run --cert=adhoc
+```
   
 #### Backgroun Tasks
 - Make sure you have RabitMQ installed and running on your system

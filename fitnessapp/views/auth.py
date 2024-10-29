@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 import requests
 from flask import (Blueprint, current_app, json, redirect, request, session, url_for)
@@ -81,6 +82,14 @@ def google_loign_callback():
                 'email': user_email,
                 'pwd': '',
             })
+            now = datetime.now()
+            now = now.strftime('%Y-%m-%d')
+            current_app.mongo.db.profile.insert({'email': user_email,
+                                                     'date': now,
+                                                     'height': 0.0,
+                                                     'weight': 0.0,
+                                                     'goal': 0.0,
+                                                     'target_weight': 0.0})
             session['email'] = user_email
             session['name'] = username
             LOGGER.info("new user created")

@@ -13,7 +13,6 @@ logging.basicConfig(level=logging.INFO)
 LOGGER = logging.getLogger(__name__)
 
 
-
 def make_celery(app) -> Celery:
     class FlaskTask(Task):
         def __call__(self, *args: object, **kwargs: object) -> object:
@@ -25,6 +24,7 @@ def make_celery(app) -> Celery:
     celery_app.set_default()
     app.extensions["celery"] = celery_app
     return celery_app
+
 
 def create_app(test_config=None):
     # Create and configure the app
@@ -47,9 +47,12 @@ def create_app(test_config=None):
 
     # Google OAuth Configuration
     app.config['GOOGLE_CLIENT_ID'] = os.environ.get("GOOGLE_CLIENT_ID", None)
-    app.config['GOOGLE_CLIENT_SECRET'] = os.environ.get("GOOGLE_CLIENT_SECRET", None)
-    app.config['GOOGLE_DISCOVERY_URL'] = os.environ.get("GOOGLE_DISCOVERY_URL", None)
-    app.config['GOOGLE_SIGN_IN_REDIRECT_URI'] = os.environ.get("GOOGLE_SIGN_IN_REDIRECT_URI", None)
+    app.config['GOOGLE_CLIENT_SECRET'] = os.environ.get(
+        "GOOGLE_CLIENT_SECRET", None)
+    app.config['GOOGLE_DISCOVERY_URL'] = os.environ.get(
+        "GOOGLE_DISCOVERY_URL", None)
+    app.config['GOOGLE_SIGN_IN_REDIRECT_URI'] = os.environ.get(
+        "GOOGLE_SIGN_IN_REDIRECT_URI", None)
 
     mail = Mail(app)
     app.mail = mail
@@ -70,16 +73,16 @@ def create_app(test_config=None):
 
     # Celery Configuration
     app.config.from_mapping(
-    CELERY=dict(
-        broker_url='amqp://guest:guest@localhost//',  # RabbitMQ broker URL
-        result_backend='rpc://',  # Use RPC for result backend
-    ),
+        CELERY=dict(
+            broker_url='amqp://guest:guest@localhost//',  # RabbitMQ broker URL
+            result_backend='rpc://',  # Use RPC for result backend
+        ),
     )
-   
+
     celery = make_celery(app)  # Initialize Celery with the app
-   
+
     celery.autodiscover_tasks(['fitnessapp'])
-    
+
     celery.conf.update(app.config)
 
     celery.conf.timezone = 'America/New_York'
@@ -89,6 +92,5 @@ def create_app(test_config=None):
             'schedule': 5.0,  # Runs every 5 seconds
         },
     }
-
 
     return app

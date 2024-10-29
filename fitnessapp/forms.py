@@ -18,17 +18,15 @@ https://github.com/VibhavDeo/FitnessApp
 """Importing modules to create forms"""
 
 
-
-
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.fields.core import DateField, SelectField, TimeField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from .apps import App
-
 import logging
 logging.basicConfig(level=logging.INFO)
 LOGGER = logging.getLogger(__name__)
+
 
 class RegistrationForm(FlaskForm):
     """Form to collect the registration data of the user"""
@@ -75,7 +73,6 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
-
 
 
 class CalorieForm(FlaskForm):
@@ -158,17 +155,18 @@ class ReviewForm(FlaskForm):
                 min=2, max=200)])
     submit = SubmitField('Submit')
 
+
 class EventForm(FlaskForm):
-    exercise_choices = [('Tennis', 'Tennis'), ('Badminton', 'Badminton'), ('Table Tennis', 'Table Tennis'), ('Yoga', 'Yoga'), 
+    exercise_choices = [('Tennis', 'Tennis'), ('Badminton', 'Badminton'), ('Table Tennis', 'Table Tennis'), ('Yoga', 'Yoga'),
                         ('Hiking', 'Hiking'), ('Jogging', 'Jogging'), ('Basketball', 'Basketball'), ('Dance', 'Dance')]
     exercise = SelectField('Select an exercise', choices=exercise_choices)
 
     date = DateField('Select a Date', validators=[DataRequired()])
-    
+
     start_time = TimeField('From', validators=[DataRequired()])
 
     end_time = TimeField('To', validators=[DataRequired()])
-    
+
     invited_friend = SelectField('Invite a friend', choices=[])
-    
+
     submit = SubmitField('Submit')

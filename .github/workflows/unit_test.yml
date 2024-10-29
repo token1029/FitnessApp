@@ -1,4 +1,5 @@
 name: Tests
+permissions: write-all
 on:
   push:
     branches:
@@ -32,16 +33,39 @@ jobs:
           python-version: 3.10.15
       - name: Install dependencies
         run: |
-          pip install pytest-cov
+          pip install pytest-cov coveralls
+          pip install coverage
           pip install -r requirements.txt
           echo requirements installed
-        # pip uninstall bson
-        # pip uninstall pymongo
-        # pip install pymongo
+
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.10.0
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
-      - name: Run tests
+      - name: Run tests with Coverage
         run: |
-          python -m pytest tests
+          coverage run -m pytest tests
+          coveralls --service=github-actions
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+      
+      - name: Run autopep8
+        if: github.ref == 'refs/heads/develop'
+        id: autopep8
+        uses: peter-evans/autopep8@v2
+        with:
+          args: --exit-code --recursive --in-place --aggressive .
+      - name: set up pylint badge
+        uses: Silleellie/pylint-github-action@v2
+        with:
+          lint-path: fitnessapp 
+      - name: Update README.md with latest run and commit autopep 8 changes
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git pull --rebase
+          sed -i "s|(https://github.com/CSC510-GROUP-40/FitnessApp/actions/runs.*)|(https://github.com/CSC510-GROUP-40/FitnessApp/actions/runs/${{ github.run_id }})|" README.md
+          git commit -am "Automated autopep8 fixes and Update README.md with the latest run ID"
+          git push -f
+

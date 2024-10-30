@@ -16,25 +16,25 @@ https://youtu.be/CvR6jDlQnB8
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/VibhavDeo/FitnessApp)
 
 <!--Badges-->
-<a href="https://github.com/VibhavDeo/FitnessApp/fork" target="blank">
+<a href="https://github.com/CSC510-GROUP-40/FitnessApp/fork" target="blank">
 <img src="https://img.shields.io/github/forks/VibhavDeo/FitnessApp?style=flat-square" alt="FitnessApp/forks"/>
 </a>
-<a href="https://github.com/VibhavDeo/FitnessApp/stargazers" target="blank">
+<a href="https://github.com/CSC510-GROUP-40/FitnessApp/stargazers" target="blank">
 <img src="https://img.shields.io/github/stars/VibhavDeo/FitnessApp?style=flat-square" alt="FitnessApp stars"/>
 </a>
-<a href="https://github.com/VibhavDeo/FitnessApp/issues" target="blank">
+<a href="https://github.com/CSC510-GROUP-40/FitnessApp/issues" target="blank">
 <img src="https://img.shields.io/github/issues/VibhavDeo/FitnessApp?style=flat-square" alt="FitnessApp issues"/>
 </a>
-<a href="https://github.com/VibhavDeo/FitnessApp/issues" target="blank">
+<a href="https://github.com/CSC510-GROUP-40/FitnessApp/issues" target="blank">
 <img src="https://img.shields.io/github/issues-closed/VibhavDeo/FitnessApp" alt="FitnessApp issues closed"/>
 </a>
-<a href="https://github.com/VibhavDeo/FitnessApp/pulls" target="blank">
+<a href="https://github.com/CSC510-GROUP-40/FitnessApp/pulls" target="blank">
 <img src="https://img.shields.io/github/issues-pr/VibhavDeo/FitnessApp?style=flat-square" alt="cheapBuy pull-requests"/>
 </a>
-<a href="https://github.com/VibhavDeo/FitnessApp/graphs/contributors" alt="Contributors">
+<a href="https://github.com/CSC510-GROUP-40/FitnessApp/graphs/contributors" alt="Contributors">
 <img src="https://img.shields.io/github/contributors/VibhavDeo/FitnessApp" /></a>
 
-<a href="https://github.com/VibhavDeo/FitnessApp/graphs/commit-activity" alt="commit activity">
+<a href="https://github.com/CSC510-GROUP-40/FitnessApp/graphs/commit-activity" alt="commit activity">
 <img src="https://img.shields.io/github/commit-activity/w/VibhavDeo/FitnessApp" /></a>
 
 <a href="https://img.shields.io/github/repo-size/VibhavDeo/FitnessApp" alt="repo size">
@@ -48,7 +48,7 @@ https://youtu.be/CvR6jDlQnB8
 
 BurnOut is an easy-to-use application designed to help users manage their daily calorie intake and expenditure, and it has now been enhanced with additional features. This all-in-one wellness app is not only a user-friendly calorie tracker but also offers a comprehensive suite of tools to support individuals in achieving their fitness and weight management goals.
 
-<img src = "https://github.com/VibhavDeo/FitnessApp/assets/145216300/e4fc29ea-253c-4bfc-803c-80bf55193044" width="700px">
+<img src = "https://github.com/CSC510-GROUP-40/FitnessApp/assets/145216300/e4fc29ea-253c-4bfc-803c-80bf55193044" width="700px">
 
 
 ## Key Features:
@@ -133,59 +133,59 @@ This document serves as a comprehensive reference point for users, giving them i
 
 ## Login
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/loginPic.PNG>
+<img src=https://github.com/CSC510-GROUP-40/FitnessApp/blob/main/static/img/loginPic.PNG>
 
 ## Dashboard
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/dashboardPic.PNG>
+<img src=https://github.com/CSC510-GROUP-40/FitnessApp/blob/main/static/img/dashboardPic.PNG>
 
 ## Excercise Section
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/excercisePic.PNG>
+<img src=https://github.com/CSC510-GROUP-40/FitnessApp/blob/main/static/img/excercisePic.PNG>
 
 ## Must Try Workout Section
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/musttryworkoutPic.PNG>
+<img src=https://github.com/CSC510-GROUP-40/FitnessApp/blob/main/static/img/musttryworkoutPic.PNG>
 
 ## Popular Workout Section
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/popularworkoutPic.PNG>
+<img src=https://github.com/CSC510-GROUP-40/FitnessApp/blob/main/static/img/popularworkoutPic.PNG>
 
 ## Enter Calories
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/historyPic.PNG>
+<img src=https://github.com/CSC510-GROUP-40/FitnessApp/blob/main/static/img/historyPic.PNG>
 
 ## Check History
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/caloriesPic.PNG>
+<img src=https://github.com/CSC510-GROUP-40/FitnessApp/blob/main/static/img/caloriesPic.PNG>
 
 ## Add Friends
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/friendsPic.PNG>
+<img src=https://github.com/CSC510-GROUP-40/FitnessApp/blob/main/static/img/friendsPic.PNG>
 
 ## Calculate BMI
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/bmiPic.PNG>
+<img src=https://github.com/CSC510-GROUP-40/FitnessApp/blob/main/static/img/bmiPic.PNG>
 
 ## Add an Excercise to Favourites
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/favPic.PNG>
+<img src=https://github.com/CSC510-GROUP-40/FitnessApp/blob/main/static/img/favPic.PNG>
 
 ## Submit a Review
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/reviewPic.jpeg>
+<img src=https://github.com/CSC510-GROUP-40/FitnessApp/blob/main/static/img/reviewPic.jpeg>
 
 ## View User Profile
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/profile1.0.jpeg>
+<img src=https://github.com/CSC510-GROUP-40/FitnessApp/blob/main/static/img/profile1.0.jpeg>
 
 ## View User Profile 2.0
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/profile2.0.jpeg>
+<img src=https://github.com/CSC510-GROUP-40/FitnessApp/blob/main/static/img/profile2.0.jpeg>
 
 ## Update Your Profile
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/updateProfile.jpeg>
+<img src=https://github.com/CSC510-GROUP-40/FitnessApp/blob/main/static/img/updateProfile.jpeg>
 
 
 # Steps for execution
@@ -196,7 +196,7 @@ https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows
 
 - Git Clone the Repository
 
-  `git clone https://github.com/VibhavDeo/FitnessApp.git`
+  `git clone https://github.com/CSC510-GROUP-40/FitnessApp.git`
   
 
 - Install the required packages by running the following command in the terminal
@@ -269,7 +269,7 @@ If you get error regarding any of the following packages - pymongo and bson, the
 # Source Code
 
 Link to the repository:
-https://github.com/VibhavDeo/FitnessApp
+https://github.com/CSC510-GROUP-40/FitnessApp
 
 # Future Scope
 
@@ -284,19 +284,19 @@ https://github.com/VibhavDeo/FitnessApp
 <center>
   <table>
     <tr>
-        <td align="center"><img src="https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/IMG-8118.jpg" width="300px;" alt=""/><br /><sub><b>Left to Right -  <a href="https://github.com/nayaksyndrome">Chinmay Nayak</a>,  <a href="https://github.com/Shubham-Saboo">Shubham Saboo</a>, <a href="https://github.com/RajatChandak2000">  Rajat Chandak</a>,  <a href="https://github.com/VibhavDeo">Vibhav Deo</a></b></sub><br /></td>
+        <td align="center"><img src="https://github.com/CSC510-GROUP-40/FitnessApp/blob/main/static/img/IMG-8118.jpg" width="300px;" alt=""/><br /><sub><b>Left to Right -  <a href="https://github.com/nayaksyndrome">Chinmay Nayak</a>,  <a href="https://github.com/Shubham-Saboo">Shubham Saboo</a>, <a href="https://github.com/RajatChandak2000">  Rajat Chandak</a>,  <a href="https://github.com/VibhavDeo">Vibhav Deo</a></b></sub><br /></td>
     </tr>
   </table>
 </center>
 
 # Contribution
 
-Please refer the [CONTRIBUTING.md](https://github.com/VibhavDeo/FitnessApp/blob/main/CONTRIBUTING.md) file for instructions on how to contribute to our repository.
+Please refer the [CONTRIBUTING.md](https://github.com/CSC510-GROUP-40/FitnessApp/blob/main/CONTRIBUTING.md) file for instructions on how to contribute to our repository.
 
   <p align="center">
-    <a href="https://github.com/VibhavDeo/FitnessApp/issues/new/choose">Report Bug</a>
+    <a href="https://github.com/CSC510-GROUP-40/FitnessApp/issues/new/choose">Report Bug</a>
     /
-    <a href="https://github.com/VibhavDeo/FitnessApp/issues/new/choose">Request Feature</a>
+    <a href="https://github.com/CSC510-GROUP-40/FitnessApp/issues/new/choose">Request Feature</a>
   </p>
 
 # License

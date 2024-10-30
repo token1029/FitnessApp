@@ -7,7 +7,7 @@ https://youtu.be/CvR6jDlQnB8
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
 [![DOI](https://zenodo.org/badge/692868088.svg)](https://zenodo.org/doi/10.5281/zenodo.10023046)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
-![GitHub last commit (branch)](https://img.shields.io/github/last-commit/VibhavDeo/FitnessApp/main)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/CSC510-GROUP-40/FitnessApp/develop)
 [![Python application](https://github.com/VibhavDeo/FitnessApp/actions/workflows/python-app.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/python-app.yml)
 [![pylint](https://img.shields.io/badge/PyLint-6.52-orange?logo=python&logoColor=white)](https://github.com/CSC510-GROUP-40/FitnessApp/actions/runs/11602633106)
 [![autopep8](./autopep8.svg)](https://github.com/CSC510-GROUP-40/FitnessApp/actions/runs/11602633106)

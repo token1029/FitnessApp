@@ -100,6 +100,7 @@ This document serves as a comprehensive reference point for users, giving them i
       - [Set up Project](#set-up-project)
       - [Create Google Client Credentials](#create-google-client-credentials)
       - [Start the application](#start-the-application)
+      - [GOOGLE CHROME SETTINGS FOR SSL](#google-chrome-settings-for-ssl)
       - [Backgroun Tasks](#backgroun-tasks)
 - [Source Code](#source-code)
 - [Future Scope](#future-scope)
@@ -233,7 +234,18 @@ https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows
 - For Google Sign In to work, run the app on `https` using the command below:
 ```
 export FLASK_APP=fitnessapp && export FLASK_ENV=development && FLASK_DEBUG=1 && flask run --cert=adhoc
+
 ```  
+
+#### GOOGLE CHROME SETTINGS FOR SSL
+for ssl to work locally on google chrome, you will have to do the following settings within your chrome browser.
+- open this URL on chrome chrome://flags/#allow-insecure-localhost
+- set the Allow invalid certificates for resources loaded from localhost. and enable this by clicking on relaunch at the bottom right. see image below
+![Google settings for SSL](docs/chrome.png)
+- note that this settings is not required for firefox 
+  
+
+
 #### Backgroun Tasks
 - Make sure you have RabitMQ installed and running on your system
 - Run the following command to start celery worker and beat for email-reminders
@@ -243,19 +255,16 @@ export FLASK_APP=fitnessapp && export FLASK_ENV=development && FLASK_DEBUG=1 && 
   ```   
 - Note that for email reminders to work, make sure you have created an events in your database and their date is equalt to date of current date. 
 
-
-
-```
 NOTE!!:
 Make sure you have redis install on your local machine for background tasks with celery to work. see https://redis.io/docs/latest/operate/oss_and_stack/install/
 
 If you get error regarding any of the following packages - pymongo and bson, then dont worry we have also been there. Run the following commands to resolve the error :
 
+
+```
     pip uninstall bson
     pip uninstall pymongo
     pip install pymongo
-
-
 ```
 # Source Code
 

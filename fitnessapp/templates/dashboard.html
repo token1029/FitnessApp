@@ -193,7 +193,11 @@
             if (data.status === "success") {
               console.log("Added");
               toastr.success("Added to Favorites!");
-            } else {
+            }
+            else if (data.status === "alreadyAdded") {
+              toastr.info("This exercise is already saved in your Favorites.");
+            }
+            else {
               alert("An error occurred while managing favorites.");
               toastr.error("An error occurred while managing favorites.");
             }

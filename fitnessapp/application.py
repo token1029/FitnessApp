@@ -606,6 +606,11 @@ def add_favorite():
         print(exercise)
         if exercise:
             if action == "add":
+                exist_favorite = current_app.mongo.db.favorites.find_one({"exercise_id": exercise.get("exercise_id"),
+                                                     "email": email})
+                if exist_favorite:
+                    return jsonify({"status": "alreadyAdded"})
+                
                 # Create a new document in the favorites schema (you can
                 # customize this schema)
                 favorite = {

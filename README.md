@@ -255,19 +255,16 @@ for ssl to work locally on google chrome, you will have to do the following sett
   ```   
 - Note that for email reminders to work, make sure you have created an events in your database and their date is equalt to date of current date. 
 
-
-
-```
 NOTE!!:
 Make sure you have redis install on your local machine for background tasks with celery to work. see https://redis.io/docs/latest/operate/oss_and_stack/install/
 
 If you get error regarding any of the following packages - pymongo and bson, then dont worry we have also been there. Run the following commands to resolve the error :
 
+
+```
     pip uninstall bson
     pip uninstall pymongo
     pip install pymongo
-
-
 ```
 # Source Code
 

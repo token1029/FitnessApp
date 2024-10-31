@@ -182,6 +182,45 @@ def register():
         return redirect(url_for('home'))
     return render_template('register.html', title='Register', form=form)
 
+@app.route("/join", methods=['GET', 'POST'])
+def join():
+    """
+    register() function displays the Registration portal (register.html) template
+    route "/register" will redirect to register() function.
+    RegistrationForm() called and if the form is submitted then various values are fetched and updated into database
+    Input: Username, Email, Password, Confirm Password
+    Output: Value update in database and redirected to home login page
+    """
+    now = datetime.now()
+    now = now.strftime('%Y-%m-%d')
+
+    if not session.get('email'):
+        form = RegistrationForm()
+        if form.validate_on_submit():
+            if request.method == 'POST':
+                username = request.form.get('username')
+                email = request.form.get('email')
+                password = request.form.get('password')
+
+                mongo.db.user.insert({'name': username, 'email': email, 'pwd': bcrypt.hashpw(
+                    password.encode("utf-8"), bcrypt.gensalt())})
+                
+                weight = request.form.get('weight')
+                height = request.form.get('height')
+                goal = request.form.get('goal')
+                target_weight = request.form.get('target_weight')
+                temp = mongo.db.profile.find_one({'email': email, 'date': now}, {'height', 'weight', 'goal', 'target_weight'})
+                mongo.db.profile.insert({'email': email,
+                                             'date': now,
+                                             'height': height,
+                                             'weight': weight,
+                                             'goal': goal,
+                                             'target_weight': target_weight})
+            flash(f'Account created for {form.username.data}!', 'success')
+            return redirect(url_for('home'))
+    else:
+        return redirect(url_for('home'))
+    return render_template('join.html', title='Register', form=form)
 
 @app.route("/calories", methods=['GET', 'POST'])
 def calories():

@@ -13,17 +13,21 @@ https://github.com/VibhavDeo/FitnessApp
 
 """
 
-"""Importing modules to check the send_email functions""" 
+"""Importing modules to check the send_email functions"""
+
+
+
+
 import random
 import string
 from flask_mail import Message
 from apps import App
-
 class Utilities:
     """Class to chech the send_email functionality"""
     app = App()
     mail = app.mail
     mongo = app.mongo
+
     def send_email(self, email):
         """Validates the send email function"""
         msg = Message()
@@ -32,7 +36,8 @@ class Utilities:
         msg.recipients = [email]
         random_str = str(self.get_random_string(8))
         msg.body = 'Please use the following password to login to your account: ' + random_str
-        self.mongo.db.ath.update({'email': email}, {'$set': {'temp': random_str}})
+        self.mongo.db.ath.update(
+            {'email': email}, {'$set': {'temp': random_str}})
         if self.mail.send(msg):
             return "success"
         return "failed"

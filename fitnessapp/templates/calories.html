@@ -1,0 +1,30 @@
+{% extends "layout.html" %} {% block content %}
+<div class="content-section my-4 d-flex justify-content-center align-items-center">
+  <form method="POST" onsubmit="storeCalories()" name="calorieform">
+      {{ form.hidden_tag() }}
+      <fieldset class="mb-4">
+          <legend class="border-bottom mb-4">Today's Calories</legend>
+
+          <div class="mb-3">
+              <label for="time" class="form-label">Date</label>
+              <p id="time" class="form-control form-control-lg">{{ time }}</p>
+          </div>
+
+          <div class="mb-3">
+              {{ form.food.label(class="form-label") }}
+              {{ form.food(class="form-control form-control-lg") }}
+          </div>
+
+          <div class="mb-3">
+              {{ form.burnout.label(class="form-label") }}
+              {{ form.burnout(class="form-control form-control-lg") }}
+          </div>
+      </fieldset>
+
+      <div class="d-grid">
+          {{ form.submit(class="btn btn-outline-info btn-lg") }}
+      </div>
+  </form>
+</div>
+
+{% endblock content %}

@@ -5,6 +5,7 @@ login()
 - This function is used for login by the user
 - Using email ID and passoword is validated and the user is directed to home
 
+
 logout()
 - This function is used for logout by the user
 - logout() function just clears the session
@@ -53,5 +54,5 @@ add_favorite()
 favorites()
 - This function displays the favourite exercises of the users
 
-yoga()/swim()/abbs()/belly()/core()/gym()/walk()/dance()/hrx()
+yoga()/swim()/abs_smash()/belly()/core()/gym()/walk()/dance()/hrx()
 - This function allows user to enroll in different plans

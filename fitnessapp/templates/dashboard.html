@@ -1,0 +1,250 @@
+<body>
+  {% extends "layout.html" %} {% block content %}
+  <!-- <script>
+    function WeightAlert() {
+      setTimeout(function () {
+        alert(
+          "Tracking progress is vital. Don't forget to log your weight today!"
+        );
+      }, 3000);
+    }
+  </script> -->
+  <div></div>
+
+  <div class="carousel slide" data-bs-ride="carousel" id="carousel-1">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img
+          class="w-100 d-block"
+          src="../static/img/sp111.png"
+          alt="Slide Image"
+        />
+      </div>
+      <div class="carousel-item">
+        <img
+          class="w-100 d-block"
+          src="../static/img/sp222.png"
+          alt="Slide Image"
+        />
+      </div>
+      <div class="carousel-item">
+        <img
+          class="w-100 d-block"
+          src="../static/img/sp333.png"
+          alt="Slide Image"
+        />
+      </div>
+    </div>
+    <div>
+      <a
+        class="carousel-control-prev"
+        href="#carousel-1"
+        role="button"
+        data-bs-slide="prev"
+        ><span class="carousel-control-prev-icon"></span
+        ><span class="visually-hidden">Previous</span></a
+      ><a
+        class="carousel-control-next"
+        href="#carousel-1"
+        role="button"
+        data-bs-slide="next"
+        ><span class="carousel-control-next-icon"></span
+        ><span class="visually-hidden">Next</span></a
+      >
+    </div>
+    <ol class="carousel-indicators">
+      <li data-bs-target="#carousel-1" data-bs-slide-to="0" class="active"></li>
+      <li data-bs-target="#carousel-1" data-bs-slide-to="1"></li>
+      <li data-bs-target="#carousel-1" data-bs-slide-to="2"></li>
+    </ol>
+  </div>
+
+  <div class="row justify-content-center align-items-center" id="introduction">
+    <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <h3 class="card-title text-center text-white my-4">For the love of fit!</h3>
+        <div class="ratio ratio-16x9">
+            <video class="w-100" controls>
+                <source src="../static/videos/video.mp4" type="video/mp4" />
+            </video>
+        </div>
+    </div>
+  </div>
+
+  
+
+  <div class="row">
+    {% for exercise in exercises %}
+    <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); text-align: center;">
+            <img class="img-thumbnail" src="{{ exercise.image }}" />
+            <div class="card-body">
+                <h4 class="card-title">{{ exercise.name }}</h4>
+                <button class="btn btn-secondary btn-sm add-favorite" data-exercise-id="{{ exercise.exercise_id }}">Add to Favorites</button>
+                <button class="btn btn-secondary btn-sm remove-favorite" data-exercise-id="{{ exercise.exercise_id }}">Remove from Favorites</button>
+                <p class="card-text">
+                    <br />&nbsp;{{ exercise.intro }}<br /><br />
+                </p>
+                <a class="btn btn-secondary btn-sm" href="{{ url_for('program', exercise=exercise.href) }}" role="button">More info</a>
+                <a class="btn btn-secondary btn-sm" href="{{ exercise.video_link }}" role="button">Tutorial</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+
+      
+  <div class="container site-section" id="yoga-2">
+    <h2 style="color: white"><strong>Most popular Workouts</strong></h2>
+    <div class="row" style="margin-top: 20px">
+      <div class="col-4">
+        <div
+          class="card"
+          style="
+            width: 325px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+              0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            text-align: center;
+          "
+        >
+          <a href="{{ url_for('program', exercise='abs_smash') }}"
+            ><img class="img-thumbnail" src="../static/img/R31.jpg"
+          /></a>
+          <div class="card-body">
+            <h4 class="card-title">Abs Smash</h4>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div
+          class="card"
+          style="
+            width: 325px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+              0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            text-align: center;
+          "
+        >
+          <a href="{{ url_for('program', exercise='core') }}"
+            ><img class="img-thumbnail" src="../static/img/R32.jpg"
+          /></a>
+          <div class="card-body">
+            <h4 class="card-title">Core Conditioning</h4>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div
+          class="card"
+          style="
+            width: 325px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+              0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            text-align: center;
+          "
+        >
+          <a href="{{ url_for('program', exercise='belly') }}"
+            ><img class="img-thumbnail" src="../static/img/R21.jpg"
+          /></a>
+          <div class="card-body">
+            <h4 class="card-title">Belly Burner</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"
+  />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+  <script
+    src="https://kit.fontawesome.com/a076d05399.js"
+    crossorigin="anonymous"
+  ></script>
+  <script>
+    $(document).ready(function () {
+      $(".add-favorite").on("click", function () {
+        var exerciseId = $(this).data("exercise-id");
+        // var isFavorite = 0; // Check if it's marked as a favorite
+
+        var clickedElement = $(this);
+
+        // Prepare the data as a JavaScript object
+        var requestData = {
+          exercise_id: exerciseId,
+          action: "add", // Add or remove based on current state
+        };
+        // Convert the data to a JSON string
+        var jsonData = JSON.stringify(requestData);
+        console.log(requestData.action);
+        $.ajax({
+          type: "POST",
+          url: "/add_favorite",
+          data: jsonData,
+          contentType: "application/json",
+          success: function (data) {
+            if (data.status === "success") {
+              console.log("Added");
+              toastr.success("Added to Favorites!");
+            }
+            else if (data.status === "alreadyAdded") {
+              toastr.info("This exercise is already saved in your Favorites.");
+            }
+            else {
+              alert("An error occurred while managing favorites.");
+              toastr.error("An error occurred while managing favorites.");
+            }
+          },
+          error: function () {
+            alert("An error occurred while making the request.");
+            toastr.error("An error occurred while making the request.");
+          },
+        });
+      });
+
+      $(".remove-favorite").on("click", function () {
+        var exerciseId = $(this).data("exercise-id");
+        // var isFavorite = True; // Check if it's marked as a favorite
+
+        var clickedElement = $(this);
+
+        // Prepare the data as a JavaScript object
+        var requestData = {
+          exercise_id: exerciseId,
+          action: "remove", // Add or remove based on current state
+        };
+        // Convert the data to a JSON string
+        var jsonData = JSON.stringify(requestData);
+        console.log(requestData.action);
+        $.ajax({
+          type: "POST",
+          url: "/add_favorite",
+          data: jsonData,
+          contentType: "application/json",
+          success: function (data) {
+            if (data.status === "success") {
+              console.log("Removed");
+              toastr.error("Removed from Favorites!");
+            } else {
+              alert("An error occurred while managing favorites.");
+              toastr.error("An error occurred while managing favorites.");
+            }
+          },
+          error: function () {
+            alert("An error occurred while making the request.");
+            toastr.error("An error occurred while making the request.");
+          },
+        });
+      });
+    });
+  </script>
+
+  {% endblock %}
+</body>

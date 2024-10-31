@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="content-section my-4">
+    <form method="POST" action="{{ url_for('events') }}" name="EventForm()">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Create an event and invite your friends!!</legend>
+            <div class="form-group">
+                {{ form.exercise.label(class="form-control-label") }}
+                {{ form.exercise(class="form-control") }}
+
+                {{ form.date.label(class="form-control-label") }}
+                {{ form.date(class="form-control", placeholder="MM/DD/YYYY", type="date", required=True) }}
+                
+                {{ form.start_time.label(class="form-control-label") }}
+                {{ form.start_time(class="form-control", type="time", required=True) }}
+
+                {{ form.end_time.label(class="form-control-label") }}
+                {{ form.end_time(class="form-control", type="time", required=True) }}
+                
+                {{ form.invited_friend.label(class="form-control-label") }}
+                {{ form.invited_friend(class="form-control") }}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+
+    <!-- Display Events -->
+    <div id="existing-reviews">
+        <h2>Upcoming Events:</h2>
+        <ul>
+            {% for event in existing_events %}
+                <li class="quote">
+                    <p>Exercise: {{ event.exercise }}</p>
+                    <p>Host: {{ event.host }}</p>
+                    <p>Date: {{ event.date }}</p>
+                    <p>From: {{ event.start_time }}</p>
+                    <p>To: {{ event.end_time }}</p>
+                    <p>Invited Friend: {{ event.invited_friend }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<style>
+    /* CSS Styles for Existing Events */
+    .quote {
+        background-color: #f9f9f9;
+        border-left: 10px solid #ccc;
+        margin: 10px 0;
+        padding: 10px 20px;
+    }
+</style>
+{% endblock content %}

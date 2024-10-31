@@ -38,6 +38,7 @@
              
             {% if not session.get("email"): %}
             <div class="navbar-nav ml-auto">
+              <a class="nav-item nav-link" href="{{ url_for('join') }}">Why Join?</a>
               <a class="nav-item nav-link" href="{{ url_for('login') }}" id="login">Login</a>
               <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
             </div>

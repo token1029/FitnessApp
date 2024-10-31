@@ -1,68 +1,139 @@
 {% extends "layout.html" %}
 {% block content %}
-<html>
-  
-        <div class="content-section">
-            <form method="POST" action="{{ url_for('user_profile') }}" name="UserProfileForm()">
-                {{ form.hidden_tag() }}
-                <fieldset class="form-group">
-                    <legend class="border-bottom mb-4">Update your data</legend>
-                    <div class="form-group">
-                        
-                        {{ form.height.label(class="form-control-label") }} (cms)
-                        {% if form.height.errors %}
-                            {{ form.height(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.height.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.height(class="form-control form-control-lg") }}
-                        {% endif %}
-                        {{ form.weight.label(class="form-control-label") }} (kgs)
-                        {% if form.weight.errors %}
-                            {{ form.weight(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.weight.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.weight(class="form-control form-control-lg") }}
-                        {% endif %}
-                        {{ form.goal.label(class="form-control-label") }}
-                        {% if form.goal.errors %}
-                            {{ form.goal(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.goal.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.goal(class="form-control form-control-lg") }}
-                        {% endif %}
-                        {{ form.target_weight.label(class="form-control-label") }} (kgs)
-                        {% if form.target_weight.errors %}
-                            {{ form.target_weight(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.target_weight.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.target_weight(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div> 
-                </fieldset>
+<head>
+    <meta charset="UTF-8">
+    <title>Update Your Data</title>
+    <style>
+        /* Background and container styling */
+        body {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            font-family: Arial, sans-serif;
+            color: #fff;
+        }
+
+        .content-section {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            margin: 30px auto;
+        }
+
+        /* Form and input styling */
+        .form-group label {
+            color: #ffd700;
+            font-size: 1.2em;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            color: #fff;
+            font-size: 1em;
+            margin-bottom: 15px;
+        }
+
+        .form-control:focus {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-color: #ffd700;
+            box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+        }
+
+        .btn-outline-info {
+            background-color: #ffd700;
+            border: none;
+            color: #333;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .btn-outline-info:hover {
+            background-color: #ffa500;
+            color: #fff;
+        }
+
+        /* Legend and title styling */
+        legend {
+            font-size: 1.8em;
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .invalid-feedback span {
+            color: #ff4c4c;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-section">
+        <form method="POST" action="{{ url_for('user_profile') }}" name="UserProfileForm()">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Update Your Data</legend>
                 <div class="form-group">
-                    {{ form.submit(class="btn btn-outline-info") }}
-                </div>  
-                
-            
-        </div>
-        
+                    
+                    {{ form.height.label(class="form-control-label") }} (cms)
+                    {% if form.height.errors %}
+                        {{ form.height(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.height.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.height(class="form-control form-control-lg") }}
+                    {% endif %}
+
+                    {{ form.weight.label(class="form-control-label") }} (kgs)
+                    {% if form.weight.errors %}
+                        {{ form.weight(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.weight.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.weight(class="form-control form-control-lg") }}
+                    {% endif %}
+
+                    {{ form.goal.label(class="form-control-label") }}
+                    {% if form.goal.errors %}
+                        {{ form.goal(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.goal.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.goal(class="form-control form-control-lg") }}
+                    {% endif %}
+
+                    {{ form.target_weight.label(class="form-control-label") }} (kgs)
+                    {% if form.target_weight.errors %}
+                        {{ form.target_weight(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.target_weight.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.target_weight(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div> 
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>  
+        </form>
     </div>
-</div>
-</div>
+</body>
 {% endblock content %}

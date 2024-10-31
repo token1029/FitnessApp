@@ -1,45 +1,53 @@
-{% extends "layout.html" %} {% block content %}
-<div class="container">
-    <h1 style="color: white" style="width: 200px;">Water Intake tracker</h1>
-    <div class="main-content">
-        <div style="display: flex; justify-content: center; align-items: center;">
-               <form method="POST" action="/water" style="display: flex; align-items: center;">
-                   <input type="number" name="intake" placeholder="Enter water intake in ml" required
-                       style="padding: 5px; margin-right: 10px;">
-                   <button type="submit"
-                       style="padding: 5px 10px; background-color: #f8f8f8; border: 1px solid #ccc; cursor: pointer;">
-                       Record Intake
-                   </button>
-               </form>
-           </div>
-		
-        <h2 style="color: white"><strong style="font-size: 25px;color: #FFC107;">Intake Records</strong></h2>
-        <ul>
+{% extends "layout.html" %} 
+{% block content %}
+<div class="container" style="max-width: 600px; margin: auto; text-align: center;">
+    <h1 style="color: #eee7e7;">Water Intake Tracker</h1>
+    <div class="main-content" style="background-color: #2b2d42; padding: 20px; border-radius: 10px;">
+        
+        <form method="POST" action="/water" style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+            <input type="number" name="intake" placeholder="Enter water intake in ml" required
+                style="padding: 10px; margin-right: 10px; border-radius: 5px; border: 1px solid #ccc; width: 60%;">
+            <button type="submit"
+                style="padding: 10px 15px; background-color: #00897b; border: none; color: white; border-radius: 5px; cursor: pointer;">
+                Record Intake
+            </button>
+        </form>
+
+        <p style="color: #ffffff; margin-bottom: 20px;">
+            To support a healthy lifestyle, it's recommended to drink 2000 ml of water each day.
+        </p>
+
+        <h2 style="color: #ffffff;"><strong style="font-size: 25px; color: #FFC107;">Intake Records</strong></h2>
+        <ul style="list-style-type: none; padding: 0;">
             {% for record in records %}
-            <li style="margin-bottom: 5px; color: white;">{{ record['intake'] }} ml at
+            <li style="margin-bottom: 10px; color: #ffffff;">{{ record['intake'] }} ml at
                 {{ record['time'].strftime('%Y-%m-%d %H:%M:%S') }}
             </li>
-			<hr style="color: white;">
+            <hr style="border: 1px solid #ffffff;">
             {% endfor %}
         </ul>
-		<h2 style="color: white"><strong style="font-size: 25px;color: #FFC107;">Total intake</strong></h2>
-		<ul>
-		    <li style="margin-bottom: 5px; color: white;">{{ total_intake }} ml</li>
-		</ul>
-		<h2 style="color: white"><strong style="font-size: 25px;color: #FFC107;">Average intake</strong></h2>
-		<ul>
-		    <li style="margin-bottom: 5px; color: white;">{{ average_intake|round(2) }} ml</li>
-		</ul>
-		<form method="POST" action="/clear-intake">
-		        <button type="submit" style="padding: 5px 10px; background-color: #f44336; border: 1px solid #ccc; cursor: pointer; color: white; margin-top: 10px;">
-		            Clear Records
-		        </button>
-		    </form>
-			<hr>
-		<div class="image-container" style="display: flex; justify-content: center; align-items: center;">
-		        <img class="img-fluid" src="../static/img/water1.jpg" width="550px" style="padding: 5px 10px;">
 
-		    </div>
+        <h2 style="color: #ffffff;"><strong style="font-size: 25px; color: #FFC107;">Total Intake</strong></h2>
+        <ul style="list-style-type: none; padding: 0;">
+            <li style="margin-bottom: 10px; color: #ffffff;">{{ total_intake }} ml</li>
+        </ul>
+
+        <h2 style="color: #ffffff;"><strong style="font-size: 25px; color: #FFC107;">Average Intake</strong></h2>
+        <ul style="list-style-type: none; padding: 0;">
+            <li style="margin-bottom: 10px; color: #ffffff;">{{ average_intake|round(2) }} ml</li>
+        </ul>
+
+        <form method="POST" action="/clear-intake" style="margin-top: 20px;">
+            <button type="submit" style="padding: 10px 15px; background-color: #d32f2f; border: none; color: white; border-radius: 5px; cursor: pointer;">
+                Clear Records
+            </button>
+        </form>
+
+        <hr style="border: 1px solid #ffffff; margin: 20px 0;">
+
+        <div class="image-container" style="display: flex; justify-content: center; align-items: center;">
+            <img class="img-fluid" src="../static/img/water1.jpg" width="100%" style="max-width: 550px; border-radius: 10px;">
+        </div>
     </div>
 </div>
 {% endblock content %}

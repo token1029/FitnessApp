@@ -1,180 +1,178 @@
-{% extends "layout.html" %} {% block content %}
-<div class="container">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Workout Guide</title>
+    <style>
+        body {
+            padding-top: 70px;
+            color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #1c1c1c;
+            margin: 0;
+        }
 
-    <head>
-        <meta charset="UTF-8">
-        <title>Home Workout Guide</title>
-        <style>
-            body {
-                padding-top: 70px;
-                color: white;
-                font-family: Arial, sans-serif;
-                line-height: 1.6;
-                margin: 0;
-            }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
 
-            .container {
-                width: 80%;
-                margin: auto;
-                overflow: hidden;
-            }
+        header {
+            background: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-            header {
-                background: #333;
-                color: white;
-                padding: 10px 0;
-                top: 0;
-                z-index: 1000;
-            }
+        header ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            padding: 0;
+        }
 
-            header ul {
-                list-style: none;
-                display: flex;
-                justify-content: center;
-                padding: 0;
-            }
+        header ul li {
+            margin: 0 15px;
+        }
 
-            header ul li {
-                margin: 0 10px;
-            }
+        header ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
 
-            header ul li a {
-                color: white;
-                text-decoration: none;
-            }
+        header ul li a:hover {
+            color: #e8491d;
+        }
 
-            .section {
-                padding: 30px;
-                margin: 20px 0;
-                border: 2px solid white;
-                border-radius: 10px;
-                background-color: #111;
-            }
+        .section {
+             padding: 20px;
+             margin: 20px 0;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background-color: rgba(34, 34, 34, 0.8); /* Semi-transparent background */
+            background-image: url('static/img/p2i3.jpeg'); /* Use your specified path */
+            background-size: cover; /* Cover the entire section */
+            background-position: center; /* Center the image */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+            color: #ffffff; /* Set text color to white for better contrast */
+        }
 
-            .section h2 {
-                margin-top: 0;
-            }
 
-            .section ul {
-                list-style: square;
-                padding: 0;
-            }
+        .section h2 {
+            color: #e8491d;
+            font-size: 1.5em;
+            margin-top: 0;
+        }
 
-            .section ul li {
-                margin-bottom: 10px;
-            }
+        .section ul {
+            list-style: none;
+            padding: 0;
+        }
 
-            .section ul li a {
-                color: #e8491d;
-                text-decoration: none;
-            }
+        .section ul li {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 15px;
+        }
 
-            .section ul li p {
-                margin-top: 5px;
-                text-align: left;
-                display: block;
-            }
-        </style>
-    </head>
+        .section ul li a {
+            color: #e8491d;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1.1em;
+            margin-right: 10px;
+        }
 
-    <body>
-        <header>
-            <div class="container">
-                <ul>
-                    <li><a href="#cardio">Cardio</a></li>
-                    <li><a href="#strength">Strength</a></li>
-                    <li><a href="#yoga">Yoga</a></li>
-                    <li><a href="#core">Core</a></li>
-                </ul>
-            </div>
-        </header>
+        .section ul li a:hover {
+            text-decoration: underline;
+        }
 
+        .section ul li p {
+            margin: 0;
+            color: #cccccc;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
         <div class="container">
-            <!-- Cardio Section -->
-            <div id="cardio" class="section">
-                <h2>Cardio Workouts</h2>
-                <ul>
-                    <li>
-                        <a
-                            href="https://www.amazon.com/Tangle-Free-Jumping-Bearings-Adjustable-Handles/dp/B09DF9NWC7/ref=sr_1_1_sspa?crid=2GFAWITTULJO2&keywords=jump%2Brope&qid=1701129318&sprefix=jump%2Brope%2Caps%2C151&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1">Speed
-                            Jump Rope</a>
-                        <p>A lightweight and adjustable jump rope, ideal for fast-paced cardio and HIIT workouts.</p>
-                    </li>
-                    <li>
-                        <a
-                            href="https://www.amazon.com/RUNOW-Treadmill-Apartment-Electric-Exercise/dp/B08QGSXV8M/ref=sr_1_2_sspa?crid=1T14J999J9AG2&keywords=treadmill&qid=1701129350&sprefix=treadmill%2Caps%2C116&sr=8-2-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1">Compact
-                            Treadmill</a>
-                        <p>Space-saving treadmill with variable speeds, perfect for home cardio sessions.</p>
-                    </li>
-                    <!-- More cardio links -->
-                </ul>
-            </div>
-
-            <!-- Strength Training Section -->
-            <div id="strength" class="section">
-                <h2>Strength Training</h2>
-                <ul>
-                    <li>
-                        <a
-                            href="https://www.amazon.com/AmazonBasics-Pound-Neoprene-Dumbbells-Weights/dp/B01LR5S6HK/ref=sr_1_1_ffob_sspa?crid=588BL24W66R2&keywords=dumbbells&qid=1701129414&sprefix=dumbbells%2Caps%2C123&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1">Adjustable
-                            Dumbbells</a>
-                        <p>Versatile dumbbells with adjustable weights, suitable for a wide range of strength exercises.
-                        </p>
-                    </li>
-                    <li>
-                        <a
-                            href="https://www.amazon.com/AmazonBasics-IR92007-12LB-Vinyl-Kettlebell-12lb/dp/B07F1NMM7B/ref=sr_1_1_ffob_sspa?crid=11ZOZGCTTDVN3&keywords=kettlebell+sets&qid=1701129444&sprefix=kettble%2Caps%2C156&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1">Kettlebells
-                            Set</a>
-                        <p>A set of kettlebells in various weights, great for building strength and endurance.</p>
-                    </li>
-                    <!-- More strength training links -->
-                </ul>
-            </div>
-
-            <!-- Yoga Section -->
-            <div id="yoga" class="section">
-                <h2>Yoga</h2>
-                <ul>
-                    <li>
-                        <a
-                            href="https://www.amazon.com/AmazonBasics-Extra-Thick-Exercise-Carrying/dp/B01LP0U5X0/ref=sr_1_1_ffob_sspa?crid=OTKGJBSP7QUH&keywords=yoga%2Bmat&qid=1701134035&sprefix=yoga%2Bma%2Caps%2C242&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1">Eco-Friendly
-                            Yoga Mat</a>
-                        <p>Durable, non-slip yoga mat made from eco-friendly materials, providing comfort and stability.
-                        </p>
-                    </li>
-                    <li>
-                        <a
-                            href="https://www.amazon.com/Trideer-Stretching-Physical-Non-Elastic-Exercise/dp/B092MJ621Z/ref=sr_1_1_sspa?crid=14TB8CLHTX6XF&keywords=yoga+strap&qid=1701134130&sprefix=yoga+strap%2Caps%2C132&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1">Yoga
-                            Strap</a>
-                        <p>Helpful for stretching and improving flexibility, this strap enhances yoga practice for
-                            beginners and advanced yogis alike.</p>
-                    </li>
-                    <!-- More yoga links -->
-                </ul>
-            </div>
-
-            <!-- Core Workouts Section -->
-            <div id="core" class="section">
-                <h2>Core Workouts</h2>
-                <ul>
-                    <li>
-                        <a
-                            href="https://www.amazon.com/Vinsguir-Workout-Exercise-Equipment-Abdominal/dp/B07RKW5H68/ref=sr_1_1_sspa?crid=1M1O0S9L7YORE&keywords=ab+roller&qid=1701129470&sprefix=ab+roller%2Caps%2C144&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1">Ab
-                            Roller Wheel</a>
-                        <p>An effective tool for core strengthening, this ab roller challenges your balance and
-                            stability.</p>
-                    </li>
-                    <li>
-                        <a
-                            href="https://www.amazon.com/Exercise-Ball-Yoga-Ball-Fitness/dp/B010MVAMH2/ref=sr_1_1_sspa?crid=2DTUGXOJEYJCX&keywords=stability%2Bball&qid=1701129503&sprefix=stability%2Bball%2Caps%2C109&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1&psc=1">Stability
-                            Ball</a>
-                        <p>Enhances core workouts and improves posture and flexibility, suitable for all fitness levels.
-                        </p>
-                    </li>
-                    <!-- More core workout links -->
-                </ul>
-            </div>
+            <ul>
+                <li><a href="#cardio">Cardio</a></li>
+                <li><a href="#strength">Strength</a></li>
+                <li><a href="#yoga">Yoga</a></li>
+                <li><a href="#core">Core</a></li>
+                <li><a href="http://127.0.0.1:5000/dashboard">Back to Burnout Homepage</a>
+                    <img src="static/img/fire.gif" alt="Burnout GIF" style="width: 50px; height: auto; vertical-align: middle; margin-left: 5px;"></li>
+            </ul>
         </div>
-    </body>
-</div>
-{% endblock content %}
+    </header>
+
+    <div class="container">
+        <!-- Cardio Section -->
+        <div id="cardio" class="section">
+            <h2>Cardio Workouts</h2>
+            <ul>
+                <li>
+                    <a href="https://www.amazon.com/Tangle-Free-Jumping-Bearings-Adjustable-Handles/dp/B09DF9NWC7/ref=sr_1_1_sspa?crid=2GFAWITTULJO2&keywords=jump%2Brope&qid=1701129318&sprefix=jump%2Brope%2Caps%2C151&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1">Speed Jump Rope</a>
+                    <p>A lightweight and adjustable jump rope, ideal for fast-paced cardio and HIIT workouts.</p>
+                </li>
+                <li>
+                    <a href="https://www.amazon.com/RUNOW-Treadmill-Apartment-Electric-Exercise/dp/B08QGSXV8M/ref=sr_1_2_sspa?crid=1T14J999J9AG2&keywords=treadmill&qid=1701129350&sprefix=treadmill%2Caps%2C116&sr=8-2-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1">Compact Treadmill</a>
+                    <p>Space-saving treadmill with variable speeds, perfect for home cardio sessions.</p>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Strength Training Section -->
+        <div id="strength" class="section">
+            <h2>Strength Training</h2>
+            <ul>
+                <li>
+                    <a href="https://www.amazon.com/AmazonBasics-Pound-Neoprene-Dumbbells-Weights/dp/B01LR5S6HK/ref=sr_1_1_ffob_sspa?crid=588BL24W66R2&keywords=dumbbells&qid=1701129414&sprefix=dumbbells%2Caps%2C123&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1">Adjustable Dumbbells</a>
+                    <p>Versatile dumbbells with adjustable weights, suitable for a wide range of strength exercises.</p>
+                </li>
+                <li>
+                    <a href="https://www.amazon.com/AmazonBasics-IR92007-12LB-Vinyl-Kettlebell-12lb/dp/B07F1NMM7B/ref=sr_1_1_ffob_sspa?crid=11ZOZGCTTDVN3&keywords=kettlebell+sets&qid=1701129444&sprefix=kettble%2Caps%2C156&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1">Kettlebells Set</a>
+                    <p>A set of kettlebells in various weights, great for building strength and endurance.</p>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Yoga Section -->
+        <div id="yoga" class="section">
+            <h2>Yoga</h2>
+            <ul>
+                <li>
+                    <a href="https://www.amazon.com/AmazonBasics-Extra-Thick-Exercise-Carrying/dp/B01LP0U5X0/ref=sr_1_1_ffob_sspa?crid=OTKGJBSP7QUH&keywords=yoga%2Bmat&qid=1701134035&sprefix=yoga%2Bma%2Caps%2C242&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1">Eco-Friendly Yoga Mat</a>
+                    <p>Durable, non-slip yoga mat made from eco-friendly materials, providing comfort and stability.</p>
+                </li>
+                <li>
+                    <a href="https://www.amazon.com/Trideer-Stretching-Physical-Non-Elastic-Exercise/dp/B092MJ621Z/ref=sr_1_1_sspa?crid=14TB8CLHTX6XF&keywords=yoga+strap&qid=1701134130&sprefix=yoga+strap%2Caps%2C132&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1">Yoga Strap</a>
+                    <p>Helpful for stretching and improving flexibility, this strap enhances yoga practice.</p>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Core Workouts Section -->
+        <div id="core" class="section">
+            <h2>Core Workouts</h2>
+            <ul>
+                <li>
+                    <a href="https://www.amazon.com/Vinsguir-Workout-Exercise-Equipment-Abdominal/dp/B07RKW5H68/ref=sr_1_1_sspa?crid=1M1O0S9L7YORE&keywords=ab+roller&qid=1701129470&sprefix=ab+roller%2Caps%2C144&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1">Ab Roller Wheel</a>
+                    <p>An effective tool for core strengthening, challenging your balance and stability.</p>
+                </li>
+                <li>
+                    <a href="https://www.amazon.com/Exercise-Ball-Yoga-Ball-Fitness/dp/B010MVAMH2/ref=sr_1_1_sspa?crid=2DTUGXOJEYJCX&keywords=stability%2Bball&qid=1701129503&sprefix=stability%2Bball%2Caps%2C109&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1&psc=1">Stability Ball</a>
+                    <p>Enhances core workouts, posture, and flexibility, suitable for all fitness levels.</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>

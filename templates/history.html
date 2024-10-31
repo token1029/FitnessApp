@@ -1,42 +1,104 @@
-{% extends "layout.html" %} {% block content %}
-<div class="content-section d-flex vh-80">
-  <form
-    method="POST"
-    onSubmit="event.preventDefault(); return history(event)"
-    name="historyForm"
-  >
+{% extends "layout.html" %}
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    background: linear-gradient(135deg, #571b1b, #ff6347, #ffc107);
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+  }
+  .content-section {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 600px;
+  }
+  h1, legend {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #fff;
+    border-bottom: 2px solid #301cbe;
+    padding-bottom: 10px;
+  }
+  .form-group {
+    margin-bottom: 20px;
+  }
+  .form-control {
+    border: 2px solid #fff;
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+  }
+  .btn-outline-light {
+    background-color: #301cbe;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .btn-outline-light:hover {
+    background-color: #f09;
+  }
+  #history-data {
+    background: url('https://www.transparenttextures.com/patterns/debut-dark.png'); /* Add a design pattern background */
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    text-align: center;
+  }
+  .card-header {
+    background: #fff;
+    color: #301cbe;
+    border-radius: 15px 15px 0 0;
+    padding: 10px;
+  }
+  .card-body p {
+    margin: 10px 0;
+  }
+</style>
+
+<div class="content-section">
+  <form method="POST" onSubmit="event.preventDefault(); return history(event)" name="historyForm">
     {{ form.hidden_tag() }}
     <fieldset class="form-group">
       <legend class="border-bottom mb-4">History</legend>
       <div class="form-group">
         <label class="form-control-label">Date</label>
-        <input type="date" name="date" required />
+        <input type="date" name="date" class="form-control" required />
       </div>
     </fieldset>
     <div class="form-group">
-      {{ form.submit(class="btn btn-outline-info") }}
+      {{ form.submit(class="btn btn-outline-light") }}
     </div>
   </form>
 </div>
-<div id="history-data card">
-  <h5 class="card-header" style="color: white">History</h5>
+<div id="history-data">
+  <h5 class="card-header">History</h5>
   <div class="card-body">
-    <p class="border-bottom mb-4 h6" style="color: white" id="date_legend"></p>
-    <p class="card-text" style="color: white" id="date"></p>
+    <p class="border-bottom mb-4 h6" id="date_legend"></p>
+    <p class="card-text" id="date"></p>
     <br />
-    <p
-      class="border-bottom mb-4 h6"
-      style="color: white"
-      id="calories_legend"
-    ></p>
-    <p class="card-text" id="calories" style="color: white"></p>
+    <p class="border-bottom mb-4 h6" id="calories_legend"></p>
+    <p class="card-text" id="calories"></p>
     <br />
-    <p
-      class="border-bottom mb-4 h6"
-      style="color: white"
-      id="burnout_legend"
-    ></p>
-    <p class="card-text" id="burnout" style="color: white"></p>
+    <p class="border-bottom mb-4 h6" id="burnout_legend"></p>
+    <p class="card-text" id="burnout"></p>
     <br />
   </div>
 </div>

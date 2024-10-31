@@ -9,7 +9,7 @@ https://youtu.be/CvR6jDlQnB8
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/CSC510-GROUP-40/FitnessApp/develop)
 [![Python application](https://github.com/VibhavDeo/FitnessApp/actions/workflows/python-app.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/python-app.yml)
-[![pylint](https://img.shields.io/badge/PyLint-6.52-orange?logo=python&logoColor=white)](https://github.com/CSC510-GROUP-40/FitnessApp/actions/runs/11602730413)
+[![pylint](https://img.shields.io/badge/PyLint-6.55-orange?logo=python&logoColor=white)](https://github.com/CSC510-GROUP-40/FitnessApp/actions/runs/11602730413)
 [![autopep8](./autopep8.svg)](https://github.com/CSC510-GROUP-40/FitnessApp/actions/runs/11602730413)
 [![Tests On Push](http://github.com/VibhavDeo/FitnessApp/actions/workflows/unit_test.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/unit_test.yml)
 [![Coverage Status](https://coveralls.io/repos/github/CSC510-GROUP-40/FitnessApp/badge.svg?branch=develop)](https://coveralls.io/github/CSC510-GROUP-40/FitnessApp?branch=develop)

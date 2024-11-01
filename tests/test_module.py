@@ -75,6 +75,15 @@ class TestApplication(unittest.TestCase):
         # Access a non-existent route
         response = self.app.get('/invalid-route')
         self.assertEqual(response.status_code, 404)
+
+    #New Unit test - 6
+    def test_logout_and_protected_route_access(self):
+        # Test that after logout, a protected route cannot be accessed
+        with self.app as client:
+            client.post('/login', data=dict(username='testuser', password='testpass'))
+            client.get('/logout')
+            response = client.get('/protected')
+            self.assertNotEqual(response.status_code, 200)  # Should not allow access after logout
             
     # def test_display_profile_route(self):
     #     

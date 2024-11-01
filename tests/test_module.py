@@ -67,6 +67,12 @@ class TestApplication(unittest.TestCase):
         with self.app as client:
             client.get('/logout')
             self.assertNotIn('user_id', session)
+
+    #New Unit test - 5
+    def test_invalid_route(self):
+        # Access a non-existent route
+        response = self.app.get('/invalid-route')
+        self.assertEqual(response.status_code, 404)
             
     # def test_display_profile_route(self):
     #     

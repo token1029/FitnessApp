@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindfulness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fstock.adobe.com%2Fsearch%3Fk%3Ddeep%2Bmeditation&psig=AOvVaw0xd8kgrUlCVduQtDqlXGLT&ust=1730522491278000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCMichOWouokDFQAAAAAdAAAAABAE') no-repeat center center fixed;
+            height: 100vh;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .section {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .parallax {
+            background-image: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fstock.adobe.com%2Fsearch%3Fk%3Ddeep%2Bmeditation&psig=AOvVaw0xd8kgrUlCVduQtDqlXGLT&ust=1730522491278000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCMichOWouokDFQAAAAAdAAAAABAE');
+            height: 100vh;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .animated {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .timer {
+            font-size: 2rem;
+            margin: 20px 0;
+            display: none; /* Initially hidden */
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Mindfulness</h1>
+        <p>Welcome to the Mindfulness Page</p>
+    </header>
+
+    <div class="section parallax">
+        <h2 class="animated">Mental Health Matters</h2>
+        <p class="animated">Mindfulness can significantly improve your mental health.</p>
+    </div>
+
+    <div class="section animated" style="animation-delay: 0.5s;">
+        <h2>What is Mindfulness?</h2>
+        <p>Mindfulness is the practice of being present in the moment, aware of your thoughts, feelings, and surroundings without judgment. It helps reduce stress, improve focus, and enhance overall well-being.</p>
+    </div>
+
+    <div class="section parallax" style="background-image: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fstock.adobe.com%2Fsearch%3Fk%3Ddeep%2Bmeditation&psig=AOvVaw0xd8kgrUlCVduQtDqlXGLT&ust=1730522491278000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCMichOWouokDFQAAAAAdAAAAABAE');">
+        <h2 class="animated">Tips for Practicing Mindfulness</h2>
+        <ul class="animated">
+            <li>Take a few deep breaths and focus on your breath.</li>
+            <li>Spend a few minutes observing your thoughts and feelings without trying to change them.</li>
+            <li>Practice gratitude by reflecting on what you're thankful for.</li>
+            <li>Engage in a mindful activity, such as eating or walking, by paying attention to each detail.</li>
+            <li>Set aside a few minutes each day for mindfulness meditation.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Guided Meditation</h2>
+        <audio controls>
+            <source src="{{ url_for('static', filename='audio/guided_meditation.mp3') }}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
+    <div class="section">
+        <h2>Breathe with Us</h2>
+        <div class="timer" id="timer">00:00</div>
+        <button onclick="startBreathing()">Start Breathing Exercise</button>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Your Fitness App. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let timer;
+        let seconds = 0;
+
+        function startBreathing() {
+            const timerDisplay = document.getElementById('timer');
+            timerDisplay.style.display = 'block';
+            timerDisplay.innerText = formatTime(seconds);
+            seconds = 0;
+
+            clearInterval(timer);
+            timer = setInterval(() => {
+                seconds++;
+                timerDisplay.innerText = formatTime(seconds);
+
+                if (seconds % 4 === 0) {
+                    alert("Breathe in!");
+                } else if (seconds % 4 === 2) {
+                    alert("Breathe out!");
+                }
+
+                // Stop after 20 seconds
+                if (seconds >= 20) {
+                    clearInterval(timer);
+                    alert("Breathing exercise completed.");
+                    timerDisplay.style.display = 'none';
+                }
+            }, 1000);
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return (minutes < 10 ? '0' : '') + minutes + ':' + (secs < 10 ? '0' : '') + secs;
+        }
+    </script>
+</body>
+</html>

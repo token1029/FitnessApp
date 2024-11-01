@@ -1,16 +1,13 @@
-
 """
 Copyright (c) 2023 Rajat Chandak, Shubham Saboo, Vibhav Deo, Chinmay Nayak
 This code is licensed under MIT license (see LICENSE for details)
 
 @author: Burnout
 
-
 This python file is used in and is part of the Burnout project.
 
 For more information about the Burnout project, visit:
 https://github.com/VibhavDeo/FitnessApp
-
 """
 from datetime import datetime
 import plotly.express as px
@@ -18,32 +15,40 @@ import plotly.graph_objects as go
 from bson import ObjectId
 import bcrypt
 import smtplib
-from flask import json,jsonify,Flask
-from flask import render_template, session, url_for, flash, redirect, request, Flask
+from flask import json, jsonify, Flask, render_template, session, url_for, flash, redirect, request
 from flask_mail import Mail, Message
 from flask_pymongo import PyMongo
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
 from tabulate import tabulate
-from forms import HistoryForm, RegistrationForm, LoginForm, CalorieForm, UserProfileForm, EnrollForm,ReviewForm
-from insert_db_data import insertfooddata,insertexercisedata
+from forms import HistoryForm, RegistrationForm, LoginForm, CalorieForm, UserProfileForm, EnrollForm, ReviewForm
+from insert_db_data import insertfooddata, insertexercisedata
 import schedule
 from threading import Thread
 import time
+import os  # For environment variables
 
 app = Flask(__name__, template_folder='templates')
-app.secret_key = 'secret'
+
+# Security: Fetch secret key and mail password from environment variables
+app.secret_key = os.environ.get('SECRET_KEY') or 'a_very_secure_secret_key'
 app.config['MONGO_URI'] = 'mongodb://127.0.0.1:27017/test'
 app.config['MONGO_CONNECT'] = False
 mongo = PyMongo(app)
 
+# Email Configuration
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = "burnoutapp2023@gmail.com"
-app.config['MAIL_PASSWORD'] = "jgny mtda gguq shnw"
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD') or "jgny mtda gguq shnw"  # Replace with secure method
 mail = Mail(app)
+
+# Initialize the serializer
+s = URLSafeTimedSerializer(app.secret_key)
 
 insertfooddata()
 insertexercisedata()
+
 
 def reminder_email():
     """
@@ -55,19 +60,19 @@ def reminder_email():
             print('in send mail')
             recipientlst = list(mongo.db.user.distinct('email'))
             print(recipientlst)
-            
-            server = smtplib.SMTP_SSL("smtp.gmail.com",465)
-            sender_email = "burnoutapp2023@gmail.com"
-            sender_password = "jgny mtda gguq shnw"
 
-            server.login(sender_email,sender_password)
-            message = 'Subject: Daily Reminder to Exercise'
-            for e in recipientlst:
-                print(e)
-                server.sendmail(sender_email,e,message)                
-            server.quit()        
+            # Using Flask-Mail instead of smtplib for consistency
+            with mail.connect() as conn:
+                for e in recipientlst:
+                    print(e)
+                    msg = Message('Daily Reminder to Exercise',
+                                  sender=app.config['MAIL_USERNAME'],
+                                  recipients=[e])
+                    msg.body = 'Hi,\n\nThis is your daily reminder to exercise. Stay fit and healthy!\n\nBest regards,\nThe Burnout Team'
+                    conn.send(msg)
         except KeyboardInterrupt:
             print("Thread interrupted")
+
 
 schedule.every().day.at("08:00").do(reminder_email)
 
@@ -78,7 +83,7 @@ def schedule_process():
         time.sleep(10)
 
 Thread(target=schedule_process).start()
-  
+
 
 @app.route("/", methods=["GET", "POST"])
 @app.route("/home")
@@ -107,28 +112,21 @@ def login():
     if not session.get('email'):
         form = LoginForm()
         if form.validate_on_submit():
-            temp = mongo.db.user.find_one({'email': form.email.data}, {
-                'email', 'pwd','name'})
-            if temp is not None and temp['email'] == form.email.data and (
-                bcrypt.checkpw(
-                    form.password.data.encode("utf-8"),
-                    temp['pwd']) or temp['temp'] == form.password.data):
-                flash('You have been logged in!', 'success')
-                print(temp)
-                session['email'] = temp['email']
-                session['name']=temp['name']
-                #session['login_type'] = form.type.data
-                return redirect(url_for('dashboard'))
-            else:
-                flash(
-                    'Login Unsuccessful. Please check username and password',
-                    'danger')
+            user = mongo.db.user.find_one({'email': form.email.data})
+            if user:
+                if not user.get('is_verified'):
+                    flash('Please verify your email address before logging in.', 'warning')
+                    return redirect(url_for('login'))
+                if bcrypt.checkpw(form.password.data.encode("utf-8"), user['pwd']):
+                    flash('You have been logged in!', 'success')
+                    session['email'] = user['email']
+                    session['name'] = user['name']
+                    # session['login_type'] = form.type.data
+                    return redirect(url_for('dashboard'))
+            flash('Login Unsuccessful. Please check username and password', 'danger')
     else:
         return redirect(url_for('home'))
-    return render_template(
-        'login.html',
-        title='Login',
-        form=form)
+    return render_template('login.html', title='Login', form=form)
 
 
 @app.route("/logout", methods=['GET', 'POST'])
@@ -139,7 +137,8 @@ def logout():
     Output: session clear
     """
     session.clear()
-    return "success"
+    flash('You have been logged out.', 'success')
+    return redirect(url_for('login'))
 
 @app.route('/sleep', methods=['GET','POST'])
 def sleep():
@@ -175,76 +174,219 @@ def register():
     Input: Username, Email, Password, Confirm Password
     Output: Value update in database and redirected to home login page
     """
-    now = datetime.now()
-    now = now.strftime('%Y-%m-%d')
+    now = datetime.now().strftime('%Y-%m-%d')
 
     if not session.get('email'):
         form = RegistrationForm()
         if form.validate_on_submit():
             if request.method == 'POST':
-                username = request.form.get('username')
-                email = request.form.get('email')
-                password = request.form.get('password')
+                username = form.username.data
+                email = form.email.data
+                password = form.password.data
 
-                mongo.db.user.insert({'name': username, 'email': email, 'pwd': bcrypt.hashpw(
-                    password.encode("utf-8"), bcrypt.gensalt())})
-                
-                weight = request.form.get('weight')
-                height = request.form.get('height')
-                goal = request.form.get('goal')
-                target_weight = request.form.get('target_weight')
-                temp = mongo.db.profile.find_one({'email': email, 'date': now}, {'height', 'weight', 'goal', 'target_weight'})
-                mongo.db.profile.insert({'email': email,
-                                             'date': now,
-                                             'height': height,
-                                             'weight': weight,
-                                             'goal': goal,
-                                             'target_weight': target_weight})
-            flash(f'Account created for {form.username.data}!', 'success')
-            return redirect(url_for('home'))
+                # Check if the user already exists
+                if mongo.db.user.find_one({'email': email}):
+                    flash('Email address already exists. Please log in or use a different email.', 'danger')
+                    return redirect(url_for('register'))
+
+                # Hash the password
+                hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+
+                # Generate a unique token for email verification
+                token = s.dumps(email, salt='email-confirm')
+
+                # Insert the new user with is_verified set to False
+                mongo.db.user.insert_one({
+                    'name': username,
+                    'email': email,
+                    'pwd': hashed_password,
+                    'is_verified': False,
+                    'verification_token': token
+                })
+
+                # Insert profile data
+                weight = form.weight.data
+                height = form.height.data
+                goal = form.goal.data
+                target_weight = form.target_weight.data
+                mongo.db.profile.insert_one({
+                    'email': email,
+                    'date': now,
+                    'height': height,
+                    'weight': weight,
+                    'goal': goal,
+                    'target_weight': target_weight
+                })
+
+                # Send verification email
+                verify_url = url_for('verify_email', token=token, _external=True)
+                msg = Message('Please Confirm Your Email', sender=app.config['MAIL_USERNAME'], recipients=[email])
+                msg.body = f'''Hi {username},
+
+Thank you for registering at Burnout!
+
+Please click the link below to verify your email address:
+
+{verify_url}
+
+If you did not make this request, please ignore this email.
+
+Best regards,
+The Burnout Team
+'''
+                mail.send(msg)
+
+                flash('Account created successfully! Please check your email to verify your account.', 'success')
+                return redirect(url_for('home'))
     else:
         return redirect(url_for('home'))
     return render_template('register.html', title='Register', form=form)
 
+
 @app.route("/join", methods=['GET', 'POST'])
 def join():
     """
-    register() function displays the Registration portal (register.html) template
-    route "/register" will redirect to register() function.
+    join() function displays the Registration portal (join.html) template
+    route "/join" will redirect to join() function.
     RegistrationForm() called and if the form is submitted then various values are fetched and updated into database
     Input: Username, Email, Password, Confirm Password
     Output: Value update in database and redirected to home login page
     """
-    now = datetime.now()
-    now = now.strftime('%Y-%m-%d')
+    now = datetime.now().strftime('%Y-%m-%d')
 
     if not session.get('email'):
         form = RegistrationForm()
         if form.validate_on_submit():
             if request.method == 'POST':
-                username = request.form.get('username')
-                email = request.form.get('email')
-                password = request.form.get('password')
+                username = form.username.data
+                email = form.email.data
+                password = form.password.data
 
-                mongo.db.user.insert({'name': username, 'email': email, 'pwd': bcrypt.hashpw(
-                    password.encode("utf-8"), bcrypt.gensalt())})
-                
-                weight = request.form.get('weight')
-                height = request.form.get('height')
-                goal = request.form.get('goal')
-                target_weight = request.form.get('target_weight')
-                temp = mongo.db.profile.find_one({'email': email, 'date': now}, {'height', 'weight', 'goal', 'target_weight'})
-                mongo.db.profile.insert({'email': email,
-                                             'date': now,
-                                             'height': height,
-                                             'weight': weight,
-                                             'goal': goal,
-                                             'target_weight': target_weight})
-            flash(f'Account created for {form.username.data}!', 'success')
-            return redirect(url_for('home'))
+                # Check if the user already exists
+                if mongo.db.user.find_one({'email': email}):
+                    flash('Email address already exists. Please log in or use a different email.', 'danger')
+                    return redirect(url_for('join'))
+
+                # Hash the password
+                hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+
+                # Generate a unique token for email verification
+                token = s.dumps(email, salt='email-confirm')
+
+                # Insert the new user with is_verified set to False
+                mongo.db.user.insert_one({
+                    'name': username,
+                    'email': email,
+                    'pwd': hashed_password,
+                    'is_verified': False,
+                    'verification_token': token
+                })
+
+                # Insert profile data
+                weight = form.weight.data
+                height = form.height.data
+                goal = form.goal.data
+                target_weight = form.target_weight.data
+                mongo.db.profile.insert_one({
+                    'email': email,
+                    'date': now,
+                    'height': height,
+                    'weight': weight,
+                    'goal': goal,
+                    'target_weight': target_weight
+                })
+
+                # Send verification email
+                verify_url = url_for('verify_email', token=token, _external=True)
+                msg = Message('Please Confirm Your Email', sender=app.config['MAIL_USERNAME'], recipients=[email])
+                msg.body = f'''Hi {username},
+
+Thank you for registering at Burnout!
+
+Please click the link below to verify your email address:
+
+{verify_url}
+
+If you did not make this request, please ignore this email.
+
+Best regards,
+The Burnout Team
+'''
+                mail.send(msg)
+
+                flash('Account created successfully! Please check your email to verify your account.', 'success')
+                return redirect(url_for('home'))
     else:
         return redirect(url_for('home'))
     return render_template('join.html', title='Register', form=form)
+
+
+@app.route('/verify_email/<token>')
+def verify_email(token):
+    """
+    verify_email() function handles the email verification when a user clicks the link sent to their email.
+    route "/verify_email/<token>" will redirect to verify_email() function.
+    Input: Token
+    Output: Account verification and redirecting to login page
+    """
+    try:
+        # The token expires after 1 hour (3600 seconds)
+        email = s.loads(token, salt='email-confirm', max_age=3600)
+    except SignatureExpired:
+        flash('The verification link has expired. Please request a new one.', 'danger')
+        return redirect(url_for('resend_verification'))
+    except BadSignature:
+        flash('Invalid verification token.', 'danger')
+        return redirect(url_for('home'))
+
+    user = mongo.db.user.find_one({'email': email})
+    if user:
+        if user.get('is_verified'):
+            flash('Account already verified. Please log in.', 'info')
+        else:
+            mongo.db.user.update_one({'email': email}, {'$set': {'is_verified': True}})
+            flash('Your account has been verified! You can now log in.', 'success')
+    else:
+        flash('Account not found.', 'danger')
+    return redirect(url_for('login'))
+
+
+@app.route('/resend_verification', methods=['GET', 'POST'])
+def resend_verification():
+    """
+    resend_verification() function allows users to request a new verification email.
+    route "/resend_verification" will redirect to resend_verification() function.
+    Input: Email
+    Output: Sends a new verification email if conditions are met
+    """
+    if request.method == 'POST':
+        email = request.form.get('email')
+        user = mongo.db.user.find_one({'email': email})
+        if user:
+            if not user.get('is_verified'):
+                token = s.dumps(email, salt='email-confirm')
+                verify_url = url_for('verify_email', token=token, _external=True)
+                msg = Message('Please Confirm Your Email', sender=app.config['MAIL_USERNAME'], recipients=[email])
+                msg.body = f'''Hi {user["name"]},
+
+You requested a new verification email. Please click the link below to verify your email address:
+
+{verify_url}
+
+If you did not make this request, please ignore this email.
+
+Best regards,
+The Burnout Team
+'''
+                mail.send(msg)
+                flash('A new verification email has been sent.', 'success')
+                return redirect(url_for('login'))
+            else:
+                flash('Account already verified. Please log in.', 'info')
+        else:
+            flash('Email address not found. Please register first.', 'danger')
+    return render_template('resend_verification.html')
+
 
 @app.route("/calories", methods=['GET', 'POST'])
 def calories():
@@ -255,8 +397,7 @@ def calories():
     Input: Email, date, food, burnout
     Output: Value update in database and redirected to home page
     """
-    now = datetime.now()
-    now = now.strftime('%Y-%m-%d')
+    now = datetime.now().strftime('%Y-%m-%d')
 
     get_session = session.get('email')
     if get_session is not None:
@@ -264,17 +405,30 @@ def calories():
         if form.validate_on_submit():
             if request.method == 'POST':
                 email = session.get('email')
-                food = request.form.get('food')
-                cals = food.split(" ")
-                cals = int(cals[-1][1:-1])
-                burn = request.form.get('burnout')
+                food = form.food.data
+                try:
+                    cals = int(food.split(" ")[-1][1:-1])
+                except (ValueError, IndexError):
+                    flash('Invalid food input format. Please try again.', 'danger')
+                    return redirect(url_for('calories'))
+                burn = form.burnout.data
 
-                temp = mongo.db.calories.find_one({'email': email}, {'email', 'calories', 'burnout', 'date'})
-                if temp is not None and temp['date']==str(now):
-                    mongo.db.calories.update_many({'email': email}, {'$set': {'calories': temp['calories'] + cals, 'burnout': temp['burnout'] + int(burn)}})
+                temp = mongo.db.calories.find_one({'email': email, 'date': now})
+                if temp:
+                    mongo.db.calories.update_one({'email': email, 'date': now}, {
+                        '$set': {
+                            'calories': temp['calories'] + cals,
+                            'burnout': temp['burnout'] + int(burn)
+                        }
+                    })
                 else:
-                    mongo.db.calories.insert({'date': now, 'email': email, 'calories': cals, 'burnout': int(burn)})
-                flash(f'Successfully updated the data', 'success')
+                    mongo.db.calories.insert_one({
+                        'date': now,
+                        'email': email,
+                        'calories': cals,
+                        'burnout': int(burn)
+                    })
+                flash('Successfully updated the data', 'success')
                 return redirect(url_for('calories'))
     else:
         return redirect(url_for('home'))
@@ -286,13 +440,15 @@ def display_profile():
     """
     Display user profile and graph
     """
-    now = datetime.now()
-    now = now.strftime('%Y-%m-%d')
+    now = datetime.now().strftime('%Y-%m-%d')
 
     if session.get('email'):
         email = session.get('email')
         user_data = mongo.db.profile.find_one({'email': email})
-        target_weight=float(user_data['target_weight'])
+        if not user_data:
+            flash('User profile not found.', 'danger')
+            return redirect(url_for('user_profile'))
+        target_weight = float(user_data['target_weight'])
         user_data_hist = list(mongo.db.profile.find({'email': email}))
 
         for entry in user_data_hist:
@@ -304,11 +460,14 @@ def display_profile():
         weights = [float(entry['weight']) for entry in sorted_user_data_hist]
 
         # Plotting Graph 
-        fig = px.line(x=dates, y=weights, labels={'x': 'Date', 'y': 'Weight'}, title='Progress',markers=True,line_shape='spline')
-        fig.add_trace(go.Scatter(x=dates, y=[target_weight] * len(dates),mode='lines', line=dict(color='green', width=1, dash='dot'), name='Target Weight'))
-        fig.update_yaxes(range=[min(min(weights),target_weight) - 5, max(max(weights),target_weight) + 5])
-        fig.update_xaxes(range=[min(dates),now]) 
-        # Converting to JSON
+        fig = px.line(x=dates, y=weights, labels={'x': 'Date', 'y': 'Weight'}, title='Progress', markers=True, line_shape='spline')
+        fig.add_trace(go.Scatter(x=dates, y=[target_weight] * len(dates),
+                                 mode='lines',
+                                 line=dict(color='green', width=1, dash='dot'),
+                                 name='Target Weight'))
+        fig.update_yaxes(range=[min(min(weights), target_weight) - 5, max(max(weights), target_weight) + 5])
+        fig.update_xaxes(range=[min(dates), datetime.strptime(now, '%Y-%m-%d').date()]) 
+        # Converting to HTML
         graph_html = fig.to_html(full_html=False)
 
         last_10_entries = sorted_user_data_hist[-10:]
@@ -316,7 +475,7 @@ def display_profile():
         return render_template('display_profile.html', status=True, user_data=user_data, graph_html=graph_html, last_10_entries=last_10_entries)
     else:
         return redirect(url_for('login'))
-    #return render_template('user_profile.html', status=True, form=form)#
+    # return render_template('user_profile.html', status=True, form=form) #
 
 
 @app.route("/user_profile", methods=['GET', 'POST'])
@@ -328,39 +487,38 @@ def user_profile():
     Input: Email, height, weight, goal, Target weight
     Output: Value update in database and redirected to home login page.
     """
-    now = datetime.now()
-    now = now.strftime('%Y-%m-%d')
+    now = datetime.now().strftime('%Y-%m-%d')
 
     if session.get('email'):
         form = UserProfileForm()
         if form.validate_on_submit():
-            print('validated')
-            if request.method == 'POST':
-                print('post')
-                email = session.get('email')
-                weight = request.form.get('weight')
-                height = request.form.get('height')
-                goal = request.form.get('goal')
-                target_weight = request.form.get('target_weight')
-                temp = mongo.db.profile.find_one({'email': email, 'date': now}, {'height', 'weight', 'goal', 'target_weight'})
-                if temp is not None:
-                    mongo.db.profile.update_one({'email': email, 'date': now},
-                                            {'$set': {
-                                                'weight': weight,
-                                                'height': height,
-                                                'goal': goal,
-                                                'target_weight':target_weight}})
-                else:
-                    mongo.db.profile.insert({'email': email,
-                                             'date': now,
-                                             'height': height,
-                                             'weight': weight,
-                                             'goal': goal,
-                                             'target_weight': target_weight})
-                
-                flash(f'User Profile Updated', 'success')
+            email = session.get('email')
+            weight = form.weight.data
+            height = form.height.data
+            goal = form.goal.data
+            target_weight = form.target_weight.data
+            temp = mongo.db.profile.find_one({'email': email, 'date': now})
+            if temp:
+                mongo.db.profile.update_one({'email': email, 'date': now}, {
+                    '$set': {
+                        'weight': weight,
+                        'height': height,
+                        'goal': goal,
+                        'target_weight': target_weight
+                    }
+                })
+            else:
+                mongo.db.profile.insert_one({
+                    'email': email,
+                    'date': now,
+                    'height': height,
+                    'weight': weight,
+                    'goal': goal,
+                    'target_weight': target_weight
+                })
 
-                return redirect(url_for('display_profile'))
+            flash('User Profile Updated', 'success')
+            return redirect(url_for('display_profile'))
     else:
         return redirect(url_for('login'))
     return render_template('user_profile.html', status=True, form=form)
@@ -375,25 +533,35 @@ def history():
     # Input: Email, date
     # Output: Value fetched and displayed
     # ##########################
-    email = get_session = session.get('email')
-    if get_session is not None:
+    email = session.get('email')
+    if email:
         form = HistoryForm()
+    else:
+        return redirect(url_for('home'))
     return render_template('history.html', form=form)
 
-@app.route('/water', methods=['GET','POST'])
+
+@app.route('/water', methods=['GET', 'POST'])
 def water():
     email = session.get('email')
+    if not email:
+        return redirect(url_for('login'))
     intake = request.form.get('intake')
     if request.method == 'POST':
-
         current_time = datetime.now()
         # Insert the new record
-        mongo.db.intake_collection.insert_one({'intake': intake, 'time': current_time, 'email': email})
+        try:
+            intake_int = int(intake)
+            mongo.db.intake_collection.insert_one({'intake': intake_int, 'time': current_time, 'email': email})
+            flash('Water intake recorded successfully.', 'success')
+        except (ValueError, TypeError):
+            flash('Invalid intake value. Please enter a number.', 'danger')
+            return redirect(url_for('water'))
 
     # Retrieving records for the logged-in user
     records = mongo.db.intake_collection.find({"email": email}).sort("time", -1)
 
-    # IMPORTANT: We need to convert the cursor to a list to iterate over it multiple times
+    # Convert cursor to a list to iterate over it multiple times
     records_list = list(records)
     if records_list:
         average_intake = sum(int(record['intake']) for record in records_list) / len(records_list)
@@ -403,20 +571,26 @@ def water():
     total_intake = sum(int(record['intake']) for record in records_list)
 
     # Render template with records and total intake
-    return render_template('water_intake.html', records=records_list, total_intake=total_intake,average_intake=average_intake)
+    return render_template('water_intake.html', records=records_list, total_intake=total_intake, average_intake=average_intake)
+
 
 @app.route('/clear-intake', methods=['POST'])
 def clear_intake():
     email = session.get('email')
+    if not email:
+        return redirect(url_for('login'))
     # 清除当前用户的所有水摄入量记录
     mongo.db.intake_collection.delete_many({"email": email})
 
+    flash('All water intake records have been cleared.', 'success')
     # 重定向回水摄入量追踪页面
     return redirect(url_for('water'))
+
 
 @app.route('/shop')
 def shop():
     return render_template('shop.html')
+
 
 @app.route("/ajaxhistory", methods=['POST'])
 def ajaxhistory():
@@ -427,76 +601,77 @@ def ajaxhistory():
     # Input: Email, date
     # Output: date, email, calories, burnout
     # ##########################
-    email = get_session = session.get('email')
+    email = session.get('email')
     print(email)
-    if get_session is not None:
-        if request.method == "POST":
-            date = request.form.get('date')
-            res = mongo.db.calories.find_one({'email': email, 'date': date}, {
-                                             'date', 'email', 'calories', 'burnout'})
-            if res:
-                return json.dumps({'date': res['date'], 'email': res['email'], 'burnout': res['burnout'], 'calories': res['calories']}), 200, {
-                    'ContentType': 'application/json'}
-            else:
-                return json.dumps({'date': "", 'email': "", 'burnout': "", 'calories': ""}), 200, {
-                    'ContentType': 'application/json'}
+    if email and request.method == "POST":
+        date = request.form.get('date')
+        res = mongo.db.calories.find_one({'email': email, 'date': date}, {
+                                         'date', 'email', 'calories', 'burnout'})
+        if res:
+            return json.dumps({'date': res['date'], 'email': res['email'], 'burnout': res['burnout'], 'calories': res['calories']}), 200, {
+                'ContentType': 'application/json'}
+        else:
+            return json.dumps({'date': "", 'email': "", 'burnout': "", 'calories': ""}), 200, {
+                'ContentType': 'application/json'}
+    return json.dumps({'status': 'Invalid request'}), 400, {'ContentType': 'application/json'}
 
 
 @app.route("/friends", methods=['GET'])
 def friends():
     # ############################
-    # friends() function displays the list of friends corrsponding to given email
+    # friends() function displays the list of friends corresponding to given email
     # route "/friends" will redirect to friends() function which redirects to friends.html page.
-    # friends() function will show a list of "My friends", "Add Friends" functionality, "send Request" and Pending Approvals" functionality
+    # friends() function will show a list of "My friends", "Add Friends" functionality, "send Request" and "Pending Approvals" functionality
     # Details corresponding to given email address are fetched from the database entries
     # Input: Email
     # Output: My friends, Pending Approvals, Sent Requests and Add new friends
     # ##########################
     email = session.get('email')
+    if not email:
+        return redirect(url_for('login'))
 
     myFriends = list(mongo.db.friends.find(
         {'sender': email, 'accept': True}, {'sender', 'receiver', 'accept'}))
-    myFriendsList = list()
-
-    for f in myFriends:
-        myFriendsList.append(f['receiver'])
+    myFriendsList = [f['receiver'] for f in myFriends]
 
     print(myFriends)
     allUsers = list(mongo.db.user.find({}, {'name', 'email'}))
 
     pendingRequests = list(mongo.db.friends.find(
         {'sender': email, 'accept': False}, {'sender', 'receiver', 'accept'}))
-    pendingReceivers = list()
-    for p in pendingRequests:
-        pendingReceivers.append(p['receiver'])
+    pendingReceivers = [p['receiver'] for p in pendingRequests]
 
-    pendingApproves = list()
+    pendingApproves = []
     pendingApprovals = list(mongo.db.friends.find(
         {'receiver': email, 'accept': False}, {'sender', 'receiver', 'accept'}))
-    for p in pendingApprovals:
-        pendingApproves.append(p['sender'])
+    pendingApproves = [p['sender'] for p in pendingApprovals]
 
     print(pendingApproves)
 
-    # print(pendingRequests)
     return render_template('friends.html', allUsers=allUsers, pendingRequests=pendingRequests, active=email,
                            pendingReceivers=pendingReceivers, pendingApproves=pendingApproves, myFriends=myFriends, myFriendsList=myFriendsList)
+
 
 @app.route('/bmi_calc', methods=['GET', 'POST'])
 def bmi_calci():
     bmi = ''
     bmi_category = ''
-    
+
     if request.method == 'POST' and 'weight' in request.form:
-        weight = float(request.form.get('weight'))
-        height = float(request.form.get('height'))
-        bmi = calc_bmi(weight, height)
-        bmi_category = get_bmi_category(bmi)
-    
+        try:
+            weight = float(request.form.get('weight'))
+            height = float(request.form.get('height'))
+            bmi = calc_bmi(weight, height)
+            bmi_category = get_bmi_category(bmi)
+        except (ValueError, TypeError):
+            flash('Invalid input for weight or height. Please enter numeric values.', 'danger')
+
     return render_template("bmi_cal.html", bmi=bmi, bmi_category=bmi_category)
+
 
 def calc_bmi(weight, height):
     return round((weight / ((height / 100) ** 2)), 2)
+
 
 def get_bmi_category(bmi):
     if bmi < 18.5:
@@ -509,7 +684,7 @@ def get_bmi_category(bmi):
         return 'Obese'
 
 
-@app.route("/send_email", methods=['GET','POST'])
+@app.route("/send_email", methods=['GET', 'POST'])
 def send_email():
     # ############################
     # send_email() function shares Calorie History with friend's email
@@ -518,53 +693,69 @@ def send_email():
     # Output: Calorie History Received on specified email
     # ##########################
     email = session.get('email')
-    temp = mongo.db.user.find_one({'email': email}, {'name'})
-    data = list(mongo.db.calories.find({'email': email}, {'date','email','calories','burnout'}))
-    table = [['Date','Email ID','Calories','Burnout']]
+    if not email:
+        return redirect(url_for('login'))
+
+    user = mongo.db.user.find_one({'email': email}, {'name'})
+    if not user:
+        flash('User not found.', 'danger')
+        return redirect(url_for('friends'))
+
+    data = list(mongo.db.calories.find({'email': email}, {'date', 'email', 'calories', 'burnout'}))
+    table = [['Date', 'Email ID', 'Calories', 'Burnout']]
     for a in data:
-        tmp = [a['date'],a['email'],a['calories'],a['burnout']] 
-        table.append(tmp) 
-    
-    friend_email = str(request.form.get('share')).strip()
-    friend_email = str(friend_email).split(',')
-    server = smtplib.SMTP_SSL("smtp.gmail.com",465)
-    #Storing sender's email address and password
-    sender_email = "burnoutapp2023@gmail.com"
-    sender_password = "jgny mtda gguq shnw"
-    
-    #Logging in with sender details
-    server.login(sender_email,sender_password)
-    message = 'Subject: Calorie History\n\n Your Friend '+str(temp['name'])+' has shared their calorie history with you!\n {}'.format(tabulate(table))
-    for e in friend_email:
-        print(e)
-        server.sendmail(sender_email,e,message)
-        
-    server.quit()
-    
+        tmp = [a['date'], a['email'], a['calories'], a['burnout']]
+        table.append(tmp)
+
+    friend_emails = request.form.get('share')
+    if not friend_emails:
+        flash('Please enter at least one friend email.', 'danger')
+        return redirect(url_for('friends'))
+
+    friend_email_list = [e.strip() for e in friend_emails.split(',') if e.strip()]
+    if not friend_email_list:
+        flash('Please enter valid friend emails.', 'danger')
+        return redirect(url_for('friends'))
+
+    # Send email using Flask-Mail
+    with mail.connect() as conn:
+        for e in friend_email_list:
+            msg = Message('Calorie History',
+                          sender=app.config['MAIL_USERNAME'],
+                          recipients=[e])
+            msg.body = f'''Hi,
+
+Your friend {user["name"]} has shared their calorie history with you!
+
+{tabulate(table)}
+
+Best regards,
+The Burnout Team
+'''
+            conn.send(msg)
+
+    flash('Calorie history shared successfully!', 'success')
+
+    # Refresh friends data
     myFriends = list(mongo.db.friends.find(
         {'sender': email, 'accept': True}, {'sender', 'receiver', 'accept'}))
-    myFriendsList = list()
-    
-    for f in myFriends:
-        myFriendsList.append(f['receiver'])
+    myFriendsList = [f['receiver'] for f in myFriends]
 
     allUsers = list(mongo.db.user.find({}, {'name', 'email'}))
-    
+
     pendingRequests = list(mongo.db.friends.find(
         {'sender': email, 'accept': False}, {'sender', 'receiver', 'accept'}))
-    pendingReceivers = list()
-    for p in pendingRequests:
-        pendingReceivers.append(p['receiver'])
+    pendingReceivers = [p['receiver'] for p in pendingRequests]
 
-    pendingApproves = list()
+    pendingApproves = []
     pendingApprovals = list(mongo.db.friends.find(
         {'receiver': email, 'accept': False}, {'sender', 'receiver', 'accept'}))
-    for p in pendingApprovals:
-        pendingApproves.append(p['sender'])
-        
+    pendingApproves = [p['sender'] for p in pendingApprovals]
+
+    print(pendingApproves)
+
     return render_template('friends.html', allUsers=allUsers, pendingRequests=pendingRequests, active=email,
                            pendingReceivers=pendingReceivers, pendingApproves=pendingApproves, myFriends=myFriends, myFriendsList=myFriendsList)
-
 
 
 @app.route("/ajaxsendrequest", methods=['POST'])
@@ -576,14 +767,18 @@ def ajaxsendrequest():
     # Input: Email, receiver
     # Output: DB entry of receiver info into database and return TRUE if success and FALSE otherwise
     # ##########################
-    email = get_session = session.get('email')
-    if get_session is not None:
+    email = session.get('email')
+    if email and request.method == 'POST':
         receiver = request.form.get('receiver')
-        res = mongo.db.friends.insert_one(
-            {'sender': email, 'receiver': receiver, 'accept': False})
-        if res:
-            return json.dumps({'status': True}), 200, {
-                'ContentType': 'application/json'}
+        if receiver:
+            if mongo.db.friends.find_one({'sender': email, 'receiver': receiver}):
+                return json.dumps({'status': False, 'message': 'Friend request already sent.'}), 400, {
+                    'ContentType': 'application/json'}
+            res = mongo.db.friends.insert_one(
+                {'sender': email, 'receiver': receiver, 'accept': False})
+            if res:
+                return json.dumps({'status': True}), 200, {
+                    'ContentType': 'application/json'}
     return json.dumps({'status': False}), 500, {
         'ContentType:': 'application/json'}
 
@@ -597,14 +792,15 @@ def ajaxcancelrequest():
     # Input: Email, receiver
     # Output: DB deletion of receiver info into database and return TRUE if success and FALSE otherwise
     # ##########################
-    email = get_session = session.get('email')
-    if get_session is not None:
+    email = session.get('email')
+    if email and request.method == 'POST':
         receiver = request.form.get('receiver')
-        res = mongo.db.friends.delete_one(
-            {'sender': email, 'receiver': receiver})
-        if res:
-            return json.dumps({'status': True}), 200, {
-                'ContentType': 'application/json'}
+        if receiver:
+            res = mongo.db.friends.delete_one(
+                {'sender': email, 'receiver': receiver})
+            if res.deleted_count > 0:
+                return json.dumps({'status': True}), 200, {
+                    'ContentType': 'application/json'}
     return json.dumps({'status': False}), 500, {
         'ContentType:': 'application/json'}
 
@@ -618,17 +814,17 @@ def ajaxapproverequest():
     # Input: Email, receiver
     # Output: DB updation of accept as TRUE info into database and return TRUE if success and FALSE otherwise
     # ##########################
-    email = get_session = session.get('email')
-    if get_session is not None:
-        receiver = request.form.get('receiver')
-        print(email, receiver)
-        res = mongo.db.friends.update_one({'sender': receiver, 'receiver': email}, {
-                                          "$set": {'sender': receiver, 'receiver': email, 'accept': True}})
-        mongo.db.friends.insert_one(
-            {'sender': email, 'receiver': receiver, 'accept': True})
-        if res:
-            return json.dumps({'status': True}), 200, {
-                'ContentType': 'application/json'}
+    email = session.get('email')
+    if email and request.method == 'POST':
+        sender = request.form.get('sender')
+        if sender:
+            res = mongo.db.friends.update_one({'sender': sender, 'receiver': email}, {
+                "$set": {'accept': True}})
+            # Also insert reciprocal friendship
+            mongo.db.friends.insert_one({'sender': email, 'receiver': sender, 'accept': True})
+            if res.modified_count > 0:
+                return json.dumps({'status': True}), 200, {
+                    'ContentType': 'application/json'}
     return json.dumps({'status': False}), 500, {
         'ContentType:': 'application/json'}
 
@@ -644,25 +840,28 @@ def dashboard():
     exercises = [
         {"id": 1, "name": "Yoga"},
         {"id": 2, "name": "Swimming"},
-        ]
+    ]
     return render_template('dashboard.html', title='Dashboard', exercises=exercises)
 
 
 @app.route('/add_favorite', methods=['POST'])
 def add_favorite():
-    email = get_session = session.get('email')
-    if session.get('email'):
+    email = session.get('email')
+    if email and request.method == 'POST':
         data = request.get_json()
         exercise_id = data.get('exercise_id')
-        print(exercise_id)
         action = data.get('action')
         exercise = mongo.db.your_exercise_collection.find_one({"exercise_id": exercise_id})
         print(exercise)
         if exercise:
-            if action=="add":
-            # Create a new document in the favorites schema (you can customize this schema)
+            if action == "add":
+                # Check if already favorited
+                existing = mongo.db.favorites.find_one({"email": email, "exercise_id": exercise_id})
+                if existing:
+                    return jsonify({"status": "already_favorited"}), 200
+                # Create a new document in the favorites schema (you can customize this schema)
                 favorite = {
-                    "exercise_id":exercise.get("exercise_id"),
+                    "exercise_id": exercise.get("exercise_id"),
                     "email": email,
                     "image": exercise.get("image"),
                     "video_link": exercise.get("video_link"),
@@ -671,24 +870,20 @@ def add_favorite():
                     "href": exercise.get("href")
                 }
 
-            # Insert the exercise into the favorites collection
+                # Insert the exercise into the favorites collection
                 mongo.db.favorites.insert_one(favorite)
-                return jsonify({"status": "success"})
-            elif action=="remove":
-                print(exercise.get("exercise_id"))
-                print("iamhere1")
-                mongo.db.favorites.delete_one({"email": email, "exercise_id": exercise.get("exercise_id")})
-                return jsonify({"status": "success"})
-
-
+                return jsonify({"status": "success"}), 200
+            elif action == "remove":
+                res = mongo.db.favorites.delete_one({"email": email, "exercise_id": exercise.get("exercise_id")})
+                if res.deleted_count > 0:
+                    return jsonify({"status": "success"}), 200
+                else:
+                    return jsonify({"status": "not_found"}), 404
         else:
-            return jsonify({"status": "error", "message": "Exercise not found"})
-    else:
-        return redirect(url_for('login'))
+            return jsonify({"status": "error", "message": "Exercise not found"}), 404
 
-    return json.dumps({'status': False}), 500, {
-        'ContentType:': 'application/json'
-    }
+    return jsonify({"status": "failure"}), 400
+
 
 @app.route('/favorites')
 def favorites():
@@ -701,29 +896,30 @@ def favorites():
     favorite_exercises = mongo.db.favorites.find({"email": email})
 
     return render_template('favorites.html', favorite_exercises=favorite_exercises)
-    
+
+
+# Enrollment Routes
+def handle_enrollment(email, enroll):
+    """
+    Helper function to handle enrollment logic.
+    """
+    # Check if already enrolled
+    existing = mongo.db.user.find_one({'Email': email, 'Status': enroll})
+    if existing:
+        flash(f'You are already enrolled in the {enroll} plan.', 'info')
+        return
+    mongo.db.user.insert_one({'Email': email, 'Status': enroll})
+    flash(f'You have successfully enrolled in our {enroll} plan!', 'success')
+
 
 @app.route("/yoga", methods=['GET', 'POST'])
 def yoga():
-    # ############################
-    # yoga() function displays the yoga.html template
-    # route "/yoga" will redirect to yoga() function.
-    # A page showing details about yoga is shown and if clicked on enroll then DB updation done and redirected to new_dashboard
-    # Input: Email
-    # Output: DB entry about enrollment and redirected to new dashboard
-    # ##########################
-    email = get_session = session.get('email')
-    if get_session is not None:
+    email = session.get('email')
+    if email:
         form = EnrollForm()
         if form.validate_on_submit():
-            if request.method == 'POST':
-                enroll = "yoga"
-                mongo.db.user.insert({'Email': email, 'Status': enroll})
-            flash(
-                f' You have succesfully enrolled in our {enroll} plan!',
-                'success')
+            handle_enrollment(email, "yoga")
             return render_template('new_dashboard.html', form=form)
-            # return redirect(url_for('dashboard'))
     else:
         return redirect(url_for('dashboard'))
     return render_template('yoga.html', title='Yoga', form=form)
@@ -731,25 +927,12 @@ def yoga():
 
 @app.route("/headspace", methods=['GET', 'POST'])
 def headspace():
-    # ############################
-    # headspace() function displays the headspace.html template
-    # route "/headspace" will redirect to headspace() function.
-    # A page showing details about headspace is shown and if clicked on enroll then DB updation done and redirected to new_dashboard
-    # Input: Email
-    # Output: DB entry about enrollment and redirected to new dashboard
-    # ##########################
-    email = get_session = session.get('email')
-    if get_session is not None:
+    email = session.get('email')
+    if email:
         form = EnrollForm()
         if form.validate_on_submit():
-            if request.method == 'POST':
-                enroll = "headspace"
-                mongo.db.user.insert({'Email': email, 'Status': enroll})
-            flash(
-                f' You have succesfully enrolled in our {enroll} plan!',
-                'success')
+            handle_enrollment(email, "headspace")
             return render_template('new_dashboard.html', form=form)
-            # return redirect(url_for('dashboard'))
     else:
         return redirect(url_for('dashboard'))
     return render_template('Headspace.html', title='Headspace', form=form)
@@ -757,25 +940,12 @@ def headspace():
 
 @app.route("/mbsr", methods=['GET', 'POST'])
 def mbsr():
-    # ############################
-    # headspace() function displays the headspace.html template
-    # route "/headspace" will redirect to headspace() function.
-    # A page showing details about headspace is shown and if clicked on enroll then DB updation done and redirected to new_dashboard
-    # Input: Email
-    # Output: DB entry about enrollment and redirected to new dashboard
-    # ##########################
-    email = get_session = session.get('email')
-    if get_session is not None:
+    email = session.get('email')
+    if email:
         form = EnrollForm()
         if form.validate_on_submit():
-            if request.method == 'POST':
-                enroll = "mbsr"
-                mongo.db.user.insert({'Email': email, 'Status': enroll})
-            flash(
-                f' You have succesfully enrolled in our {enroll} plan!',
-                'success')
+            handle_enrollment(email, "mbsr")
             return render_template('new_dashboard.html', form=form)
-            # return redirect(url_for('dashboard'))
     else:
         return redirect(url_for('dashboard'))
     return render_template('mbsr.html', title='mbsr', form=form)
@@ -783,25 +953,12 @@ def mbsr():
 
 @app.route("/swim", methods=['GET', 'POST'])
 def swim():
-    # ############################
-    # swim() function displays the swim.html template
-    # route "/swim" will redirect to swim() function.
-    # A page showing details about swimming is shown and if clicked on enroll then DB updation done and redirected to new_dashboard
-    # Input: Email
-    # Output: DB entry about enrollment and redirected to new dashboard
-    # ##########################
-    email = get_session = session.get('email')
-    if get_session is not None:
+    email = session.get('email')
+    if email:
         form = EnrollForm()
         if form.validate_on_submit():
-            if request.method == 'POST':
-                enroll = "swimming"
-                mongo.db.user.insert({'Email': email, 'Status': enroll})
-            flash(
-                f' You have succesfully enrolled in our {enroll} plan!',
-                'success')
+            handle_enrollment(email, "swimming")
             return render_template('new_dashboard.html', form=form)
-            # return redirect(url_for('dashboard'))
     else:
         return redirect(url_for('dashboard'))
     return render_template('swim.html', title='Swim', form=form)
@@ -809,23 +966,11 @@ def swim():
 
 @app.route("/abbs", methods=['GET', 'POST'])
 def abbs():
-    # ############################
-    # abbs() function displays the abbs.html template
-    # route "/abbs" will redirect to abbs() function.
-    # A page showing details about abbs workout is shown and if clicked on enroll then DB updation done and redirected to new_dashboard
-    # Input: Email
-    # Output: DB entry about enrollment and redirected to new dashboard
-    # ##########################
-    email = get_session = session.get('email')
-    if get_session is not None:
+    email = session.get('email')
+    if email:
         form = EnrollForm()
         if form.validate_on_submit():
-            if request.method == 'POST':
-                enroll = "abbs"
-                mongo.db.user.insert({'Email': email, 'Status': enroll})
-            flash(
-                f' You have succesfully enrolled in our {enroll} plan!',
-                'success')
+            handle_enrollment(email, "abbs")
             return render_template('new_dashboard.html', form=form)
     else:
         return redirect(url_for('dashboard'))
@@ -834,25 +979,12 @@ def abbs():
 
 @app.route("/belly", methods=['GET', 'POST'])
 def belly():
-    # ############################
-    # belly() function displays the belly.html template
-    # route "/belly" will redirect to belly() function.
-    # A page showing details about belly workout is shown and if clicked on enroll then DB updation done and redirected to new_dashboard
-    # Input: Email
-    # Output: DB entry about enrollment and redirected to new dashboard
-    # ##########################
-    email = get_session = session.get('email')
-    if get_session is not None:
+    email = session.get('email')
+    if email:
         form = EnrollForm()
         if form.validate_on_submit():
-            if request.method == 'POST':
-                enroll = "belly"
-                mongo.db.user.insert({'Email': email, 'Status': enroll})
-            flash(
-                f' You have succesfully enrolled in our {enroll} plan!',
-                'success')
+            handle_enrollment(email, "belly")
             return render_template('new_dashboard.html', form=form)
-            # return redirect(url_for('dashboard'))
     else:
         return redirect(url_for('dashboard'))
     return render_template('belly.html', title='Belly Burner', form=form)
@@ -860,23 +992,11 @@ def belly():
 
 @app.route("/core", methods=['GET', 'POST'])
 def core():
-    # ############################
-    # core() function displays the belly.html template
-    # route "/core" will redirect to core() function.
-    # A page showing details about core workout is shown and if clicked on enroll then DB updation done and redirected to new_dashboard
-    # Input: Email
-    # Output: DB entry about enrollment and redirected to new dashboard
-    # ##########################
-    email = get_session = session.get('email')
-    if get_session is not None:
+    email = session.get('email')
+    if email:
         form = EnrollForm()
         if form.validate_on_submit():
-            if request.method == 'POST':
-                enroll = "core"
-                mongo.db.user.insert({'Email': email, 'Status': enroll})
-            flash(
-                f' You have succesfully enrolled in our {enroll} plan!',
-                'success')
+            handle_enrollment(email, "core")
             return render_template('new_dashboard.html', form=form)
     else:
         return redirect(url_for('dashboard'))
@@ -885,125 +1005,55 @@ def core():
 
 @app.route("/gym", methods=['GET', 'POST'])
 def gym():
-    # ############################
-    # gym() function displays the gym.html template
-    # route "/gym" will redirect to gym() function.
-    # A page showing details about gym plan is shown and if clicked on enroll then DB updation done and redirected to new_dashboard
-    # Input: Email
-    # Output: DB entry about enrollment and redirected to new dashboard
-    # ##########################
-    email = get_session = session.get('email')
-    if get_session is not None:
+    email = session.get('email')
+    if email:
         form = EnrollForm()
         if form.validate_on_submit():
-            if request.method == 'POST':
-                enroll = "gym"
-                mongo.db.user.insert({'Email': email, 'Status': enroll})
-            flash(
-                f' You have succesfully enrolled in our {enroll} plan!',
-                'success')
+            handle_enrollment(email, "gym")
             return render_template('new_dashboard.html', form=form)
-            # return redirect(url_for('dashboard'))
     else:
         return redirect(url_for('dashboard'))
     return render_template('gym.html', title='Gym', form=form)
 
+
 @app.route("/walk", methods=['GET', 'POST'])
 def walk():
-    # ############################
-    # walk() function displays the walk.html template
-    # route "/walk" will redirect to walk() function.
-    # A page showing details about walk plan is shown and if clicked on enroll then DB updation done and redirected to new_dashboard
-    # Input: Email
-    # Output: DB entry about enrollment and redirected to new dashboard
-    # ##########################
-    email = get_session = session.get('email')
-    if get_session is not None:
+    email = session.get('email')
+    if email:
         form = EnrollForm()
         if form.validate_on_submit():
-            if request.method == 'POST':
-                enroll = "walk"
-                mongo.db.user.insert({'Email': email, 'Status': enroll})
-            flash(
-                f' You have succesfully enrolled in our {enroll} plan!',
-                'success')
+            handle_enrollment(email, "walk")
             return render_template('new_dashboard.html', form=form)
-            # return redirect(url_for('dashboard'))
     else:
         return redirect(url_for('dashboard'))
     return render_template('walk.html', title='Walk', form=form)
 
+
 @app.route("/dance", methods=['GET', 'POST'])
 def dance():
-    # ############################
-    # dance() function displays the dance.html template
-    # route "/dance" will redirect to dance() function.
-    # A page showing details about dance plan is shown and if clicked on enroll then DB updation done and redirected to new_dashboard
-    # Input: Email
-    # Output: DB entry about enrollment and redirected to new dashboard
-    # ##########################
-    email = get_session = session.get('email')
-    if get_session is not None:
+    email = session.get('email')
+    if email:
         form = EnrollForm()
         if form.validate_on_submit():
-            if request.method == 'POST':
-                enroll = "dance"
-                mongo.db.user.insert({'Email': email, 'Status': enroll})
-            flash(
-                f' You have succesfully enrolled in our {enroll} plan!',
-                'success')
+            handle_enrollment(email, "dance")
             return render_template('new_dashboard.html', form=form)
-            # return redirect(url_for('dashboard'))
     else:
         return redirect(url_for('dashboard'))
     return render_template('dance.html', title='Dance', form=form)
 
+
 @app.route("/hrx", methods=['GET', 'POST'])
 def hrx():
-    # ############################
-    # hrx() function displays the hrx.html template
-    # route "/hrx" will redirect to hrx() function.
-    # A page showing details about hrx plan is shown and if clicked on enroll then DB updation done and redirected to new_dashboard
-    # Input: Email
-    # Output: DB entry about enrollment and redirected to new dashboard
-    # ##########################
-    email = get_session = session.get('email')
-    if get_session is not None:
+    email = session.get('email')
+    if email:
         form = EnrollForm()
         if form.validate_on_submit():
-            if request.method == 'POST':
-                enroll = "hrx"
-                mongo.db.user.insert({'Email': email, 'Status': enroll})
-            flash(
-                f' You have succesfully enrolled in our {enroll} plan!',
-                'success')
+            handle_enrollment(email, "hrx")
             return render_template('new_dashboard.html', form=form)
-            # return redirect(url_for('dashboard'))
     else:
         return redirect(url_for('dashboard'))
     return render_template('hrx.html', title='HRX', form=form)
 
-# @app.route("/ajaxdashboard", methods=['POST'])
-# def ajaxdashboard():
-#     # ############################
-#     # login() function displays the Login form (login.html) template
-#     # route "/login" will redirect to login() function.
-#     # LoginForm() called and if the form is submitted then various values are fetched and verified from the database entries
-#     # Input: Email, Password, Login Type
-#     # Output: Account Authentication and redirecting to Dashboard
-#     # ##########################
-#     email = get_session = session.get('email')
-#     print(email)
-#     if get_session is not None:
-#         if request.method == "POST":
-#             result = mongo.db.user.find_one(
-#                 {'email': email}, {'email', 'Status'})
-#             if result:
-#                 return json.dumps({'email': result['email'], 'Status': result['result']}), 200, {
-#                     'ContentType': 'application/json'}
-#             else:
-#                 return json.dumps({'email': "", 'Status': ""}), 200, {
-#                     'ContentType': 'application/json'}
 
 @app.route("/review", methods=['GET', 'POST'])
 def submit_reviews():
@@ -1023,24 +1073,30 @@ def submit_reviews():
                 print("imehere1")
                 email = session.get('email')
                 user = mongo.db.user.find_one({'email': email})
-                name = request.form.get('name')
-                review = request.form.get('review')  # Correct the field name
+                name = form.name.data
+                review = form.review.data  # Correct the field name
                 mongo.db.reviews.insert_one({'name': name, 'review': review})
-                return render_template("review.html", form=form, existing_reviews=existing_reviews)
+                flash('Your review has been submitted!', 'success')
+                return redirect(url_for('submit_reviews'))
         else:
             form = ReviewForm()  # Create an empty form for GET requests
         return render_template('review.html', form=form, existing_reviews=existing_reviews)
     else:
-        return "User not logged in"
+        flash('Please log in to submit a review.', 'danger')
+        return redirect(url_for('login'))
+
 
 @app.route('/blog')
 def blog():
     # 处理 "blog" 页面的逻辑
     return render_template('blog.html')
 
+@app.route('/test_flash')
+def test_flash():
+    flash('This is a test flash message!', 'info')
+    return redirect(url_for('home'))
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
-
- 
- 

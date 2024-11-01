@@ -239,29 +239,24 @@ If you get error regarding any of the following packages - pymongo and bson, the
 # Source Code
 
 Link to the repository:
-https://github.com/token1029/FitnessApp
+[REPO LINK](https://github.com/se-hw1/FitnessApp)
 
 # Future Scope
 
-1. Bug fixes
-2. Show the enrollment lists for all the courses
-3. Email verification for loggin
-4. Use openAI api to enhance bot performance.
+1. Automatically categorize meals into breakfast, lunch, dinner, or snacks, making meal tracking faster and more intuitive.
+2. Fully optimized interface for seamless use across all devices.
+3. Track weight weekly and compare actual progress with target goals.
+4. Receive personalized meal and workout suggestions for balanced health goals.
 
 # Team Members
 
-<table>
-  <tr>
-    <td align="center"><a href="https://github.com/WeizhiGao"><img src="https://avatars.githubusercontent.com/u/57804858?v=4" width="75px;" alt=""/><br /><sub><b>Weizhi Gao</b></sub></a><br /></td>
-    <td align="center"><a href="https://github.com/Itaru-Shin"><img src="https://avatars.githubusercontent.com/u/143905092?v=4" width="75px;" alt=""/><br /><sub><b>Fucheng Guo</b></sub></a><br /></td>
-    <td align="center"><a href="https://github.com/KingBanshou"><img src="https://avatars.githubusercontent.com/u/143905049?v=4" width="75px;" alt=""/><br /><sub><b>Zikang Wang</b></sub></a><br /></td>
-    <td align="center"><a href="https://github.com/token1029"><img src="https://avatars.githubusercontent.com/u/38797209?v=4" width="75px;" alt=""/><br /><sub><b>Dongming Wu</b></sub></a></td>
-  </tr>
-</table>
+1. Navyatej Tummala (navyatej3112) [GitHub Profile](https://github.com/navyatej3112)
+2. Sasidhar Appalla  (sasidharappalla) [GitHub Profile](https://github.com/sasidharappalla)
+3. Niranjan Rajendran (Niranjan30) [GitHub Profile](https://github.com/Niranjan30)
 
 # Contribution
 
-Please refer the [CONTRIBUTING.md](https://github.com/token1029/FitnessApp/blob/main/CONTRIBUTING.md) file for instructions on how to contribute to our repository.
+Please refer the [CONTRIBUTING.md](https://github.com/se-hw1/FitnessApp/blob/feature1/CONTRIBUTING.md) file for instructions on how to contribute to our repository.
 
   <p align="center">
     <a href="https://github.com/token1029/FitnessApp/issues/new/choose">Report Bug</a>

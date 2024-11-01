@@ -58,7 +58,16 @@ class TestApplication(unittest.TestCase):
         # Access a protected route without logging in, expecting a redirect or unauthorized response
         response = self.app.get('/protected')
         self.assertNotEqual(response.status_code, 200)  # Should not allow access without login
-        
+
+    #New Unit test - 4
+    def test_logout_route(self):
+        # Test logout to ensure session is cleared
+        response = self.app.get('/logout')
+        self.assertEqual(response.status_code, 200)  # Assuming it redirects to the login page
+        with self.app as client:
+            client.get('/logout')
+            self.assertNotIn('user_id', session)
+            
     # def test_display_profile_route(self):
     #     
     #     with self.app as client:

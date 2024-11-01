@@ -27,6 +27,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip install pytest-cov
+        pip install pandas
         pip install -r requirements.txt
         echo requirements installed
         # pip uninstall bson

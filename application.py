@@ -141,6 +141,30 @@ def logout():
     session.clear()
     return "success"
 
+@app.route('/sleep', methods=['GET','POST'])
+def sleep():
+    email = session.get('email')
+    intake = request.form.get('intake')
+    if request.method == 'POST':
+
+        current_time = datetime.now()
+        # Insert the new record
+        mongo.db.intake_collection.insert_one({'intake': intake, 'time': current_time, 'email': email})
+
+    # Retrieving records for the logged-in user
+    records = mongo.db.intake_collection.find({"email": email}).sort("time", -1)
+
+    # IMPORTANT: We need to convert the cursor to a list to iterate over it multiple times
+    records_list = list(records)
+    if records_list:
+        average_intake = sum(int(record['intake']) for record in records_list) / len(records_list)
+    else:
+        average_intake = 0
+    # Calculate total intake
+    total_intake = sum(int(record['intake']) for record in records_list)
+
+    # Render template with records and total intake
+    return render_template('sleep.html', records=records_list, total_intake=total_intake,average_intake=average_intake)
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():

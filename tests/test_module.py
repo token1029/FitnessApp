@@ -43,6 +43,11 @@ class TestApplication(unittest.TestCase):
         response = self.app.get('/calories')
         self.assertEqual(response.status_code, 302)  
 
+    #New Unit test - 1
+    def test_join_title_present(self):
+        response = self.app.get('/join')  
+        self.assertEqual(response.status_code, 404) 
+
     # def test_display_profile_route(self):
     #     
     #     with self.app as client:

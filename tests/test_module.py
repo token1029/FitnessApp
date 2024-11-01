@@ -52,6 +52,12 @@ class TestApplication(unittest.TestCase):
     def test_sleep_route(self):
         response = self.app.get('/sleep')  
         self.assertEqual(response.status_code, 404) 
+
+    #New Unit test - 3
+    def test_protected_route_without_login(self):
+        # Access a protected route without logging in, expecting a redirect or unauthorized response
+        response = self.app.get('/protected')
+        self.assertNotEqual(response.status_code, 200)  # Should not allow access without login
         
     # def test_display_profile_route(self):
     #     

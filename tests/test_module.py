@@ -17,8 +17,10 @@ import os,sys,inspect
 # currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 # parentdir = os.path.dirname(currentdir)
 # sys.path.insert(0, parentdir)
-from application import app
+from application import app, mongo, bcrypt
 from flask import session
+from unittest.mock import patch
+from itsdangerous import URLSafeTimedSerializer
 
 class TestApplication(unittest.TestCase):
 
@@ -138,5 +140,104 @@ class TestApplication(unittest.TestCase):
                 sess['email'] = 'testuser@example.com'
             response = client.get('/review')
             self.assertEqual(response.status_code, 200)  #
+
+    # S
+
+    def test_login_without_verification(self):
+        response = self.app.post('/login', data={
+            'email': self.test_email,
+            'password': self.test_password
+        }, follow_redirects=True)
+        self.assertIn(b'Please verify your email address before logging in.', response.data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_successful_email_verification(self):
+        user = mongo.db.user.find_one({'email': self.test_email})
+        token = user['verification_token']
+        response = self.app.get(f'/verify_email/{token}', follow_redirects=True)
+        self.assertIn(b'Your account has been verified! You can now log in.', response.data)
+        self.assertEqual(response.status_code, 200)
+
+    # Verify that is_verified is now True
+        updated_user = mongo.db.user.find_one({'email': self.test_email})
+        self.assertTrue(updated_user['is_verified'])
+    
+    @patch('application.mail.send')
+    def test_resend_verification_email(self, mock_mail_send):
+        # Attempt to resend verification email
+        response = self.app.post('/resend_verification', data={
+            'email': self.test_email
+        }, follow_redirects=True)
+        self.assertIn(b'A new verification email has been sent.', response.data)
+        self.assertEqual(response.status_code, 200)
+        mock_mail_send.assert_called_once()
+
+    def test_register_with_weak_password(self):
+        response = self.app.post('/register', data={
+            'username': 'Weak Password User',
+            'email': 'weakpassword@example.com',
+            'password': '123'  # Assuming password strength validation
+        }, follow_redirects=True)
+        self.assertIn(b'Password does not meet strength requirements.', response.data)  # Adjust based on actual message
+        self.assertEqual(response.status_code, 200)    
+
+
+    def test_register_with_missing_fields(self):
+        response = self.app.post('/register', data={
+            'username': '',
+            'email': '',
+            'password': ''
+        }, follow_redirects=True)
+        self.assertIn(b'This field is required.', response.data)  # Assuming form validation messages
+        self.assertEqual(response.status_code, 200)
+
+
+
+
+    def test_register_with_existing_email(self):
+        response = self.app.post('/register', data={
+            'username': 'Another User',
+            'email': self.test_email,
+            'password': 'AnotherPassword123!'
+        }, follow_redirects=True)
+        self.assertIn(b'Email address already exists. Please log in or use a different email.', response.data)
+        self.assertEqual(response.status_code, 200)
+
+
+    def test_login_incorrect_password_after_verification(self):
+        # First, verify the user's email
+        self.test_successful_email_verification()
+
+        # Attempt to log in with incorrect password
+        response = self.app.post('/login', data={
+            'email': self.test_email,
+            'password': 'WrongPassword!'
+        }, follow_redirects=True)
+        self.assertIn(b'Login Unsuccessful. Please check username and password', response.data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_email_verification_nonexistent_user(self):
+        # Generate a token for an email that doesn't exist
+        fake_email = 'nonexistent@example.com'
+        fake_token = self.serializer.dumps(fake_email, salt='email-confirm')
+        response = self.app.get(f'/verify_email/{fake_token}', follow_redirects=True)
+        self.assertIn(b'Account not found.', response.data)
+        self.assertEqual(response.status_code, 200)
+
+
+        
+    def test_resend_verification_already_verified(self):
+        # First, verify the user's email
+        self.test_successful_email_verification()
+
+        # Attempt to resend verification email
+        response = self.app.post('/resend_verification', data={
+            'email': self.test_email
+        }, follow_redirects=True)
+        self.assertIn(b'Account already verified. Please log in.', response.data)
+        self.assertEqual(response.status_code, 200)
+
+  
+
 if __name__ == '__main__':
     unittest.main()

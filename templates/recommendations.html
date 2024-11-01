@@ -1,0 +1,139 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+    body {
+        font-family: 'PrimaryMuscleFont', sans-serif;
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 36px;
+        color: #acffb8;
+        margin-top: 120px;
+        margin-bottom: 50px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: bold;
+    }
+
+    h3 {
+        font-size: 36px;
+        color:  #8ac2fe;
+        margin-top: 40px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: bold;
+    }
+
+    /* Exercise frame */
+    .exercise-frame {
+        border: 2px solid #747373;
+        padding: 10px;
+        margin: 20px 0;
+    }
+
+    /* Exercise name style */
+    .exercise-name {
+        font-size: 24px;
+    }
+
+    /* Images section */
+    .images-section {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    /* Image style */
+    .exercise-image {
+        max-width: 48%;
+        border: 1px solid #333;
+    }
+
+    /* Instructions section */
+    .instructions-section {
+        padding: 10px 0;
+        color: #ffffff;
+    }
+
+    /* Instruction style with numbered steps */
+    .instruction {
+        counter-increment: step;
+        margin-bottom: 10px;
+    }
+
+    .instruction::before {
+        content: counter(step);
+        margin-right: 10px;
+        font-weight: bold;
+    }
+
+    /* User input section */
+    .user-input {
+        margin-top: 20px;
+    }
+
+    /* User input label style */
+    .user-input label {
+        font-weight: bold;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    /* Additional styles for buttons */
+    .recommend-btn {
+        background-color: #007BFF;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        border-radius: .375rem;
+        margin-top: 20px;
+        justify-content: center;
+    }
+
+    .recommend-btn:hover {
+        background-color: #0056b3;
+    }
+
+</style>
+
+
+<h1>Exercises tailored to your preference details</h1>
+<ul>
+    {% for exercise in recommendations %}
+    <h3 class="exercise-name">{{ exercise.name }}</h3>
+    <!-- Display Images -->
+    <div class="images-section">
+        {% for image in exercise.images %}
+        <img class="exercise-image"
+            src="{{ url_for('static', filename='/exercises/' ~ exercise.id ~ '/images/' ~ image) }}"
+            alt="Exercise Image">
+        {% endfor %}
+    </div>
+    <div class="exercise-frame">
+        <!-- Display Instructions -->
+        <div class="instructions-section">
+            {% for instruction in exercise.instructions.split('<br>') %}
+            <p class="instruction">{{ instruction | safe }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</ul>
+<form action="{{ url_for('more_recommendations') }}" method="POST">
+    <input type="hidden" name="user_input" value='{{ user_input | tojson | replace("'", '"') }}'>
+    <div class="button-container">
+        <button type="submit" class="recommend-btn">Recommend More Exercises</button>
+    </div>
+</form>
+<br><br>
+
+{% endblock %}

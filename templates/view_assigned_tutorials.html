@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Assigned Tutorials</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <style>
+    .card {
+      margin-bottom: 20px;
+      border: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .progress-container {
+      margin-bottom: 30px;
+    }
+    .text-white-custom {
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  {% extends "layout.html" %}
+  {% block content %}
+
+  <main role="main" class="container mt-5">
+    <h1 class="text-center text-white-custom mb-4">My Assigned Tutorials</h1>
+
+    <div class="progress-container text-center mb-4">
+      <h4 class="text-white-custom">Progress: {{ progress }}%</h4>
+      <div class="progress" style="height: 20px;">
+        <div class="progress-bar bg-success" role="progressbar" style="width: {{ progress }}%;" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100">
+          {{ progress }}%
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      {% for tutorial in tutorials %}
+        <div class="col-md-6 col-lg-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{ tutorial.title }}</h5>
+              <p class="card-text">{{ tutorial.description }}</p>
+              <div class="embed-responsive embed-responsive-16by9 mb-3">
+                <iframe class="embed-responsive-item" src="{{ tutorial.video_link | replace('watch?v=', 'embed/') }}" allowfullscreen></iframe>
+              </div>
+              {% if tutorial.status == "Completed" %}
+                <span class="badge badge-success">Completed</span>
+              {% else %}
+                <form method="POST">
+                  <input type="hidden" name="tutorial_id" value="{{ tutorial._id }}">
+                  <button type="submit" class="btn btn-primary btn-block">Mark as Completed</button>
+                </form>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+{% endblock %}
+</html>

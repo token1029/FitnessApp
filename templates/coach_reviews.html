@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Check & Student Progress</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <style>
+    /* Basic styling */
+    body, html {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Content section to push footer down */
+    main {
+      flex: 1;
+    }
+
+    /* Footer styling */
+    footer {
+      background-color: #333;
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  {% extends "coach_layout.html" %}
+  {% block content %}
+  
+  <main role="main" class="container mt-5">
+    <h1 class="text-center text-white mb-4">Form Check & Student Progress</h1>
+
+    <!-- Reviews Section with Scrollable Container for Multiple Videos -->
+    <div class="reviews-section" style="max-height: 600px; overflow-y: auto;">
+      {% for review in reviews %}
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title text-center">{{ review.student_email }}'s Form Check</h5>
+            
+            <!-- Embedded Video Section -->
+            <div class="embed-responsive embed-responsive-16by9 mb-3" style="height: 250px;">
+              <iframe class="embed-responsive-item" src="{{ review.video_link | replace('watch?v=', 'embed/') }}" allowfullscreen></iframe>
+            </div>
+
+            <p class="card-text"><strong>Notes:</strong> {{ review.notes }}</p>
+
+            {% if not review.reviewed %}
+              <!-- Feedback Form if not reviewed -->
+              <form method="POST" action="{{ url_for('submit_feedback') }}">
+                <input type="hidden" name="review_id" value="{{ review._id }}">
+                <div class="form-group mt-3">
+                  <label for="feedback">Provide Feedback</label>
+                  <textarea class="form-control" name="feedback" placeholder="Enter your feedback..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Submit Feedback</button>
+              </form>
+            {% else %}
+              <!-- Display Feedback if already reviewed -->
+              <p class="mt-3"><strong>Feedback:</strong> {{ review.feedback }}</p>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Student Progress Section -->
+    <h2 class="text-center text-white mb-4">Student Progress</h2>
+    {% for student in students_progress %}
+      <div class="card mb-4">
+        <div class="card-body text-center">
+          <h5 class="card-title">{{ student.name }}'s Progress</h5>
+
+          <!-- Progress Bar -->
+          <div class="progress-container text-center mb-4">
+            <div class="progress" style="height: 20px;">
+              <div class="progress-bar bg-success" role="progressbar" style="width: {{ student.progress }}%;" 
+                   aria-valuenow="{{ student.progress }}" aria-valuemin="0" aria-valuemax="100">
+                {{ student.progress }}%
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <footer>
+    <p>&copy; 2024 Fitness App. All Rights Reserved.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+{% endblock %}
+</html>

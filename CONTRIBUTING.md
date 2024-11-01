@@ -1,6 +1,6 @@
-# Contributing to BurnOut 5.0!!
+# Contributing to BurnOut 5.0
 <h3>Hello!👋</h3>
-<p>Firstly, thank you so much for showing interest in BurnOut 4.0 and contributing to our project.👍</p>
+<p>Firstly, thank you so much for showing interest in BurnOut 5.0 and contributing to our project.👍</p>
 The following are a set of guidelines for contributing to BurnOut. We are open to suggestions to enhance our project so feel free to propose changes to this document in a pull request.
 
 
@@ -10,7 +10,7 @@ The following are a set of guidelines for contributing to BurnOut. We are open t
 [How Can I Contribute?](#how-can-i-contribute)
  * [Reporting Bugs](#reporting-bugs)
  * [Suggesting enhancements](#suggesting-enhancements)
- * [Pull Requests Methods](#pull-requests-methods)
+ * [Submitting a pull request](#submitting-a-pull-request)
 
 [Style Guides](#style-guides)
 
@@ -54,17 +54,24 @@ Everyone participating in this project needs to abide by the aPAS - A Personal A
   1) What is the enhancement? 
   2) Suggestions to implement the enhancement
 
-  ## Pull Requests Methods
-  The process described here has several goals: 
+  ## Submitting a pull request
 
-  - Maintain BurnOut 4.0 quality
-  - Fix problems that are important to the users 
-  - Engage the community in working towards the best possible BurnOut 
-  - Enable a sustainable system for Atom's maintainers to review contributions
+1. [Fork][fork] and clone the repository.
+1. Configure and install the dependencies: `npm install`.
+1. Make sure the tests pass on your machine: `npm test`, note: these tests also apply the linter, so there's no need to lint separately.
+1. Create a new branch: `git checkout -b my-branch-name`.
+1. Make your change, add tests, and make sure the tests still pass.
+1. Push to your fork and [submit a pull request][pr].
+1. Pat your self on the back and wait for your pull request to be reviewed and merged.
 
-  Ensure that you follow the steps mentioned below in order to have your contribution reviewed by the maintainers:
-  - Add a description of the modification.
-  - Insert a clear and descriptive title.
+Here are a few things you can do that will increase the likelihood of your pull request being accepted:
+
+- Follow the [style guide][style] which is using standard. Any linting errors should be shown when running `npm test`.
+- Write and update tests.
+- Keep your changes as focused as possible. If there are multiple changes you would like to make that are not dependent upon each other, consider submitting them as separate pull requests.
+- Write a [good commit message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
+
+Work in Progress pull requests are also welcome to get feedback early on, or if there is something blocked you.
 
 ### <h2>Style Guides</h2>
 
@@ -75,36 +82,6 @@ Everyone participating in this project needs to abide by the aPAS - A Personal A
 * Limit the first line to 72 characters or less
 * Reference issues and pull requests liberally after the first line
 * When only changing documentation, include `[ci skip]` in the commit title
-
-
-#### CoffeeScript Styleguide
-
-* Set parameter defaults without spaces around the equal sign
-    * `clear = (count=1) ->` instead of `clear = (count = 1) ->`
-* Use spaces around operators
-    * `count + 1` instead of `count+1`
-* Use spaces after commas (unless separated by newlines)
-* Use parentheses if it improves code clarity.
-* Prefer alphabetic keywords to symbolic keywords:
-    * `a is b` instead of `a == b`
-* Avoid spaces inside the curly-braces of hash literals:
-    * `{a: 1, b: 2}` instead of `{ a: 1, b: 2 }`
-* Include a single line of whitespace between methods.
-* Capitalize initialisms and acronyms in names, except for the first word, which
-  should be lower-case:
-  * `getURI` instead of `getUri`
-  * `uriToOpen` instead of `URIToOpen`
-* Use `slice()` to copy an array
-* Add an explicit `return` when your function ends with a `for`/`while` loop and
-  you don't want it to return a collected array.
-* Use `this` instead of a standalone `@`
-  * `return this` instead of `return @`
-* Place requires in the following order:
-    * Built in Node Modules (such as `path`)
-    * Local Modules (using relative paths)
-* Place class properties in the following order:
-    * Class methods and properties (methods starting with a `@`)
-    * Instance methods and properties
 
 
 #### Documentation Styleguide

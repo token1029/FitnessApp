@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='card.css') }}">
+
+  <title>{% if title %}BURNOUT - {{ title }}{% else %}BURNOUT{% endif %}</title>
+</head>
+
+<body>
+  <header class="site-header">
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
+      <div class="container">
+        <!-- Logo and Brand Name -->
+        <a class="navbar-brand mr-4 text-white" href="{{ url_for('coach_dashboard') }}">
+          <img src="{{ url_for('static', filename='img/fire.gif') }}" alt="BURNOUT Logo" style="width:98px;height:38px;">
+          BURNOUT
+        </a>
+
+        <!-- Toggle button for mobile view -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Links -->
+        <div class="collapse navbar-collapse" id="navbarToggle">
+          {% if not session.get("email") %}
+          <!-- If not logged in -->
+          <div class="navbar-nav ml-auto">
+            <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
+            <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
+          </div>
+          {% else %}
+          <!-- If logged in -->
+          <div class="navbar-nav ml-auto d-flex align-items-center gap-3">
+            <a class="nav-item nav-link" href="{{ url_for('coach_dashboard') }}">Dashboard</a>
+            <a class="nav-item nav-link" href="{{ url_for('upload_tutorial') }}">Upload Tutorials</a>
+            <a class="nav-item nav-link" href="{{ url_for('schedule_meeting') }}">Schedule Meeting</a>
+            <a class="nav-item nav-link" href="{{ url_for('manage_plans') }}">Workout Plan</a>
+            <a class="nav-item nav-link" href="{{ url_for('coach_reviews') }}"> Student Progress</a>
+            <a class="nav-item nav-link" href="{{ url_for('coach_profile') }}">Profile</a>
+            
+          </div>
+
+          <!-- Welcome Message and Logout Button -->
+          <div class="navbar-nav d-flex align-items-center ml-auto gap-3">
+            <span class="nav-item text-white">Welcome, Coach {{ session.get("name") }}</span>
+            <button class="btn btn-warning text-dark" onclick="logout()">Log Out</button>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main role="main" class="container mt-5 pt-4">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <!-- Content Block -->
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white pt-4 pb-4 mt-5">
+    <div class="container text-center text-md-left">
+      <div class="row">
+        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+          <h5 class="text-uppercase mb-4 font-weight-bold text-warning">BURNOUT</h5>
+          <p class="small">Turning excuses into results...</p>
+        </div> -->
+
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+          <h5 class="text-uppercase mb-4 font-weight-bold text-warning">Contact</h5>
+          <p><i class="fas fa-home mr-3"></i> Raleigh, NC 27606, US</p>
+          <p><i class="fas fa-envelope mr-3"></i> burnoutapp@example.com</p>
+          <p><i class="fas fa-phone mr-3"></i> +1 (919) 555-5555</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Optional JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha384-ZvpUoO/+PpE/REmj3uoJdXjRO1qcTpf8FJzI2bi+n9t7vuzL2IWYRg7p+XW3mrFl" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-2PzHgLgKRH7Rw+OtTn4CmKtAx6wwtuz5Z0ddvHTiTo+P4UjSA5ml5eZT+k7IgHjx" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfkkZF0SewOroFfD0DgfBh9E0aDbP4ppdhQXo8fD3" crossorigin="anonymous"></script>
+
+  <!-- Logout Script -->
+  <script>
+    function logout() {
+      fetch('/logout', { method: 'POST' })
+        .then(response => {
+          if (response.ok) {
+            window.location.href = "{{ url_for('login') }}";
+          }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+  </script>
+</body>
+</html>

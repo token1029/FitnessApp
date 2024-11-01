@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Tutorial</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <style>
+    /* Sticky footer styles */
+    body, html {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    main.container {
+      flex: 1;
+    }
+
+    footer {
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+  {% extends "coach_layout.html" %}
+  {% block content %}
+
+  <main role="main" class="container mt-5">
+    <h1 class="text-center text-white mb-4">Upload Tutorial</h1>
+    
+    <form method="POST" action="{{ url_for('upload_tutorial') }}">
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" name="title" placeholder="Enter tutorial title" required>
+      </div>
+
+      <div class="form-group mt-3">
+        <label for="description">Description</label>
+        <textarea class="form-control" name="description" placeholder="Enter tutorial description" required></textarea>
+      </div>
+
+      <div class="form-group mt-3">
+        <label for="video_link">Video Link</label>
+        <input type="url" class="form-control" name="video_link" placeholder="Paste video link (e.g., YouTube)" required>
+      </div>
+
+      <div class="form-group mt-3">
+        <label for="assigned_students">Assign to Students</label>
+        <select class="form-control" name="assigned_students" multiple required>
+          {% for student in students %}
+            <option value="{{ student._id }}">{{ student.name }}</option>
+          {% endfor %}
+        </select>
+        <small class="form-text text-muted">Hold down Ctrl (Windows) or Command (Mac) to select multiple students.</small>
+      </div>
+
+      <button type="submit" class="btn btn-primary mt-3">Upload & Assign</button>
+    </form>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+{% endblock %}
+<<<<<<< HEAD
+</html>
+=======
+</html>
+>>>>>>> 14ec9fa (Added Upload Tutorials Module)

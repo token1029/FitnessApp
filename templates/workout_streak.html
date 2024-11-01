@@ -1,0 +1,40 @@
+{% extends "layout.html" %} {% block content %}
+
+<div class="container site-section" id="workout-streak">
+    <form method="POST" action="{{ url_for('update_streak') }}">
+        {{ form.hidden_tag() }}
+
+        <div class>
+            <div class="card-body">
+                <h4 class="card-titlae text-white">Workout Streak 💪 </h4>
+
+                <p class="current-streak text-white">
+                    Current Streak: 
+                    <span>{{ current_streak }} days</span>
+                </p>
+
+                <div >
+                    <button type="submit" name="action" value="update" class="btn btn-primary btn-sm">
+                        Update Streak
+                    </button>
+
+                    <button type="submit" name="action" value="reset" class="btn btn-danger btn-sm">
+                        Reset Streak
+                    </button>
+                    <p></p>
+                </div>
+
+                <div class="text-white">
+                    <h5 class="text-white">Rewards Earned</h5>
+                    <ul>
+                        <li>Bronze Medal: 5-day streak</li>
+                        <li>Silver Medal: 10-day streak</li>
+                        <li>Gold Medal: 30-day streak</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

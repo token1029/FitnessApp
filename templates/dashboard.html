@@ -58,6 +58,55 @@
       <li data-bs-target="#carousel-1" data-bs-slide-to="2"></li>
     </ol>
   </div>
+
+  <div class="container site-section" id="workout-streak">
+    <a href="{{ url_for('update_streak') }}" style="text-decoration: none;">
+      <div
+        class="card workout-card"
+        style="
+          width: 400px;
+          margin: auto;
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+                      0 6px 20px 0 rgba(0, 0, 0, 0.19);
+          text-align: center;
+          background-color: #2a2a2a;
+          color: white;
+          transition: transform 0.3s ease; /* Smooth scaling */
+        "
+      >
+        <div class="card-body">
+          <h4 class="card-title text-white">Workout Streak</h4>
+          <p class="card-text" style="color: rgba(255, 255, 255, 0.7);">Keep your streak going strong! Track how many days you've worked out in a row.</p>
+        </div>
+      </div>
+    </a>
+  </div>
+  <style>
+    .workout-card:hover {
+      transform: scale(1.15); 
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); 
+    }
+  </style>
+
+      <!-- Upcoming Meetings Section -->
+      <div class="container mt-5">
+        <h4 class="text-white">Upcoming Meetings</h4>
+        {% if upcoming_meetings %}
+          <ul class="list-group">
+            {% for meeting in upcoming_meetings %}
+              <li class="list-group-item bg-dark text-white">
+                <strong>Date:</strong> {{ meeting.date }} <br>
+                <strong>Time:</strong> {{ meeting.time }} <br>
+                <strong>Student ID:</strong> {{ meeting.student_id }} <br>
+                <strong>Meeting Link:</strong> <a href="{{ meeting.link }}" class="text-info" target="_blank">Join Meeting</a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted">No upcoming meetings scheduled.</p>
+        {% endif %}
+      </div>
+  
   <div class="container site-section" id="introduction">
     <h3 class="card-title" style="color: white">For the love of fit!</h3>
     <center>

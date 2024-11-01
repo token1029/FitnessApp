@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div
+  class="content-section d-flex justify-content-center min-vh-90 align-items-center"
+>
+  <form method="POST" enctype="multipart/form-data" name="progressform">
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+      <legend class="border-bottom mb-4">Today's Progress</legend>
+
+      <!-- Display Form Errors (For Debugging) -->
+      {% if form.errors %}
+        <div class="alert alert-danger">
+          <ul>
+            {% for field, errors in form.errors.items() %}
+              {% for error in errors %}
+                <li>{{ error }}</li>
+              {% endfor %}
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      <!-- Date Display -->
+      <div class="form-group">
+        <label class="form-control-label">Date</label>
+        <p class="form-control form-control-lg" name="time">{{ date }}</p>
+      </div>
+
+      <!-- Current Weight -->
+      <div class="form-group">
+        {{ form.current_weight.label(class="form-control-label") }}
+        {{ form.current_weight(class="form-control form-control-lg") }}
+      </div>
+
+      <!-- Goal Weight -->
+      <div class="form-group">
+        {{ form.goal_weight.label(class="form-control-label") }}
+        {{ form.goal_weight(class="form-control form-control-lg") }}
+      </div>
+
+      <!-- Waist Measurement -->
+      <div class="form-group">
+        {{ form.waist.label(class="form-control-label") }}
+        {{ form.waist(class="form-control form-control-lg") }}
+      </div>
+
+      <!-- Hips Measurement -->
+      <div class="form-group">
+        {{ form.hips.label(class="form-control-label") }}
+        {{ form.hips(class="form-control form-control-lg") }}
+      </div>
+
+      <!-- Chest Measurement -->
+      <div class="form-group">
+        {{ form.chest.label(class="form-control-label") }}
+        {{ form.chest(class="form-control form-control-lg") }}
+      </div>
+
+      <!-- Notes -->
+      <div class="form-group">
+        {{ form.notes.label(class="form-control-label") }}
+        {{ form.notes(class="form-control form-control-lg") }}
+      </div>
+    </fieldset>
+
+    <!-- Submit Button -->
+    <div class="form-group mb-4">
+      {{ form.submit(class="btn btn-outline-info") }}
+    </div>
+
+    <div class="justify-content-center mb-4">
+      <a href="{{ url_for('progress_history') }}" class="btn btn-primary">View Progress History</a>
+    </div>
+  </form>
+</div>
+{% endblock content %}

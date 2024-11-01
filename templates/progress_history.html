@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2 class="text-white">Your Progress History</h2>
+  
+  {% if progress_data %}
+    <div class="list-group">
+      {% for entry in progress_data %}
+        <div class="list-group-item">
+          <h5 class="mb-1">Date: {{ entry['date'] }}</h5>
+          <p>Current Weight: {{ entry['weight'] }} kg</p>
+          <p>Goal Weight: {{ entry['goal_weight'] }} kg</p>
+          <p>Waist: {{ entry['measurements']['waist'] }} cm</p>
+          <p>Hips: {{ entry['measurements']['hips'] }} cm</p>
+          <p>Chest: {{ entry['measurements']['chest'] }} cm</p>
+          <p>Notes: {{ entry['notes'] }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No progress entries found.</p>
+  {% endif %}
+</div>
+{% endblock content %}

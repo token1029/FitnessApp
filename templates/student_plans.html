@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assigned Workout Plans</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <style>
+    .plan-container {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      background-color: #333;
+    }
+    h1, h4, h5, p, label {
+      color: white !important;
+    }
+    .step-container {
+      margin-top: 10px;
+      border: 1px solid #555;
+      padding: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  
+  {% extends "layout.html" %}
+  {% block content %}
+
+  <main role="main" class="container mt-5">
+
+    <h1 class="text-center mb-4">Assigned Workout Plans</h1>
+
+    <!-- Display assigned plans -->
+    <div id="assigned-plans">
+      {% if assigned_plans %}
+        {% for plan in assigned_plans %}
+        <div class="plan-container">
+          <h4>{{ plan.title }}</h4>
+          <p><strong>Type:</strong> {{ plan.type }}</p>
+          <p><strong>Duration:</strong> {{ plan.duration_weeks }} weeks</p>
+          <p><strong>Description:</strong> {{ plan.description }}</p>
+          
+          <h5>Steps:</h5>
+          {% for step in plan.steps %}
+          <div class="step-container">
+            <h5>Step {{ loop.index }}</h5>
+            <p><strong>Description:</strong> {{ step.description }}</p>
+            <p><strong>Target Duration:</strong> {{ step.target_duration }}</p>
+            <p><strong>Frequency:</strong> {{ step.frequency }}</p>
+            {% if step.exercises %}
+              <p><strong>Exercises:</strong> {{ step.exercises | join(', ') }}</p>
+            {% endif %}
+            {% if step.meal_plan %}
+              <p><strong>Meal Plan:</strong> {{ step.meal_plan | join(', ') }}</p>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+        {% endfor %}
+      {% else %}
+        <p class="text-center">No Workout plans assigned to you at the moment.</p>
+      {% endif %}
+    </div>
+  </main>
+
+  <!-- Bootstrap JS, Popper.js, and jQuery -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+{% endblock %}
+</html>

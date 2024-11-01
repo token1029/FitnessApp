@@ -1,0 +1,40 @@
+{% extends "layout.html" %} {% block content %}
+
+<style>
+    h1 {
+        color: white;
+        margin-top: 20px;
+    }
+
+    form {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    /* Style the buttons */
+    button {
+        font-size: 18px; 
+        padding: 15px 30px;
+        margin: 10px;
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        border-radius: .375rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<h1>Select the level of workout for recommendation</h1>
+
+<form action="{{ url_for('recommend_workout') }}" method="POST">
+    <button type="submit" name="selectedLevel" value="Beginner">Beginner</button>
+    <br>
+    <button type="submit" name="selectedLevel" value="Advanced">Advanced</button>
+</form>
+
+{% endblock content %}

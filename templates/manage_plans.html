@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Plans</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <style>
+    /* Flexbox layout for sticky footer */
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    main {
+      flex-grow: 1;
+    }
+
+    .step-container {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+    }
+
+    label {
+      color: white;
+    }
+
+    h1, h2, h4, h5 {
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  
+  {% extends "coach_layout.html" %}
+  {% block content %}
+
+  <main role="main" class="container mt-5">
+    <h1 class="text-center mb-4" style="color: white;">Manage Specialized Workout Plans</h1>
+
+    <!-- Plan Creation and Editing Form -->
+    <form method="POST" action="{{ url_for('manage_plans') }}" onsubmit="return validateForm()">
+      <input type="hidden" name="create_or_edit_plan" value="1">
+      <div class="form-group">
+        <label for="title">Plan Title</label>
+        <input type="text" class="form-control" name="title" value="{{ edit_plan.title if edit_plan }}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea class="form-control" name="description" required>{{ edit_plan.description if edit_plan }}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="type">Plan Type</label>
+        <select class="form-control" name="type" required>
+          <option value="workout" {% if edit_plan and edit_plan.type == "workout" %}selected{% endif %}>Workout</option>
+          <option value="nutrition" {% if edit_plan and edit_plan.type == "nutrition" %}selected{% endif %}>Nutrition</option>
+          <option value="hybrid" {% if edit_plan and edit_plan.type == "hybrid" %}selected{% endif %}>Hybrid</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="duration_weeks">Duration (Weeks)</label>
+        <input type="number" class="form-control" name="duration_weeks" min="1" value="{{ edit_plan.duration_weeks if edit_plan }}" required>
+      </div>
+
+      <hr>
+      <h4 style="color: white;">Routine</h4>
+      <div id="steps-container">
+        {% if edit_plan and edit_plan.steps %}
+          {% for step in edit_plan.steps %}
+          <div class="step-container">
+            <h5 style="color: white;">Step {{ loop.index }}</h5>
+            <div class="form-group">
+              <label for="step_description_{{ loop.index }}">Description</label>
+              <textarea class="form-control" name="step_description_{{ loop.index }}" required>{{ step.description }}</textarea>
+            </div>
+            
+            <div class="form-group">
+              <label for="target_duration_{{ loop.index }}">Target Duration</label>
+              <input type="text" class="form-control" name="target_duration_{{ loop.index }}" value="{{ step.target_duration }}" required>
+            </div>
+
+            <div class="form-group">
+              <label for="frequency_{{ loop.index }}">Frequency</label>
+              <input type="text" class="form-control" name="frequency_{{ loop.index }}" value="{{ step.frequency }}" required>
+            </div>
+
+            <div class="form-group">
+              <label for="exercises_{{ loop.index }}">Exercises (Comma separated)</label>
+              <input type="text" class="form-control" name="exercises_{{ loop.index }}" value="{{ step.exercises | join(', ') }}">
+            </div>
+
+            <div class="form-group">
+              <label for="meal_plan_{{ loop.index }}">Meal Plan (Comma separated)</label>
+              <input type="text" class="form-control" name="meal_plan_{{ loop.index }}" value="{{ step.meal_plan | join(', ') }}">
+            </div>
+          </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+      
+      <input type="hidden" id="step_count" name="step_count" value="{{ edit_plan.steps|length if edit_plan and edit_plan.steps else 0 }}">
+
+      <button type="button" class="btn btn-secondary mb-3" onclick="addStep()">Add Step</button>
+      <button type="submit" class="btn btn-primary">Save Plan</button>
+    </form>
+
+    <hr>
+
+    <!-- All Plans Section -->
+    <h2 style="color: white;" class="mt-5">All Workout Plans</h2>
+    <ul class="list-group mb-4">
+      {% for plan in plans %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <strong>{{ plan.title }}</strong> - {{ plan.description }}
+          <p>Type: {{ plan.type }} | Duration: {{ plan.duration_weeks }} weeks</p>
+        </div>
+        <div>
+          <a href="{{ url_for('manage_plans', edit_plan_id=plan._id) }}" class="btn btn-primary btn-sm">Edit</a>
+          <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#assignModal" onclick="setPlanId('{{ plan._id }}')">Assign to Students</button>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <!-- Modal for Assigning Plan to Students -->
+    <div class="modal fade" id="assignModal" tabindex="-1" role="dialog" aria-labelledby="assignModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="assignModalLabel">Assign Plan to Students</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form method="POST" action="{{ url_for('manage_plans') }}">
+            <input type="hidden" name="assign_plan" value="1">
+            <input type="hidden" id="assign_plan_id" name="plan_id" value="">
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="students">Select Students</label>
+                <select multiple class="form-control" name="students">
+                  {% for student in students %}
+                    <option value="{{ student._id }}">{{ student.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">Assign Plan</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let stepCount = {{ edit_plan.steps|length if edit_plan and edit_plan.steps else 0 }};
+
+    function addStep() {
+      stepCount++;
+      document.getElementById("step_count").value = stepCount;
+
+      const stepContainer = document.createElement("div");
+      stepContainer.classList.add("step-container");
+
+      stepContainer.innerHTML = `
+        <h5 style="color: white;">Step ${stepCount}</h5>
+        <div class="form-group">
+          <label for="step_description_${stepCount}">Description</label>
+          <textarea class="form-control" name="step_description_${stepCount}" required></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="target_duration_${stepCount}">Target Duration</label>
+          <input type="text" class="form-control" name="target_duration_${stepCount}" required>
+        </div>
+
+        <div class="form-group">
+          <label for="frequency_${stepCount}">Frequency</label>
+          <input type="text" class="form-control" name="frequency_${stepCount}" required>
+        </div>
+
+        <div class="form-group">
+          <label for="exercises_${stepCount}">Exercises (Comma separated)</label>
+          <input type="text" class="form-control" name="exercises_${stepCount}">
+        </div>
+
+        <div class="form-group">
+          <label for="meal_plan_${stepCount}">Meal Plan (Comma separated)</label>
+          <input type="text" class="form-control" name="meal_plan_${stepCount}">
+        </div>
+      `;
+
+      document.getElementById("steps-container").appendChild(stepContainer);
+    }
+
+    function validateForm() {
+      const stepCount = document.getElementById("step_count").value;
+      if (stepCount == 0) {
+        alert("Please add at least one step to the plan.");
+        return false;
+      }
+      return true;
+    }
+
+    function setPlanId(planId) {
+      document.getElementById("assign_plan_id").value = planId;
+    }
+  </script>
+
+  <!-- Bootstrap JS, Popper.js, and jQuery -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+{% endblock %}
+</body>
+</html>

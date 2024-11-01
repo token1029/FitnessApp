@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Set a Reminder</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+  {% extends "coach_layout.html" %}
+  {% block content %}
+
+  <main role="main" class="container mt-5">
+    <h1 class="text-center text-white mb-4">Set a Reminder</h1>
+    
+    <form method="POST" action="{{ url_for('set_reminder') }}">
+      <div class="form-group">
+        <label for="student">Select Student</label>
+        <select class="form-control" name="student_id" required>
+          <option value="" disabled selected>Select a student</option>
+          {% for student in students %}
+            <option value="{{ student._id }}">{{ student.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group mt-3">
+        <label for="reminder">Reminder Message</label>
+        <textarea class="form-control" name="reminder" placeholder="Enter your reminder message..." required></textarea>
+      </div>
+      
+      <div class="form-group mt-3">
+        <label for="date">Reminder Date</label>
+        <input type="date" class="form-control" name="date" required>
+      </div>
+
+      <div class="form-group mt-3">
+        <label for="time">Reminder Time</label>
+        <input type="time" class="form-control" name="time" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary mt-3">Set Reminder</button>
+    </form>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+{% endblock %}
+</html>

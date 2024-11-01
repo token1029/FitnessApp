@@ -35,5 +35,4 @@ jobs:
         run: |
           python application.py &
           sleep 5
-          cd tests
-          python -m unittest test_module
+          python -m unittest tests.test_module

@@ -16,7 +16,6 @@ from datetime import datetime
 import plotly.express as px
 import plotly.graph_objects as go
 from bson import ObjectId
-import bcrypt
 import smtplib
 from flask import json,jsonify,Flask
 from flask import render_template, session, url_for, flash, redirect, request, Flask
@@ -28,11 +27,12 @@ from insert_db_data import insertfooddata,insertexercisedata
 import schedule
 from threading import Thread
 import time
+import base64
 
 app = Flask(__name__, template_folder='templates')
 app.secret_key = 'secret'
 app.config['MONGO_URI'] = 'mongodb://127.0.0.1:27017/test'
-app.config['MONGO_CONNECT'] = False
+app.config['MONGO_CONNECT'] = True
 mongo = PyMongo(app)
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -42,8 +42,8 @@ app.config['MAIL_USERNAME'] = "burnoutapp2023@gmail.com"
 app.config['MAIL_PASSWORD'] = "jgny mtda gguq shnw"
 mail = Mail(app)
 
-insertfooddata()
-insertexercisedata()
+# insertfooddata()
+# insertexercisedata()
 
 def reminder_email():
     """
@@ -109,10 +109,7 @@ def login():
         if form.validate_on_submit():
             temp = mongo.db.user.find_one({'email': form.email.data}, {
                 'email', 'pwd','name'})
-            if temp is not None and temp['email'] == form.email.data and (
-                bcrypt.checkpw(
-                    form.password.data.encode("utf-8"),
-                    temp['pwd']) or temp['temp'] == form.password.data):
+            if temp is not None and temp['email'] == form.email.data and temp['pwd'] == form.password.data:
                 flash('You have been logged in!', 'success')
                 print(temp)
                 session['email'] = temp['email']
@@ -162,15 +159,14 @@ def register():
                 email = request.form.get('email')
                 password = request.form.get('password')
 
-                mongo.db.user.insert({'name': username, 'email': email, 'pwd': bcrypt.hashpw(
-                    password.encode("utf-8"), bcrypt.gensalt())})
+                mongo.db.user.insert_one({'name': username, 'email': email, 'pwd': password})
                 
                 weight = request.form.get('weight')
                 height = request.form.get('height')
                 goal = request.form.get('goal')
                 target_weight = request.form.get('target_weight')
                 temp = mongo.db.profile.find_one({'email': email, 'date': now}, {'height', 'weight', 'goal', 'target_weight'})
-                mongo.db.profile.insert({'email': email,
+                mongo.db.profile.insert_one({'email': email,
                                              'date': now,
                                              'height': height,
                                              'weight': weight,
@@ -354,6 +350,10 @@ def clear_intake():
 @app.route('/shop')
 def shop():
     return render_template('shop.html')
+
+@app.route('/mind')
+def mind():
+    return render_template('mind.html')
 
 @app.route("/ajaxhistory", methods=['POST'])
 def ajaxhistory():

@@ -239,24 +239,24 @@ If you get error regarding any of the following packages - pymongo and bson, the
 # Source Code
 
 Link to the repository:
-https://github.com/token1029/FitnessApp
+[REPO LINK](https://github.com/se-hw1/FitnessApp)
 
 # Future Scope
 
-1. Bug fixes
-2. Show the enrollment lists for all the courses
-3. Email verification for loggin
-4. Use openAI api to enhance bot performance.
+1. Automatically categorize meals into breakfast, lunch, dinner, or snacks, making meal tracking faster and more intuitive.
+2. Fully optimized interface for seamless use across all devices.
+3. Track weight weekly and compare actual progress with target goals.
+4. Receive personalized meal and workout suggestions for balanced health goals.
 
 # Team Members
 
-1. Navyatej Tummala (ntummal3) [GitHub Repository](https://github.com/navyatej3112)
-2. Sasidhar Apalla 
-3. Niranjan Rajendran 
+1. Navyatej Tummala (navyatej3112) [GitHub Profile](https://github.com/navyatej3112)
+2. Sasidhar Appalla  (sasidharappalla) [GitHub Profile](https://github.com/sasidharappalla)
+3. Niranjan Rajendran (Niranjan30) [GitHub Profile](https://github.com/Niranjan30)
 
 # Contribution
 
-Please refer the [CONTRIBUTING.md](https://github.com/token1029/FitnessApp/blob/main/CONTRIBUTING.md) file for instructions on how to contribute to our repository.
+Please refer the [CONTRIBUTING.md](https://github.com/se-hw1/FitnessApp/blob/feature1/CONTRIBUTING.md) file for instructions on how to contribute to our repository.
 
   <p align="center">
     <a href="https://github.com/token1029/FitnessApp/issues/new/choose">Report Bug</a>

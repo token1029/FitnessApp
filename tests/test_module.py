@@ -341,6 +341,49 @@ class TestApplication(unittest.TestCase):
         }, follow_redirects=True)
         self.assertIn(b'Password does not meet strength requirements.', response.data)  # Adjust based on actual message
         self.assertEqual(response.status_code, 200)
+
+
+    def test_burnbot_route_accessible(self):
+        response = self.app.get('/burnbot')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Burnbot is ready to assist you!', response.data)  # Adjust based on actual welcome message
+    
+    def test_burnbot_greeting_response(self):
+        user_message = {'message': 'Hello'}
+        response = self.app.post('/burnbot', json=user_message)
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertIn('Hello! How can I assist you today?', data['response'])  # Expected response
+
+
+    def test_burnbot_unknown_command(self):
+        user_message = {'message': 'Tell me a joke about unicorns'}
+        response = self.app.post('/burnbot', json=user_message)
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertIn('I\'m sorry, I didn\'t understand that. Could you please rephrase?', data['response'])  # Expected fallback response
+
+
+    def test_burnbot_session_state(self):
+        with self.app as client:
+            with client.session_transaction() as sess:
+                sess['user_id'] = 'testuser123'  # Simulate logged-in user
+            
+            # First message to establish context
+            first_message = {'message': 'I want to track my calories'}
+            response1 = client.post('/burnbot', json=first_message)
+            self.assertEqual(response1.status_code, 200)
+            data1 = response1.get_json()
+            self.assertIn('Sure, I can help you track your calories. What did you eat today?', data1['response'])
+            
+            # Second message continuing the conversation
+            second_message = {'message': 'I had a salad and grilled chicken'}
+            response2 = client.post('/burnbot', json=second_message)
+            self.assertEqual(response2.status_code, 200)
+            data2 = response2.get_json()
+            self.assertIn('Great choice! Your salad has approximately 150 calories and grilled chicken around 300 calories.', data2['response'])
+
+
 if __name__ == '__main__':
     unittest.main()
 

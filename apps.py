@@ -20,7 +20,7 @@ from flask_mail import Mail
 
 
 class App:
-    """Sending emails to friends"""
+    """Initialize Flask app with MongoDB and Mail configuration"""
     def __init__(self):
         self.app = Flask(__name__)
         self.app.secret_key = 'secret'
@@ -33,3 +33,16 @@ class App:
         self.app.config['MAIL_USERNAME'] = "bogusdummy123@gmail.com"
         self.app.config['MAIL_PASSWORD'] = "helloworld123!"
         self.mail = Mail(self.app)
+
+
+    def get_app(self):
+        """Returns the Flask app instance"""
+        return self.app
+
+    def get_mongo(self):
+        """Returns the MongoDB instance"""
+        return self.mongo
+
+    def get_mail(self):
+        """Returns the Mail instance"""
+        return self.mail

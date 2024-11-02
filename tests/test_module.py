@@ -272,6 +272,75 @@ class TestApplication(unittest.TestCase):
         response = self.app.get('/dashboard', follow_redirects=True)
         self.assertIn(b'Please log in to access this page.', response.data)  # Assuming such a flash message exists
         self.assertEqual(response.status_code, 200)
+
+
+    def test_multiple_email_verification_attempts(self):
+        # First verification attempt
+        self.test_successful_email_verification()
+
+        # Second verification attempt with the same token
+        user = mongo.db.user.find_one({'email': self.test_email})
+        token = user['verification_token']
+        response = self.app.get(f'/verify_email/{token}', follow_redirects=True)
+        self.assertIn(b'Account already verified. Please log in.', response.data)
+        self.assertEqual(response.status_code, 200)
+
+    
+    def test_login_after_failed_verification_attempts(self):
+        # Attempt to verify with invalid token multiple times
+        for _ in range(3):
+            response = self.app.get('/verify_email/invalidtoken', follow_redirects=True)
+            self.assertIn(b'Invalid verification token.', response.data)
+            self.assertEqual(response.status_code, 200)
+
+        # Ensure the user is still not verified
+        user = mongo.db.user.find_one({'email': self.test_email})
+        self.assertFalse(user['is_verified'])
+
+    
+    def test_resend_verification_without_email(self):
+        response = self.app.post('/resend_verification', data={}, follow_redirects=True)
+        self.assertIn(b'Email address not found. Please register first.', response.data)
+        self.assertEqual(response.status_code, 200)
+
+    
+    def test_email_verification_tampered_token(self):
+        user = mongo.db.user.find_one({'email': self.test_email})
+        token = user['verification_token']
+        tampered_token = token + 'tampered'
+        response = self.app.get(f'/verify_email/{tampered_token}', follow_redirects=True)
+        self.assertIn(b'Invalid verification token.', response.data)
+        self.assertEqual(response.status_code, 200)
+
+    
+    def test_register_with_existing_email(self):
+        response = self.app.post('/register', data={
+            'username': 'Another User',
+            'email': self.test_email,
+            'password': 'AnotherPassword123!'
+        }, follow_redirects=True)
+        self.assertIn(b'Email address already exists. Please log in or use a different email.', response.data)
+        self.assertEqual(response.status_code, 200)
+
+    
+    def test_register_with_missing_fields(self):
+        response = self.app.post('/register', data={
+            'username': '',
+            'email': '',
+            'password': ''
+        }, follow_redirects=True)
+        self.assertIn(b'This field is required.', response.data)  # Assuming form validation messages
+        self.assertEqual(response.status_code, 200)
+
+    
+    def test_register_with_weak_password(self):
+        response = self.app.post('/register', data={
+            'username': 'Weak Password User',
+            'email': 'weakpassword@example.com',
+            'password': '123'  # Assuming password strength validation
+        }, follow_redirects=True)
+        self.assertIn(b'Password does not meet strength requirements.', response.data)  # Adjust based on actual message
+        self.assertEqual(response.status_code, 200)
 if __name__ == '__main__':
     unittest.main()
 

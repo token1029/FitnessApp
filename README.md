@@ -236,9 +236,9 @@ Link to the repository:
 
 # Future Scope
 
-1. Automatically categorize meals into breakfast, lunch, dinner, or snacks, making meal tracking faster and more intuitive.
-2. Fully optimized interface for seamless use across all devices.
-3. Track weight weekly and compare actual progress with target goals.
+1. Infrastructure Scaling (take this project to the next level by implementing cloud services.)
+2. Fully optimized interface for seamless use across all devices( multidevice support).
+3. Implement Advanced Security features ( 2FA, OAuth Integration etc )
 4. Receive personalized meal and workout suggestions for balanced health goals.
 
 # Team Members

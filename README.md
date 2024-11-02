@@ -44,7 +44,7 @@ https://www.youtube.com/watch?v=mSZjVjDSeXE
 
 ![WhatsApp Image 2021-09-28 at 2 48 00 PM](https://user-images.githubusercontent.com/25662536/135546154-cfae1d2e-439a-4edc-b0bb-57f693ef5a83.jpeg)
 
-# BurnOut - Your Wellness Companion
+# BurnOut - Break Boundaries. Burn Beyond.
 
 BurnOut is an easy-to-use application designed to help users manage their daily calorie intake and expenditure as well as drinking habits, and it has now been enhanced with additional features. This all-in-one wellness app is not only a user-friendly calorie tracker but also offers a comprehensive suite of tools to support individuals in achieving their fitness and weight management goals.
 

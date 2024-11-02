@@ -240,7 +240,7 @@ Link to the repository:
 2. Fully optimized interface for seamless use across all devices( multidevice support).
 3. Implement Advanced Security features ( 2FA, OAuth Integration etc )
 4. Receive personalized meal and workout suggestions for balanced health goals.
-5. All Broken TestCases are FutureScope ( YOU GOT THIS 🥹 ) 
+5. All Broken TestCases are features that can be implemented in Future. ( YOU GOT THIS 🥹 ) 
 
 # Team Members
 

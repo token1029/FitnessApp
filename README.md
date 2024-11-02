@@ -88,6 +88,7 @@ This document serves as a comprehensive reference point for users, giving them i
   - [Login](#login)
   - [Set User Profile](#set-user-profile)
   - [Enter Calories in and burnt](#enter-calories-in-and-burnt)
+  - [Enter Sleep Duration](#enter-sleep-duration)
   - [Enter Water Intakes](#enter-water-intakes)
   - [Blog](#blog)
   - [Shop](#shop)

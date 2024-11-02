@@ -180,6 +180,16 @@ class TestApplication(unittest.TestCase):
             response = client.get('/review')
             self.assertEqual(response.status_code, 200)  #
 
+    def test_register_password_strength_valid(self):
+        # Test with a valid password that meets the strength requirements
+        response = self.app.post('/register', data={'username': 'testuser', 'password': 'valid1234'})
+        self.assertEqual(response.status_code, 200)  # Assuming it passes the registration
+    def test_register_password_strength_valid_with_special_chars(self):
+        # Test with a valid password including special characters that meets the strength requirements
+        response = self.app.post('/register', data={'username': 'testuser', 'password': 'Password@12'})
+        self.assertEqual(response.status_code, 200)  # Assuming it passes the registration
+        
+
     #sas
 
 

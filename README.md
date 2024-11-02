@@ -253,7 +253,7 @@ https://github.com/token1029/FitnessApp
 <table>
   <tr>
     <td align="center"><a href="https://github.com/DeveshAjayVaidya"><img src="https://avatars.githubusercontent.com/u/158637611?v=4" width="75px;" alt=""/><br /><sub><b>Devesh Ajay Vaidya</b></sub></a><br /></td>
-    <td align="center"><a href="https://github.com/ashwinramesh022"><img src="https://avatars.githubusercontent.com/u/143905092?v=4" width="75px;" alt=""/><br /><sub><b>Ashwin Ramesh Kannan</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/ashwinramesh022"><img src="https://avatars.githubusercontent.com/u/117009209?v=4" width="75px;" alt=""/><br /><sub><b>Ashwin Ramesh Kannan</b></sub></a><br /></td>
     <td align="center"><a href="https://github.com/Aditi105"><img src="https://avatars.githubusercontent.com/u/120356039?v=4" width="75px;" alt=""/><br /><sub><b>aditi reddy</b></sub></a><br /></td>
     <td align="center"><a href="https://github.com/Bhuvankurra"><img src="https://avatars.githubusercontent.com/u/93917820?v=4" width="75px;" alt=""/><br /><sub><b>bhuvan chandra kurra</b></sub></a></td>
   </tr>

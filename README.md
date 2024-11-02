@@ -75,6 +75,8 @@ BurnOut is an easy-to-use application designed to help users manage their daily 
 
 11. **Reviews:** Users can leave reviews and feedback on the fitness programs they've participated in, sharing their experiences with the community and helping others make informed choices.
 
+12. **SLeep Tracker** Users can now track how much hours of sleeps they need/don't need to have an optimal amount of sleep every night.
+
 This document serves as a comprehensive reference point for users, giving them insight into the functionalities of BurnOut and encouraging them to participate in its development as an open-source software project. As an open-source project, the community can contribute additional features and enhancements to make BurnOut even more robust and tailored to individual needs before its official market release. Furthermore, it assists developers by providing a clear understanding of the codebase and serves as a valuable resource for the project's continued development.
 
 # Table of Contents

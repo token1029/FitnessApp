@@ -92,7 +92,6 @@ This document serves as a comprehensive reference point for users, giving them i
   - [Enter Water Intakes](#enter-water-intakes)
   - [Blog](#blog)
   - [Shop](#shop)
-  - [Check History](#check-history)
   - [Adding Friends](#adding-friends)
   - [Add an Excercise to Favourites](#add-an-excercise-to-favourites)
   - [Submit a Review](#submit-a-review)
@@ -135,71 +134,63 @@ This document serves as a comprehensive reference point for users, giving them i
 
 ## Dashboard
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/dashboardPic.PNG>
+<img src=https://github.com/se-hw1/FitnessApp/blob/feature1/static/img/Dashboard.png>
 
 ## Excercise Section
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/excercisePic.PNG>
+<img src=https://github.com/se-hw1/FitnessApp/blob/feature1/static/img/Exercise%20section.png>
 
 ## Must Try Workout Section
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/musttryworkoutPic.PNG>
+<img src=https://github.com/se-hw1/FitnessApp/blob/feature1/static/img/Musttry.png>
 
 ## Popular Workout Section
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/popularworkoutPic.PNG>
+<img src=https://github.com/se-hw1/FitnessApp/blob/feature1/static/img/pop.png>
 
 ## Spirit Curation Section
 
-<img src=https://github.com/token1029/FitnessApp/blob/main/static/img/spirit.PNG>
+<img src=https://github.com/se-hw1/FitnessApp/blob/feature1/static/img/med.png>
 
 ## Enter Calories
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/historyPic.PNG>
+<img src=https://github.com/se-hw1/FitnessApp/blob/feature1/static/img/calo.png>
 
 ## Enter water intakes
 
-<img src=https://github.com/token1029/FitnessApp/blob/main/static/img/water.PNG>
+<img src=https://github.com/se-hw1/FitnessApp/blob/feature1/static/img/Water.png>
 
 ## Blog
 
-<img src=https://github.com/token1029/FitnessApp/blob/main/static/img/blog.PNG>
+<img src=https://github.com/se-hw1/FitnessApp/blob/feature1/static/img/blog.png>
 
 ## Shop workout gears
 
-<img src=https://github.com/token1029/FitnessApp/blob/main/static/img/shop.PNG>
-
-## Check History
-
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/caloriesPic.PNG>
+<img src=https://github.com/se-hw1/FitnessApp/blob/feature1/static/img/gear.png>
 
 ## Add Friends
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/friendsPic.PNG>
+<img src=https://github.com/se-hw1/FitnessApp/blob/feature1/static/img/Friends.png>
 
 ## Calculate BMI
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/bmiPic.PNG>
+<img src=https://github.com/se-hw1/FitnessApp/blob/feature1/static/img/bmi.png>
 
 ## Add an Excercise to Favourites
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/favPic.PNG>
+<img src=https://github.com/se-hw1/FitnessApp/blob/feature1/static/img/fav.png>
 
 ## Submit a Review
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/reviewPic.jpeg>
+<img src=https://github.com/se-hw1/FitnessApp/blob/feature1/static/img/Review.png>
 
 ## View User Profile
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/profile1.0.jpeg>
-
-## View User Profile 2.0
-
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/profile2.0.jpeg>
+<img src=https://github.com/se-hw1/FitnessApp/blob/feature1/static/img/profile.png>
 
 ## Update Your Profile
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/updateProfile.jpeg>
+<img src=https://github.com/se-hw1/FitnessApp/blob/feature1/static/img/Update.png>
 
 # Steps for execution
 

@@ -170,6 +170,99 @@ class TestApplication(unittest.TestCase):
                 sess['email'] = 'testuser@example.com'
             response = client.get('/review')
             self.assertEqual(response.status_code, 200)  #
+
+    #sas
+
+
+    def test_login_without_verification(self):
+        response = self.app.post('/login', data={
+            'email': self.test_email,
+            'password': self.test_password
+        }, follow_redirects=True)
+        self.assertIn(b'Please verify your email address before logging in.', response.data)
+        self.assertEqual(response.status_code, 200)
+
+
+    def test_successful_email_verification(self):
+        user = mongo.db.user.find_one({'email': self.test_email})
+        token = user['verification_token']
+        response = self.app.get(f'/verify_email/{token}', follow_redirects=True)
+        self.assertIn(b'Your account has been verified! You can now log in.', response.data)
+        self.assertEqual(response.status_code, 200)
+
+        # Verify that is_verified is now True
+        updated_user = mongo.db.user.find_one({'email': self.test_email})
+        self.assertTrue(updated_user['is_verified'])
+
+
+    def test_login_after_verification(self):
+        # First, verify the user's email
+        self.test_successful_email_verification()
+
+        # Attempt to log in
+        response = self.app.post('/login', data={
+            'email': self.test_email,
+            'password': self.test_password
+        }, follow_redirects=True)
+        self.assertIn(b'You have been logged in!', response.data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_email_verification_invalid_token(self):
+        invalid_token = 'invalidtoken123'
+        response = self.app.get(f'/verify_email/{invalid_token}', follow_redirects=True)
+        self.assertIn(b'Invalid verification token.', response.data)
+        self.assertEqual(response.status_code, 200)
+
+
+    @patch('application.mail.send')
+    def test_resend_verification_email(self, mock_mail_send):
+        # Attempt to resend verification email
+        response = self.app.post('/resend_verification', data={
+            'email': self.test_email
+        }, follow_redirects=True)
+        self.assertIn(b'A new verification email has been sent.', response.data)
+        self.assertEqual(response.status_code, 200)
+        mock_mail_send.assert_called_once()
+
+
+    def test_resend_verification_already_verified(self):
+        # First, verify the user's email
+        self.test_successful_email_verification()
+
+        # Attempt to resend verification email
+        response = self.app.post('/resend_verification', data={
+            'email': self.test_email
+        }, follow_redirects=True)
+        self.assertIn(b'Account already verified. Please log in.', response.data)
+        self.assertEqual(response.status_code, 200)
+
+
+    def test_email_verification_nonexistent_user(self):
+        # Generate a token for an email that doesn't exist
+        fake_email = 'nonexistent@example.com'
+        fake_token = self.serializer.dumps(fake_email, salt='email-confirm')
+        response = self.app.get(f'/verify_email/{fake_token}', follow_redirects=True)
+        self.assertIn(b'Account not found.', response.data)
+        self.assertEqual(response.status_code, 200)
+
+
+    def test_login_incorrect_password_after_verification(self):
+        # First, verify the user's email
+        self.test_successful_email_verification()
+
+        # Attempt to log in with incorrect password
+        response = self.app.post('/login', data={
+            'email': self.test_email,
+            'password': 'WrongPassword!'
+        }, follow_redirects=True)
+        self.assertIn(b'Login Unsuccessful. Please check username and password', response.data)
+        self.assertEqual(response.status_code, 200)
+
+
+    def test_access_protected_route_without_login(self):
+        response = self.app.get('/dashboard', follow_redirects=True)
+        self.assertIn(b'Please log in to access this page.', response.data)  # Assuming such a flash message exists
+        self.assertEqual(response.status_code, 200)
 if __name__ == '__main__':
     unittest.main()
 

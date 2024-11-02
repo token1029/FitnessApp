@@ -20,18 +20,27 @@ mongo = app.mongo
 
 
 def insertfooddata():
-    """Inserting the food data from CSV file to MongoDB"""
-    #with open("food_data/calories.csv", "r", encoding="ISO-8859-1") as file:
+    """
+    Function to insert food data from a CSV file into MongoDB.
+    Reads calorie data for various foods and inserts or updates each food's calorie count in the database.
+    """
+    
+    # Open the CSV file containing food calorie data
     f = open("food_data/calories.csv", "r", encoding="ISO-8859-1")
-    l = f.readlines()
-
+    l = f.readlines()  # Read all lines in the file into a list
+    
+    # Adjust each line to remove unwanted characters (trimming edges)
     for i in range(1, len(l)):
         l[i] = l[i][1:len(l[i]) - 2]
-
+    
+    # Process each line (food item) and update calorie data in MongoDB
     for i in range(1, len(l)):
-        temp = l[i].split(",")
+        temp = l[i].split(",")  # Split line by commas to separate food and calorie count
         mongo.db.food.update_one(
-            {'food': temp[0]}, {'$set': {'calories': temp[1]}}, upsert=True)
+            {'food': temp[0]},  # Filter by food name
+            {'$set': {'calories': temp[1]}},  # Set or update calorie data
+            upsert=True  # If food item doesn't exist, insert it
+        )
 
 
 def insertexercisedata():
@@ -140,10 +149,11 @@ def insertexercisedata():
 
     # Connect to MongoDB
 
+    # Connect to MongoDB collection designated for storing exercise data
     collection = mongo.db["your_exercise_collection"]
 
-    # Insert exercise data into MongoDB
+    # Insert each exercise into MongoDB
     for exercise in exercise_data:
-        query = {"exercise_id": exercise["exercise_id"]}
-        update = {"$set": exercise}
-        collection.update_one(query, update, upsert=True)
+        query = {"exercise_id": exercise["exercise_id"]}  # Query by unique exercise ID
+        update = {"$set": exercise}  # Update exercise details if exercise already exists
+        collection.update_one(query, update, upsert=True)  # Insert exercise if it doesn't exist

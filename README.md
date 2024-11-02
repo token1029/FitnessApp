@@ -127,11 +127,11 @@ This document serves as a comprehensive reference point for users, giving them i
 
 ## Register
 
-<img src=https://raw.githubusercontent.com/VibhavDeo/FitnessApp/main/static/img/registerPic.PNG>
+<img src=https://github.com/se-hw1/FitnessApp/blob/feature1/static/img/register.png>
 
 ## Login
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/loginPic.PNG>
+<img src=https://github.com/se-hw1/FitnessApp/blob/feature1/static/img/login.png>
 
 ## Dashboard
 

@@ -384,6 +384,17 @@ class TestApplication(unittest.TestCase):
             self.assertIn('Great choice! Your salad has approximately 150 calories and grilled chicken around 300 calories.', data2['response'])
 
 
+    def test_burnbot_calorie_log(self):
+        user_message = {'message': 'I ate a banana and yogurt'}
+        response = self.app.post('/burnbot', json=user_message)
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertIn('A banana has approximately 105 calories, and yogurt around 150 calories.', data['response'])
+
+    
+
+
+
 if __name__ == '__main__':
     unittest.main()
 

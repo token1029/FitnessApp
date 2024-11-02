@@ -97,7 +97,6 @@ This document serves as a comprehensive reference point for users, giving them i
   - [Add an Excercise to Favourites](#add-an-excercise-to-favourites)
   - [Submit a Review](#submit-a-review)
   - [View User Profile](#view-user-profile)
-  - [View User Profile 2.0](#view-user-profile-2.0)
   - [Update Your Profile](#update-your-profile)
 - [Steps for Execution:](#steps-for-execution)
 - [Source Code](#source-code)

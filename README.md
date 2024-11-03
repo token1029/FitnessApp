@@ -5,7 +5,7 @@ https://www.youtube.com/watch?v=mSZjVjDSeXE
 <br>
 
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
-[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.14031340-blue.svg?style=for-the-badge)](https://doi.org/10.5281/zenodo.14031340)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14031340.svg)](https://doi.org/10.5281/zenodo.14031340)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 ![GitHub last commit (branch)](https://img.shields.io/badge/last%20commit-November%202024-orange)
 [![Python application](https://github.com/VibhavDeo/FitnessApp/actions/workflows/python-app.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/python-app.yml)

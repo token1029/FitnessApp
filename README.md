@@ -13,7 +13,7 @@ https://www.youtube.com/watch?v=mSZjVjDSeXE
 [![Pylint](https://github.com/VibhavDeo/FitnessApp/actions/workflows/pylint.yml/badge.svg)](https://github.com/se-hw1/FitnessApp/actions/workflows/pylint.yml)
 [![Tests On Push](http://github.com/VibhavDeo/FitnessApp/actions/workflows/unit_test.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/unit_test.yml)
 [![Code Coverage](https://github.com/VibhavDeo/FitnessApp/actions/workflows/code_cov.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/code_cov.yml)
-![GitHub code size in bytes](https://img.shields.io/badge/repo%20size-147%20MB-%20blue)
+![GitHub code size in bytes](https://img.shields.io/badge/code%20size-260%20KB-%20green)
 
 <!--Badges-->
 <a href="https://github.com/VibhavDeo/FitnessApp/fork" target="blank">
@@ -37,8 +37,8 @@ https://www.youtube.com/watch?v=mSZjVjDSeXE
 <a href="https://github.com/VibhavDeo/FitnessApp/graphs/commit-activity" alt="commit activity">
 <img src="https://img.shields.io/badge/Commit%20Activity-80%2Fweek-blue" /></a>
 
-<a href="https://img.shields.io/github/repo-size/VibhavDeo/FitnessApp" alt="repo size">
-<img src="https://img.shields.io/github/repo-size/VibhavDeo/FitnessApp" /></a>
+<a href="https://img.shields.io/badge/repo%20size-147%20MB-%20blue" alt="repo size">
+<img src="https://img.shields.io/badge/repo%20size-147%20MB-%20blue" /></a>
 
 # BurnOut
 

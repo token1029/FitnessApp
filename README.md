@@ -9,11 +9,11 @@ https://www.youtube.com/watch?v=mSZjVjDSeXE
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 ![GitHub last commit (branch)](https://img.shields.io/badge/last%20commit-November%202024-orange)
 [![Python application](https://github.com/VibhavDeo/FitnessApp/actions/workflows/python-app.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/python-app.yml)
-[![Lint](https://github.com/VibhavDeo/FitnessApp/actions/workflows/syntax_checker.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/syntax_checker.yml)
-[![Pylint](https://github.com/VibhavDeo/FitnessApp/actions/workflows/pylint.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/pylint.yml)
+[![Lint](https://github.com/VibhavDeo/FitnessApp/actions/workflows/syntax_checker.yml/badge.svg)](https://github.com/se-hw1/FitnessApp/actions/workflows/syntax_checker.yml)
+[![Pylint](https://github.com/VibhavDeo/FitnessApp/actions/workflows/pylint.yml/badge.svg)](https://github.com/se-hw1/FitnessApp/actions/workflows/pylint.yml)
 [![Tests On Push](http://github.com/VibhavDeo/FitnessApp/actions/workflows/unit_test.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/unit_test.yml)
 [![Code Coverage](https://github.com/VibhavDeo/FitnessApp/actions/workflows/code_cov.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/code_cov.yml)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/VibhavDeo/FitnessApp)
+![GitHub code size in bytes](https://img.shields.io/badge/repo%20size-147%20MB-%20blue)
 
 <!--Badges-->
 <a href="https://github.com/VibhavDeo/FitnessApp/fork" target="blank">

@@ -8,8 +8,6 @@ https://www.youtube.com/watch?v=mSZjVjDSeXE
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14031340.svg)](https://doi.org/10.5281/zenodo.14031340)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 ![GitHub last commit (branch)](https://img.shields.io/badge/last%20commit-November%202024-orange)
-![Last Commit](https://img.shields.io/github/last-commit/se-hw1/FitnessApp)
-
 [![Python application](https://github.com/VibhavDeo/FitnessApp/actions/workflows/python-app.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/python-app.yml)
 [![Lint](https://github.com/VibhavDeo/FitnessApp/actions/workflows/syntax_checker.yml/badge.svg)](https://github.com/se-hw1/FitnessApp/actions/workflows/syntax_checker.yml)
 [![Pylint](https://github.com/VibhavDeo/FitnessApp/actions/workflows/pylint.yml/badge.svg)](https://github.com/se-hw1/FitnessApp/actions/workflows/pylint.yml)

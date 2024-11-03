@@ -35,7 +35,7 @@ https://www.youtube.com/watch?v=mSZjVjDSeXE
 <img src="https://img.shields.io/github/contributors/VibhavDeo/FitnessApp" /></a>
 
 <a href="https://github.com/VibhavDeo/FitnessApp/graphs/commit-activity" alt="commit activity">
-<img src="https://img.shields.io/github/commit-activity/w/VibhavDeo/FitnessApp" /></a>
+<img src="https://img.shields.io/badge/Commit%20Activity-80%2Fweek-blue" /></a>
 
 <a href="https://img.shields.io/github/repo-size/VibhavDeo/FitnessApp" alt="repo size">
 <img src="https://img.shields.io/github/repo-size/VibhavDeo/FitnessApp" /></a>

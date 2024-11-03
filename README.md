@@ -7,7 +7,7 @@ https://www.youtube.com/watch?v=mSZjVjDSeXE
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
 [![DOI](https://zenodo.org/badge/692868088.svg)](https://zenodo.org/doi/10.5281/zenodo.10023046)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
-![GitHub last commit (branch)](https://img.shields.io/github/last-commit/VibhavDeo/FitnessApp/main)
+![GitHub last commit (branch)](https://img.shields.io/badge/last%20commit-November%202024-orange)
 [![Python application](https://github.com/VibhavDeo/FitnessApp/actions/workflows/python-app.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/python-app.yml)
 [![Lint](https://github.com/VibhavDeo/FitnessApp/actions/workflows/syntax_checker.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/syntax_checker.yml)
 [![Pylint](https://github.com/VibhavDeo/FitnessApp/actions/workflows/pylint.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/pylint.yml)

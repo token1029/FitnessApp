@@ -73,44 +73,4 @@
 | Question 10.6: Are there any guidelines for submitting code changes to your project?         | Yes.                                                                                                                                                                            |
  
 | Question 10.1: Is your source code stored in a repository under revision control?            | Yes.                                                                             |
-| Question 10.2: Is each source code release a snapshot of the repository?      | Yes.                                                                                     |
-| Question 10.3: Are releases tagged in the repository?                                  | Yes.                                                                                     |
-| Question 10.4: Is there a branch of the repository that is always stable? (i.e. tests always pass, code always builds successfully)                                                           | Yes.                                                                                     |
-| Question 10.5: Do you back-up your repository?                                           | Yes.                                                                         |
-| Question 11.1: Do you provide publicly-available instructions for building your software from the source code?      |Yes.                                                                                     |
-| Question 11.2: Can you build, or package, your software using an automated tool?*                 | Yes, setup.py exists.                                                                    |
-| Question 11.3: Do you provide publicly-available instructions for deploying your software?            | Yes.                                                                                     |
-| Question 11.4: Does your documentation list all third-party dependencies?                   | Yes. [requirements.txt](https://github.com/se-hw1/FitnessApp/blob/feature1/requirements.txt) |
-| Question 11.5: Does your documentation list the version number for all third-party dependencies?        |Yes[requirements.txt](https://github.com/se-hw1/FitnessApp/blob/feature1/requirements.txt) |
-| Question 11.6: Does your software list the web address, and licences for all third-party dependencies and say whether they are mandatory or optional?                                        | N/A                                                                                      |
-| Question 11.7: Can you download dependencies using a dependency management tool or package manager?*             | Yes.                                                                                     |
-| Question 11.8: Do you have tests that can be run after your software has been built or deployed to show whether the build or deployment has been successful?                                                    | Yes.                                                                                     |
-| Question 12.1: Do you have an automated test suite for your software?                            | Yes.                                                                                     |
-| Question 12.2: Do you have a framework to periodically (e.g. nightly) run your tests on the latest version of the source code?                                                               | Yes. [actions](https://github.com/se-hw1/FitnessApp/actions)                             |
-| Question 12.3: Do you use continuous integration, automatically running tests whenever changes are made to your source code?                                                                   | Yes. [actions](https://github.com/se-hw1/FitnessApp/actions)                             |
-| Question 12.4: Are your test results publicly visible?                                                                              | Navyatej | Sasidhar | Niranjan | Yes.                                                                                     |
-| Question 12.5: Are all manually-run tests documented?                                       | Yes.                                                                                     |
-| Question 13.1: Does your project have resources (e.g. blog, Twitter, RSS feed, Facebook page, wiki, mailing list) that are regularly updated?                                             | Yes. [README.md](https://github.com/se-hw1/FitnessApp/blob/feature1/README.md)           |
-| Question 13.2: Does your website state how many projects and users are associated with your project?             | Yes.                                                                                     |
-| Question 13.3: Do you provide success stories on your website?                                   | No.                                                                                      |
-| Question 13.4: Do you list your important partners and collaborators on your website?                 | Yes.                                                                                     |
-| Question 13.5: Do you list your project's publications on your website or link to a resource where these are available?  | No.                                                                                     
-                                          |
-| Question 13.6: Do you list third-party publications that refer to your software on your website or link to a resource where these are available?                                                | No.                                                                                      |
-| Question 13.7: Can users subscribe to notifications to changes to your source code repository?                  | Yes.                                                                                     |
-| Question 13.8: If your software is developed as an open source project, do you have a governance model?          | No.                                                                                      |
-| Question 14.1: Do you accept contributions from people who are not part of your project?                     | Yes.                                                                                     |
-| Question 14.2: Do you have a contributions policy?                                              | Yes.                                                                                     |
-| Question 14.3: Is your contributions' policy publicly available?                                    | Yes.                                                                                     |
-| Question 14.4: Do contributors keep the copyright/IP of their contributions?                     | Yes.                                                                                     |
-| Question 15.1: Does your website and documentation clearly state the copyright owners of your software?           | Yes.                                                                                     |
-| Question 15.2: Does each of your source code files include a copyright statement?                          | Yes.                                                                                     |
-| Question 15.3: Does your website and documentation clearly state the licence of your software?              | Yes.                                                                                     |
-| Question 15.4: Is your software released under an open source licence?                               | Yes. MIT.                                                                                |
-| Question 15.5: Is your software released under an OSI-approved open-source licence?                     | Yes.                                                                                     |
-| Question 15.6: Does each of your source code files include a licence header?                        | Yes.                                                                                     |
-| Question 15.7: Do you have a recommended citation for your software?                             | No.                                                                                      |
-| Question 16.1: Does your website or documentation include a project roadmap?                        | No.                                                                                      |
-| Question 16.2: Does your website or documentation describe how your project is funded?                | No.                                                                                      |
-| Question 16.3: Do you make timely announcements of the deprecation of components, APIs, etc.?          | No.                                                                                      |
-
+ 

@@ -40,7 +40,8 @@ app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = "burnoutapp2023@gmail.com"
-app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD') or "jgny mtda gguq shnw"  # Replace with secure method
+app.config['MAIL_PASSWORD'] = os.environ.get(
+    'MAIL_PASSWORD') or "jgny mtda gguq shnw"  # Replace with secure method
 mail = Mail(app)
 
 # Initialize the serializer
@@ -77,10 +78,13 @@ def reminder_email():
 schedule.every().day.at("08:00").do(reminder_email)
 
 # Run the scheduler
+
+
 def schedule_process():
     while True:
         schedule.run_pending()
         time.sleep(10)
+
 
 Thread(target=schedule_process).start()
 
@@ -115,7 +119,8 @@ def login():
             user = mongo.db.user.find_one({'email': form.email.data})
             if user:
                 if not user.get('is_verified'):
-                    flash('Please verify your email address before logging in.', 'warning')
+                    flash(
+                        'Please verify your email address before logging in.', 'warning')
                     return redirect(url_for('login'))
                 if bcrypt.checkpw(form.password.data.encode("utf-8"), user['pwd']):
                     flash('You have been logged in!', 'success')
@@ -140,7 +145,8 @@ def logout():
     flash('You have been logged out.', 'success')
     return redirect(url_for('login'))
 
-@app.route('/sleep', methods=['GET','POST'])
+
+@app.route('/sleep', methods=['GET', 'POST'])
 def sleep():
     email = session.get('email')
     intake = request.form.get('intake')
@@ -148,22 +154,26 @@ def sleep():
 
         current_time = datetime.now()
         # Insert the new record
-        mongo.db.intake_collection.insert_one({'intake': intake, 'time': current_time, 'email': email})
+        mongo.db.intake_collection.insert_one(
+            {'intake': intake, 'time': current_time, 'email': email})
 
     # Retrieving records for the logged-in user
-    records = mongo.db.intake_collection.find({"email": email}).sort("time", -1)
+    records = mongo.db.intake_collection.find(
+        {"email": email}).sort("time", -1)
 
     # IMPORTANT: We need to convert the cursor to a list to iterate over it multiple times
     records_list = list(records)
     if records_list:
-        average_intake = sum(int(record['intake']) for record in records_list) / len(records_list)
+        average_intake = sum(int(record['intake'])
+                             for record in records_list) / len(records_list)
     else:
         average_intake = 0
     # Calculate total intake
     total_intake = sum(int(record['intake']) for record in records_list)
 
     # Render template with records and total intake
-    return render_template('sleep.html', records=records_list, total_intake=total_intake,average_intake=average_intake)
+    return render_template('sleep.html', records=records_list, total_intake=total_intake, average_intake=average_intake)
+
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -186,11 +196,13 @@ def register():
 
                 # Check if the user already exists
                 if mongo.db.user.find_one({'email': email}):
-                    flash('Email address already exists. Please log in or use a different email.', 'danger')
+                    flash(
+                        'Email address already exists. Please log in or use a different email.', 'danger')
                     return redirect(url_for('register'))
 
                 # Hash the password
-                hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+                hashed_password = bcrypt.hashpw(
+                    password.encode("utf-8"), bcrypt.gensalt())
 
                 # Generate a unique token for email verification
                 token = s.dumps(email, salt='email-confirm')
@@ -219,8 +231,10 @@ def register():
                 })
 
                 # Send verification email
-                verify_url = url_for('verify_email', token=token, _external=True)
-                msg = Message('Please Confirm Your Email', sender=app.config['MAIL_USERNAME'], recipients=[email])
+                verify_url = url_for(
+                    'verify_email', token=token, _external=True)
+                msg = Message('Please Confirm Your Email',
+                              sender=app.config['MAIL_USERNAME'], recipients=[email])
                 msg.body = f'''Hi {username},
 
 Thank you for registering at Burnout!
@@ -236,7 +250,8 @@ The Burnout Team
 '''
                 mail.send(msg)
 
-                flash('Account created successfully! Please check your email to verify your account.', 'success')
+                flash(
+                    'Account created successfully! Please check your email to verify your account.', 'success')
                 return redirect(url_for('home'))
     else:
         return redirect(url_for('home'))
@@ -264,11 +279,13 @@ def join():
 
                 # Check if the user already exists
                 if mongo.db.user.find_one({'email': email}):
-                    flash('Email address already exists. Please log in or use a different email.', 'danger')
+                    flash(
+                        'Email address already exists. Please log in or use a different email.', 'danger')
                     return redirect(url_for('join'))
 
                 # Hash the password
-                hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+                hashed_password = bcrypt.hashpw(
+                    password.encode("utf-8"), bcrypt.gensalt())
 
                 # Generate a unique token for email verification
                 token = s.dumps(email, salt='email-confirm')
@@ -297,8 +314,10 @@ def join():
                 })
 
                 # Send verification email
-                verify_url = url_for('verify_email', token=token, _external=True)
-                msg = Message('Please Confirm Your Email', sender=app.config['MAIL_USERNAME'], recipients=[email])
+                verify_url = url_for(
+                    'verify_email', token=token, _external=True)
+                msg = Message('Please Confirm Your Email',
+                              sender=app.config['MAIL_USERNAME'], recipients=[email])
                 msg.body = f'''Hi {username},
 
 Thank you for registering at Burnout!
@@ -314,7 +333,8 @@ The Burnout Team
 '''
                 mail.send(msg)
 
-                flash('Account created successfully! Please check your email to verify your account.', 'success')
+                flash(
+                    'Account created successfully! Please check your email to verify your account.', 'success')
                 return redirect(url_for('home'))
     else:
         return redirect(url_for('home'))
@@ -344,7 +364,8 @@ def verify_email(token):
         if user.get('is_verified'):
             flash('Account already verified. Please log in.', 'info')
         else:
-            mongo.db.user.update_one({'email': email}, {'$set': {'is_verified': True}})
+            mongo.db.user.update_one(
+                {'email': email}, {'$set': {'is_verified': True}})
             flash('Your account has been verified! You can now log in.', 'success')
     else:
         flash('Account not found.', 'danger')
@@ -365,8 +386,10 @@ def resend_verification():
         if user:
             if not user.get('is_verified'):
                 token = s.dumps(email, salt='email-confirm')
-                verify_url = url_for('verify_email', token=token, _external=True)
-                msg = Message('Please Confirm Your Email', sender=app.config['MAIL_USERNAME'], recipients=[email])
+                verify_url = url_for(
+                    'verify_email', token=token, _external=True)
+                msg = Message('Please Confirm Your Email',
+                              sender=app.config['MAIL_USERNAME'], recipients=[email])
                 msg.body = f'''Hi {user["name"]},
 
 You requested a new verification email. Please click the link below to verify your email address:
@@ -413,7 +436,8 @@ def calories():
                     return redirect(url_for('calories'))
                 burn = form.burnout.data
 
-                temp = mongo.db.calories.find_one({'email': email, 'date': now})
+                temp = mongo.db.calories.find_one(
+                    {'email': email, 'date': now})
                 if temp:
                     mongo.db.calories.update_one({'email': email, 'date': now}, {
                         '$set': {
@@ -459,14 +483,17 @@ def display_profile():
         dates = [entry['date'] for entry in sorted_user_data_hist]
         weights = [float(entry['weight']) for entry in sorted_user_data_hist]
 
-        # Plotting Graph 
-        fig = px.line(x=dates, y=weights, labels={'x': 'Date', 'y': 'Weight'}, title='Progress', markers=True, line_shape='spline')
+        # Plotting Graph
+        fig = px.line(x=dates, y=weights, labels={
+                      'x': 'Date', 'y': 'Weight'}, title='Progress', markers=True, line_shape='spline')
         fig.add_trace(go.Scatter(x=dates, y=[target_weight] * len(dates),
                                  mode='lines',
                                  line=dict(color='green', width=1, dash='dot'),
                                  name='Target Weight'))
-        fig.update_yaxes(range=[min(min(weights), target_weight) - 5, max(max(weights), target_weight) + 5])
-        fig.update_xaxes(range=[min(dates), datetime.strptime(now, '%Y-%m-%d').date()]) 
+        fig.update_yaxes(
+            range=[min(min(weights), target_weight) - 5, max(max(weights), target_weight) + 5])
+        fig.update_xaxes(
+            range=[min(dates), datetime.strptime(now, '%Y-%m-%d').date()])
         # Converting to HTML
         graph_html = fig.to_html(full_html=False)
 
@@ -552,19 +579,22 @@ def water():
         # Insert the new record
         try:
             intake_int = int(intake)
-            mongo.db.intake_collection.insert_one({'intake': intake_int, 'time': current_time, 'email': email})
+            mongo.db.intake_collection.insert_one(
+                {'intake': intake_int, 'time': current_time, 'email': email})
             flash('Water intake recorded successfully.', 'success')
         except (ValueError, TypeError):
             flash('Invalid intake value. Please enter a number.', 'danger')
             return redirect(url_for('water'))
 
     # Retrieving records for the logged-in user
-    records = mongo.db.intake_collection.find({"email": email}).sort("time", -1)
+    records = mongo.db.intake_collection.find(
+        {"email": email}).sort("time", -1)
 
     # Convert cursor to a list to iterate over it multiple times
     records_list = list(records)
     if records_list:
-        average_intake = sum(int(record['intake']) for record in records_list) / len(records_list)
+        average_intake = sum(int(record['intake'])
+                             for record in records_list) / len(records_list)
     else:
         average_intake = 0
     # Calculate total intake
@@ -664,7 +694,8 @@ def bmi_calci():
             bmi = calc_bmi(weight, height)
             bmi_category = get_bmi_category(bmi)
         except (ValueError, TypeError):
-            flash('Invalid input for weight or height. Please enter numeric values.', 'danger')
+            flash(
+                'Invalid input for weight or height. Please enter numeric values.', 'danger')
 
     return render_template("bmi_cal.html", bmi=bmi, bmi_category=bmi_category)
 
@@ -701,7 +732,8 @@ def send_email():
         flash('User not found.', 'danger')
         return redirect(url_for('friends'))
 
-    data = list(mongo.db.calories.find({'email': email}, {'date', 'email', 'calories', 'burnout'}))
+    data = list(mongo.db.calories.find({'email': email}, {
+                'date', 'email', 'calories', 'burnout'}))
     table = [['Date', 'Email ID', 'Calories', 'Burnout']]
     for a in data:
         tmp = [a['date'], a['email'], a['calories'], a['burnout']]
@@ -712,7 +744,8 @@ def send_email():
         flash('Please enter at least one friend email.', 'danger')
         return redirect(url_for('friends'))
 
-    friend_email_list = [e.strip() for e in friend_emails.split(',') if e.strip()]
+    friend_email_list = [e.strip()
+                         for e in friend_emails.split(',') if e.strip()]
     if not friend_email_list:
         flash('Please enter valid friend emails.', 'danger')
         return redirect(url_for('friends'))
@@ -821,7 +854,8 @@ def ajaxapproverequest():
             res = mongo.db.friends.update_one({'sender': sender, 'receiver': email}, {
                 "$set": {'accept': True}})
             # Also insert reciprocal friendship
-            mongo.db.friends.insert_one({'sender': email, 'receiver': sender, 'accept': True})
+            mongo.db.friends.insert_one(
+                {'sender': email, 'receiver': sender, 'accept': True})
             if res.modified_count > 0:
                 return json.dumps({'status': True}), 200, {
                     'ContentType': 'application/json'}
@@ -851,12 +885,14 @@ def add_favorite():
         data = request.get_json()
         exercise_id = data.get('exercise_id')
         action = data.get('action')
-        exercise = mongo.db.your_exercise_collection.find_one({"exercise_id": exercise_id})
+        exercise = mongo.db.your_exercise_collection.find_one(
+            {"exercise_id": exercise_id})
         print(exercise)
         if exercise:
             if action == "add":
                 # Check if already favorited
-                existing = mongo.db.favorites.find_one({"email": email, "exercise_id": exercise_id})
+                existing = mongo.db.favorites.find_one(
+                    {"email": email, "exercise_id": exercise_id})
                 if existing:
                     return jsonify({"status": "already_favorited"}), 200
                 # Create a new document in the favorites schema (you can customize this schema)
@@ -874,7 +910,8 @@ def add_favorite():
                 mongo.db.favorites.insert_one(favorite)
                 return jsonify({"status": "success"}), 200
             elif action == "remove":
-                res = mongo.db.favorites.delete_one({"email": email, "exercise_id": exercise.get("exercise_id")})
+                res = mongo.db.favorites.delete_one(
+                    {"email": email, "exercise_id": exercise.get("exercise_id")})
                 if res.deleted_count > 0:
                     return jsonify({"status": "success"}), 200
                 else:
@@ -1068,7 +1105,8 @@ def submit_reviews():
     if session.get('email'):
         print("Imhere2")
         if request.method == 'POST':  # Check if it's a POST request
-            form = ReviewForm(request.form)  # Initialize the form with form data
+            # Initialize the form with form data
+            form = ReviewForm(request.form)
             if form.validate_on_submit():
                 print("imehere1")
                 email = session.get('email')
@@ -1091,11 +1129,11 @@ def blog():
     # 处理 "blog" 页面的逻辑
     return render_template('blog.html')
 
+
 @app.route('/test_flash')
 def test_flash():
     flash('This is a test flash message!', 'info')
     return redirect(url_for('home'))
-
 
 
 if __name__ == '__main__':

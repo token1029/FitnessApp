@@ -16,11 +16,11 @@ https://github.com/VibhavDeo/FitnessApp
 # from re import sub
 # from flask import app
 """Importing modules to create forms"""
+from apps import App
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms.fields.core import DateField, SelectField
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.fields.core import DateField, SelectField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from apps import App
 
 
 class RegistrationForm(FlaskForm):
@@ -128,6 +128,7 @@ class EnrollForm(FlaskForm):
     mongo = app.mongo
     submit = SubmitField('Enroll')
 
+
 class ResetPasswordForm(FlaskForm):
     """Form to reset the account password"""
     password = PasswordField('Password', validators=[DataRequired()])
@@ -135,6 +136,7 @@ class ResetPasswordForm(FlaskForm):
         'Confirm Password', validators=[
             DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset')
+
 
 class ReviewForm(FlaskForm):
     """Form to input the different reviews about the application"""

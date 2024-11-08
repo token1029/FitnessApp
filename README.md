@@ -7,38 +7,38 @@ https://www.youtube.com/watch?v=e3Jg1mSQiNs
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
 [![DOI](https://zenodo.org/badge/692868088.svg)](https://zenodo.org/doi/10.5281/zenodo.10023046)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
-![GitHub last commit (branch)](https://img.shields.io/github/last-commit/VibhavDeo/FitnessApp/main)
-[![Python application](https://github.com/VibhavDeo/FitnessApp/actions/workflows/python-app.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/python-app.yml)
-[![Lint](https://github.com/VibhavDeo/FitnessApp/actions/workflows/syntax_checker.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/syntax_checker.yml)
-[![Pylint](https://github.com/VibhavDeo/FitnessApp/actions/workflows/pylint.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/pylint.yml)
-[![Tests On Push](http://github.com/VibhavDeo/FitnessApp/actions/workflows/unit_test.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/unit_test.yml)
-[![Code Coverage](https://github.com/VibhavDeo/FitnessApp/actions/workflows/code_cov.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/code_cov.yml)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/VibhavDeo/FitnessApp)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/CS510-001-HW/FitnessApp/main)
+[![Python application](https://github.com/CS510-001-HW/FitnessApp/actions/workflows/python-app.yml/badge.svg)](https://github.com/CS510-001-HW/FitnessApp/actions/workflows/python-app.yml)
+[![Lint](https://github.com/CS510-001-HW/FitnessApp/actions/workflows/syntax_checker.yml/badge.svg)](https://github.com/CS510-001-HW/FitnessApp/actions/workflows/syntax_checker.yml)
+[![Pylint](https://github.com/CS510-001-HW/FitnessApp/actions/workflows/pylint.yml/badge.svg)](https://github.com/CS510-001-HW/FitnessApp/actions/workflows/pylint.yml)
+[![Tests On Push](http://github.com/CS510-001-HW/FitnessApp/actions/workflows/unit_test.yml/badge.svg)](https://github.com/CS510-001-HW/FitnessApp/actions/workflows/unit_test.yml)
+[![Code Coverage](https://github.com/CS510-001-HW/FitnessApp/actions/workflows/code_cov.yml/badge.svg)](https://github.com/CS510-001-HW/FitnessApp/actions/workflows/code_cov.yml)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/CS510-001-HW/FitnessApp)
 
 <!--Badges-->
-<a href="https://github.com/VibhavDeo/FitnessApp/fork" target="blank">
-<img src="https://img.shields.io/github/forks/VibhavDeo/FitnessApp?style=flat-square" alt="FitnessApp/forks"/>
+<a href="https://github.com/CS510-001-HW/FitnessApp/fork" target="blank">
+<img src="https://img.shields.io/github/forks/CS510-001-HW/FitnessApp?style=flat-square" alt="FitnessApp/forks"/>
 </a>
-<a href="https://github.com/VibhavDeo/FitnessApp/stargazers" target="blank">
-<img src="https://img.shields.io/github/stars/VibhavDeo/FitnessApp?style=flat-square" alt="FitnessApp stars"/>
+<a href="https://github.com/CS510-001-HW/FitnessApp/stargazers" target="blank">
+<img src="https://img.shields.io/github/stars/CS510-001-HW/FitnessApp?style=flat-square" alt="FitnessApp stars"/>
 </a>
-<a href="https://github.com/VibhavDeo/FitnessApp/issues" target="blank">
-<img src="https://img.shields.io/github/issues/VibhavDeo/FitnessApp?style=flat-square" alt="FitnessApp issues"/>
+<a href="https://github.com/CS510-001-HW/FitnessApp/issues" target="blank">
+<img src="https://img.shields.io/github/issues/CS510-001-HW/FitnessApp?style=flat-square" alt="FitnessApp issues"/>
 </a>
-<a href="https://github.com/VibhavDeo/FitnessApp/issues" target="blank">
-<img src="https://img.shields.io/github/issues-closed/VibhavDeo/FitnessApp" alt="FitnessApp issues closed"/>
+<a href="https://github.com/CS510-001-HW/FitnessApp/issues" target="blank">
+<img src="https://img.shields.io/github/issues-closed/CS510-001-HW/FitnessApp" alt="FitnessApp issues closed"/>
 </a>
-<a href="https://github.com/VibhavDeo/FitnessApp/pulls" target="blank">
-<img src="https://img.shields.io/github/issues-pr/VibhavDeo/FitnessApp?style=flat-square" alt="cheapBuy pull-requests"/>
+<a href="https://github.com/CS510-001-HW/FitnessApp/pulls" target="blank">
+<img src="https://img.shields.io/github/issues-pr/CS510-001-HW/FitnessApp?style=flat-square" alt="cheapBuy pull-requests"/>
 </a>
-<a href="https://github.com/VibhavDeo/FitnessApp/graphs/contributors" alt="Contributors">
-<img src="https://img.shields.io/github/contributors/VibhavDeo/FitnessApp" /></a>
+<a href="https://github.com/CS510-001-HW/FitnessApp/graphs/contributors" alt="Contributors">
+<img src="https://img.shields.io/github/contributors/CS510-001-HW/FitnessApp" /></a>
 
-<a href="https://github.com/VibhavDeo/FitnessApp/graphs/commit-activity" alt="commit activity">
-<img src="https://img.shields.io/github/commit-activity/w/VibhavDeo/FitnessApp" /></a>
+<a href="https://github.com/CS510-001-HW/FitnessApp/graphs/commit-activity" alt="commit activity">
+<img src="https://img.shields.io/github/commit-activity/w/CS510-001-HW/FitnessApp" /></a>
 
-<a href="https://img.shields.io/github/repo-size/VibhavDeo/FitnessApp" alt="repo size">
-<img src="https://img.shields.io/github/repo-size/VibhavDeo/FitnessApp" /></a>
+<a href="https://img.shields.io/github/repo-size/CS510-001-HW/FitnessApp" alt="repo size">
+<img src="https://img.shields.io/github/repo-size/CS510-001-HW/FitnessApp" /></a>
 
 # BurnOut
 
@@ -48,7 +48,7 @@ https://www.youtube.com/watch?v=e3Jg1mSQiNs
 
 BurnOut is an easy-to-use application designed to help users manage their daily calorie intake and expenditure as well as drinking habits, and it has now been enhanced with additional features. This all-in-one wellness app is not only a user-friendly calorie tracker but also offers a comprehensive suite of tools to support individuals in achieving their fitness and weight management goals.
 
-<img src = "https://github.com/VibhavDeo/FitnessApp/assets/145216300/e4fc29ea-253c-4bfc-803c-80bf55193044" width="700px">
+<img src = "https://github.com/CS510-001-HW/FitnessApp/assets/145216300/e4fc29ea-253c-4bfc-803c-80bf55193044" width="700px">
 
 
 ## Key Features:
@@ -125,27 +125,27 @@ This document serves as a comprehensive reference point for users, giving them i
 
 ## Register
 
-<img src=https://raw.githubusercontent.com/VibhavDeo/FitnessApp/main/static/img/registerPic.PNG>
+<img src=https://raw.githubusercontent.com/CS510-001-HW/FitnessApp/main/static/img/registerPic.PNG>
 
 ## Login
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/loginPic.PNG>
+<img src=https://github.com/CS510-001-HW/FitnessApp/blob/main/static/img/loginPic.PNG>
 
 ## Dashboard
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/dashboardPic.PNG>
+<img src=https://github.com/CS510-001-HW/FitnessApp/blob/main/static/img/dashboardPic.PNG>
 
 ## Excercise Section
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/excercisePic.PNG>
+<img src=https://github.com/CS510-001-HW/FitnessApp/blob/main/static/img/excercisePic.PNG>
 
 ## Must Try Workout Section
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/musttryworkoutPic.PNG>
+<img src=https://github.com/CS510-001-HW/FitnessApp/blob/main/static/img/musttryworkoutPic.PNG>
 
 ## Popular Workout Section
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/popularworkoutPic.PNG>
+<img src=https://github.com/CS510-001-HW/FitnessApp/blob/main/static/img/popularworkoutPic.PNG>
 
 ## Spirit Curation Section
 
@@ -153,7 +153,7 @@ This document serves as a comprehensive reference point for users, giving them i
 
 ## Enter Calories
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/historyPic.PNG>
+<img src=https://github.com/CS510-001-HW/FitnessApp/blob/main/static/img/historyPic.PNG>
 
 ## Enter water intakes
 
@@ -169,35 +169,35 @@ This document serves as a comprehensive reference point for users, giving them i
 
 ## Check History
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/caloriesPic.PNG>
+<img src=https://github.com/CS510-001-HW/FitnessApp/blob/main/static/img/caloriesPic.PNG>
 
 ## Add Friends
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/friendsPic.PNG>
+<img src=https://github.com/CS510-001-HW/FitnessApp/blob/main/static/img/friendsPic.PNG>
 
 ## Calculate BMI
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/bmiPic.PNG>
+<img src=https://github.com/CS510-001-HW/FitnessApp/blob/main/static/img/bmiPic.PNG>
 
 ## Add an Excercise to Favourites
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/favPic.PNG>
+<img src=https://github.com/CS510-001-HW/FitnessApp/blob/main/static/img/favPic.PNG>
 
 ## Submit a Review
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/reviewPic.jpeg>
+<img src=https://github.com/CS510-001-HW/FitnessApp/blob/main/static/img/reviewPic.jpeg>
 
 ## View User Profile
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/profile1.0.jpeg>
+<img src=https://github.com/CS510-001-HW/FitnessApp/blob/main/static/img/profile1.0.jpeg>
 
 ## View User Profile 2.0
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/profile2.0.jpeg>
+<img src=https://github.com/CS510-001-HW/FitnessApp/blob/main/static/img/profile2.0.jpeg>
 
 ## Update Your Profile
 
-<img src=https://github.com/VibhavDeo/FitnessApp/blob/main/static/img/updateProfile.jpeg>
+<img src=https://github.com/CS510-001-HW/FitnessApp/blob/main/static/img/updateProfile.jpeg>
 
 # Steps for execution
 
@@ -209,11 +209,11 @@ https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows
 Step 2:
 Git Clone the Repository
 
-    git clone https://github.com/VibhavDeo/FitnessApp.git
+    git clone https://github.com/CS510-001-HW/FitnessApp.git
 
 (OR) Download the .zip file on your local machine
 
-    https://github.com/VibhavDeo/FitnessApp.git
+    https://github.com/CS510-001-HW/FitnessApp.git
 
 Step 3:
 Install the required packages by running the following command in the terminal

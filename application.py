@@ -27,7 +27,6 @@ from insert_db_data import insertfooddata,insertexercisedata
 import schedule
 from threading import Thread
 import time
-import base64
 
 app = Flask(__name__, template_folder='templates')
 app.secret_key = 'secret'
@@ -569,7 +568,7 @@ def ajaxapproverequest():
     return json.dumps({'status': False}), 500, {
         'ContentType:': 'application/json'}
 
-
+"""
 @app.route("/dashboard", methods=['GET', 'POST'])
 def dashboard():
     # ############################
@@ -583,6 +582,33 @@ def dashboard():
         {"id": 2, "name": "Swimming"},
         ]
     return render_template('dashboard.html', title='Dashboard', exercises=exercises)
+
+    """
+
+@app.route("/dashboard", methods=['GET', 'POST'])
+def dashboard():
+    # ############################
+    # dashboard() function displays the dashboard.html template
+    # route "/dashboard" will redirect to dashboard() function.
+    # dashboard() called and displays the list of activities
+    # Output: redirected to dashboard.html
+    # ##########################
+    exercises = [
+        {"id": 1, "name": "Yoga"},
+        {"id": 2, "name": "Swimming"},
+    ]
+    
+    # Retrieve mood data for the logged-in user
+    email = session.get('email')
+    mood_data = []
+    
+    if email:
+        user_profile = mongo.db.profile.find_one({'email': email})
+        mood_data = user_profile.get('moods', []) if user_profile else []
+
+    # Pass the mood data to the template without changing the existing return statement
+    return render_template('dashboard.html', title='Dashboard', exercises=exercises, mood_data=mood_data)
+
 
 
 @app.route('/add_favorite', methods=['POST'])
@@ -974,6 +1000,41 @@ def submit_reviews():
 def blog():
     # 处理 "blog" 页面的逻辑
     return render_template('blog.html')
+
+
+@app.route('/add_mood', methods=['POST'])
+def add_mood():
+    mood = request.form.get('mood')
+    email = session.get('email')
+    date = datetime.now().strftime('%Y-%m-%d')
+
+    if email:
+        # Fetch the user profile and update mood history
+        user_profile = mongo.db.profile.find_one({'email': email})
+        if user_profile:
+            # Append new mood entry
+            if 'moods' not in user_profile:
+                user_profile['moods'] = []
+            user_profile['moods'].append({'date': date, 'mood': mood})
+            mongo.db.profile.update_one({'email': email}, {'$set': {'moods': user_profile['moods']}})
+        
+        # Instead of returning JSON, redirect to the dashboard to display mood history
+        return redirect(url_for('dashboard'))
+
+    # If email not found, redirect to login
+    return redirect(url_for('login'))
+
+# Route to view mood history
+@app.route('/mood_tracker')
+def mood_tracker():
+    email = session.get('email')
+    if email:
+        # Retrieve mood history from the user's profile
+        user_profile = mongo.db.profile.find_one({'email': email})
+        mood_data = user_profile.get('moods', []) if user_profile else []
+        return render_template('dashboard.html', mood_data=mood_data)
+    else:
+        return redirect(url_for('login'))
 
 
 if __name__ == '__main__':

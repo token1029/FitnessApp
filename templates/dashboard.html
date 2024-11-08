@@ -35,6 +35,14 @@
         />
       </div>
     </div>
+
+
+
+    
+    
+
+
+
     <div>
       <a
         class="carousel-control-prev"
@@ -65,6 +73,29 @@
         <source src="../static/videos/video.mp4" type="video/mp4" />
       </video>
     </center>
+  </div>
+
+
+  <div class="container site-section" id="mood-tracker">
+    <h2 style="color: rgb(170, 178, 242)">Track Your Mood</h2>
+    <form action="/add_mood" method="POST">
+      <label for="mood">Select your mood today:</label>
+      <select name="mood" id="mood" class="form-select" style="width: 200px; display: inline-block;">
+        <option value="happy">Happy</option>
+        <option value="stressed">Stressed</option>
+        <option value="energetic">Energetic</option>
+        <option value="tired">Tired</option>
+        <option value="neutral">Neutral</option>
+      </select>
+      <button type="submit" class="btn btn-primary btn-sm" style="margin-left: 10px;">Submit Mood</button>
+    </form>
+  </div>
+
+
+
+  <div class="container site-section" id="mood-history">
+    <h3 style="color: rgb(147, 174, 236)">Your Recent Mood History</h3>
+    <canvas id="moodChart" width="400" height="200"></canvas>
   </div>
 
   <section class="container-fluid">
@@ -732,6 +763,90 @@
     src="https://kit.fontawesome.com/a076d05399.js"
     crossorigin="anonymous"
   ></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Retrieve mood data passed from the backend
+      const moodData = {{ mood_data | tojson }};
+      
+      // Extract dates and moods for the chart
+      const dates = moodData.map(entry => entry.date);
+      const moods = moodData.map(entry => {
+        switch(entry.mood) {
+          case "happy": return 5;
+          case "energetic": return 4;
+          case "neutral": return 3;
+          case "tired": return 2;
+          case "stressed": return 1;
+          default: return 0;
+        }
+      });
+  
+      // Create the mood chart
+      const ctx = document.getElementById("moodChart").getContext("2d");
+      new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: dates,
+          datasets: [{
+            label: "Mood Over Time",
+            data: moods,
+            backgroundColor: "rgba(75, 192, 192, 0.2)",
+            borderColor: "rgba(75, 192, 192, 1)",
+            borderWidth: 2,
+            tension: 0.3,  // Adds smoothness to the line
+            pointBackgroundColor: "rgba(75, 192, 192, 1)"
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function(value) {
+                  switch(value) {
+                    case 5: return "Happy";
+                    case 4: return "Energetic";
+                    case 3: return "Neutral";
+                    case 2: return "Tired";
+                    case 1: return "Stressed";
+                    default: return "";
+                  }
+                }
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: "Date"
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top'
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const mood = context.raw;
+                  switch(mood) {
+                    case 5: return "Happy";
+                    case 4: return "Energetic";
+                    case 3: return "Neutral";
+                    case 2: return "Tired";
+                    case 1: return "Stressed";
+                    default: return "Unknown";
+                  }
+                }
+              }
+            }
+          }
+        }
+      });
+    });
+  </script>
   <script>
     $(document).ready(function () {
       $(".add-favorite").on("click", function () {
@@ -805,6 +920,8 @@
       });
     });
   </script>
+
+  
 
   {% endblock %}
 </body>

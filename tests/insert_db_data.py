@@ -12,6 +12,7 @@ For more information about the Burnout project, visit:
 https://github.com/VibhavDeo/FitnessApp
 
 """
+
 """"Importing app from apps.py"""
 from apps import App
 app = App()
@@ -116,6 +117,24 @@ def insertexercisedata():
             "name": "Gym",
             "description": "A collection of Dumbbells workouts by skilled trainers specific to a particular muscle group.",
             "href": "gym"
+        },
+        {
+            "email": "email",
+            "exercise_id": 10,
+            "image": "../static/img/headspace.PNG",
+            "video_link": "https://www.youtube.com/watch?v=5LMRrYqAAZI",
+            "name": "Headspace",
+            "description": "Headspace's mission is to provide every person access to lifelong mental health support.",
+            "href": "Headspace"
+        },
+        {
+            "email": "email",
+            "exercise_id": 11,
+            "image": "../static/img/mbsr.jpg",
+            "video_link": "https://www.youtube.com/watch?v=507zwibbfRs",
+            "name": "MBSR",
+            "description": "Mindfulness-Based Stress Reduction (MBSR) is a structured program designed to help individuals manage stress, reduce anxiety, and improve overall well-being through mindfulness meditation and awareness.",
+            "href": "MBSR"
         }
     ]
 

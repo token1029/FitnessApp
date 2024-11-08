@@ -16,7 +16,6 @@ from datetime import datetime
 import plotly.express as px
 import plotly.graph_objects as go
 from bson import ObjectId
-import bcrypt
 import smtplib
 from flask import json,jsonify,Flask
 from flask import render_template, session, url_for, flash, redirect, request, Flask
@@ -32,7 +31,7 @@ import time
 app = Flask(__name__, template_folder='templates')
 app.secret_key = 'secret'
 app.config['MONGO_URI'] = 'mongodb://127.0.0.1:27017/test'
-app.config['MONGO_CONNECT'] = False
+app.config['MONGO_CONNECT'] = True
 mongo = PyMongo(app)
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -42,8 +41,8 @@ app.config['MAIL_USERNAME'] = "burnoutapp2023@gmail.com"
 app.config['MAIL_PASSWORD'] = "jgny mtda gguq shnw"
 mail = Mail(app)
 
-insertfooddata()
-insertexercisedata()
+# insertfooddata()
+# insertexercisedata()
 
 def reminder_email():
     """
@@ -109,10 +108,7 @@ def login():
         if form.validate_on_submit():
             temp = mongo.db.user.find_one({'email': form.email.data}, {
                 'email', 'pwd','name'})
-            if temp is not None and temp['email'] == form.email.data and (
-                bcrypt.checkpw(
-                    form.password.data.encode("utf-8"),
-                    temp['pwd']) or temp['temp'] == form.password.data):
+            if temp is not None and temp['email'] == form.email.data and temp['pwd'] == form.password.data:
                 flash('You have been logged in!', 'success')
                 print(temp)
                 session['email'] = temp['email']
@@ -162,15 +158,14 @@ def register():
                 email = request.form.get('email')
                 password = request.form.get('password')
 
-                mongo.db.user.insert({'name': username, 'email': email, 'pwd': bcrypt.hashpw(
-                    password.encode("utf-8"), bcrypt.gensalt())})
+                mongo.db.user.insert_one({'name': username, 'email': email, 'pwd': password})
                 
                 weight = request.form.get('weight')
                 height = request.form.get('height')
                 goal = request.form.get('goal')
                 target_weight = request.form.get('target_weight')
                 temp = mongo.db.profile.find_one({'email': email, 'date': now}, {'height', 'weight', 'goal', 'target_weight'})
-                mongo.db.profile.insert({'email': email,
+                mongo.db.profile.insert_one({'email': email,
                                              'date': now,
                                              'height': height,
                                              'weight': weight,
@@ -354,6 +349,10 @@ def clear_intake():
 @app.route('/shop')
 def shop():
     return render_template('shop.html')
+
+@app.route('/mind')
+def mind():
+    return render_template('mind.html')
 
 @app.route("/ajaxhistory", methods=['POST'])
 def ajaxhistory():
@@ -569,7 +568,7 @@ def ajaxapproverequest():
     return json.dumps({'status': False}), 500, {
         'ContentType:': 'application/json'}
 
-
+"""
 @app.route("/dashboard", methods=['GET', 'POST'])
 def dashboard():
     # ############################
@@ -583,6 +582,33 @@ def dashboard():
         {"id": 2, "name": "Swimming"},
         ]
     return render_template('dashboard.html', title='Dashboard', exercises=exercises)
+
+    """
+
+@app.route("/dashboard", methods=['GET', 'POST'])
+def dashboard():
+    # ############################
+    # dashboard() function displays the dashboard.html template
+    # route "/dashboard" will redirect to dashboard() function.
+    # dashboard() called and displays the list of activities
+    # Output: redirected to dashboard.html
+    # ##########################
+    exercises = [
+        {"id": 1, "name": "Yoga"},
+        {"id": 2, "name": "Swimming"},
+    ]
+    
+    # Retrieve mood data for the logged-in user
+    email = session.get('email')
+    mood_data = []
+    
+    if email:
+        user_profile = mongo.db.profile.find_one({'email': email})
+        mood_data = user_profile.get('moods', []) if user_profile else []
+
+    # Pass the mood data to the template without changing the existing return statement
+    return render_template('dashboard.html', title='Dashboard', exercises=exercises, mood_data=mood_data)
+
 
 
 @app.route('/add_favorite', methods=['POST'])
@@ -974,6 +1000,41 @@ def submit_reviews():
 def blog():
     # 处理 "blog" 页面的逻辑
     return render_template('blog.html')
+
+
+@app.route('/add_mood', methods=['POST'])
+def add_mood():
+    mood = request.form.get('mood')
+    email = session.get('email')
+    date = datetime.now().strftime('%Y-%m-%d')
+
+    if email:
+        # Fetch the user profile and update mood history
+        user_profile = mongo.db.profile.find_one({'email': email})
+        if user_profile:
+            # Append new mood entry
+            if 'moods' not in user_profile:
+                user_profile['moods'] = []
+            user_profile['moods'].append({'date': date, 'mood': mood})
+            mongo.db.profile.update_one({'email': email}, {'$set': {'moods': user_profile['moods']}})
+        
+        # Instead of returning JSON, redirect to the dashboard to display mood history
+        return redirect(url_for('dashboard'))
+
+    # If email not found, redirect to login
+    return redirect(url_for('login'))
+
+# Route to view mood history
+@app.route('/mood_tracker')
+def mood_tracker():
+    email = session.get('email')
+    if email:
+        # Retrieve mood history from the user's profile
+        user_profile = mongo.db.profile.find_one({'email': email})
+        mood_data = user_profile.get('moods', []) if user_profile else []
+        return render_template('dashboard.html', mood_data=mood_data)
+    else:
+        return redirect(url_for('login'))
 
 
 if __name__ == '__main__':

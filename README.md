@@ -7,38 +7,37 @@ https://www.youtube.com/watch?v=e3Jg1mSQiNs
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
 [![DOI](https://zenodo.org/badge/692868088.svg)](https://zenodo.org/doi/10.5281/zenodo.10023046)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
-![GitHub last commit (branch)](https://img.shields.io/github/last-commit/VibhavDeo/FitnessApp/main)
-[![Python application](https://github.com/VibhavDeo/FitnessApp/actions/workflows/python-app.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/python-app.yml)
-[![Lint](https://github.com/VibhavDeo/FitnessApp/actions/workflows/syntax_checker.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/syntax_checker.yml)
-[![Pylint](https://github.com/VibhavDeo/FitnessApp/actions/workflows/pylint.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/pylint.yml)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/CS510-001-HW/FitnessApp/main)
+[![Python application](https://github.com/CS510-001-HW/FitnessApp/actions/workflows/python-app.yml/badge.svg)](https://github.com/CS510-001-HW/FitnessApp/actions/workflows/python-app.yml)
+[![Lint](https://github.com/CS510-001-HW/FitnessApp/actions/workflows/syntax_checker.yml/badge.svg)](https://github.com/CS510-001-HW/FitnessApp/actions/workflows/syntax_checker.yml)
+[![Pylint](https://github.com/CS510-001-HW/FitnessApp/actions/workflows/pylint.yml/badge.svg)](https://github.com/CS510-001-HW/FitnessApp/actions/workflows/pylint.yml)
 [![Tests On Push](http://github.com/VibhavDeo/FitnessApp/actions/workflows/unit_test.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/unit_test.yml)
 [![Code Coverage](https://github.com/VibhavDeo/FitnessApp/actions/workflows/code_cov.yml/badge.svg)](https://github.com/VibhavDeo/FitnessApp/actions/workflows/code_cov.yml)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/VibhavDeo/FitnessApp)
-
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/CS510-001-HW/FitnessApp)
 <!--Badges-->
-<a href="https://github.com/VibhavDeo/FitnessApp/fork" target="blank">
-<img src="https://img.shields.io/github/forks/VibhavDeo/FitnessApp?style=flat-square" alt="FitnessApp/forks"/>
+<a href="https://github.com/CS510-001-HW/FitnessApp/fork" target="blank">
+<img src="https://img.shields.io/github/forks/CS510-001-HW/FitnessApp?style=flat-square" alt="FitnessApp/forks"/>
 </a>
-<a href="https://github.com/VibhavDeo/FitnessApp/stargazers" target="blank">
-<img src="https://img.shields.io/github/stars/VibhavDeo/FitnessApp?style=flat-square" alt="FitnessApp stars"/>
+<a href="https://github.com/CS510-001-HW/FitnessApp/stargazers" target="blank">
+<img src="https://img.shields.io/github/stars/CS510-001-HW/FitnessApp?style=flat-square" alt="FitnessApp stars"/>
 </a>
-<a href="https://github.com/VibhavDeo/FitnessApp/issues" target="blank">
-<img src="https://img.shields.io/github/issues/VibhavDeo/FitnessApp?style=flat-square" alt="FitnessApp issues"/>
+<a href="https://github.com/CS510-001-HW/FitnessApp/issues" target="blank">
+<img src="https://img.shields.io/github/issues/CS510-001-HW/FitnessApp?style=flat-square" alt="FitnessApp issues"/>
 </a>
-<a href="https://github.com/VibhavDeo/FitnessApp/issues" target="blank">
-<img src="https://img.shields.io/github/issues-closed/VibhavDeo/FitnessApp" alt="FitnessApp issues closed"/>
+<a href="https://github.com/CS510-001-HW/FitnessApp/issues" target="blank">
+<img src="https://img.shields.io/github/issues-closed/CS510-001-HW/FitnessApp" alt="FitnessApp issues closed"/>
 </a>
-<a href="https://github.com/VibhavDeo/FitnessApp/pulls" target="blank">
-<img src="https://img.shields.io/github/issues-pr/VibhavDeo/FitnessApp?style=flat-square" alt="cheapBuy pull-requests"/>
+<a href="https://github.com/CS510-001-HW/FitnessApp/pulls" target="blank">
+<img src="https://img.shields.io/github/issues-pr/CS510-001-HW/FitnessApp?style=flat-square" alt="cheapBuy pull-requests"/>
 </a>
-<a href="https://github.com/VibhavDeo/FitnessApp/graphs/contributors" alt="Contributors">
-<img src="https://img.shields.io/github/contributors/VibhavDeo/FitnessApp" /></a>
+<a href="https://github.com/CS510-001-HW/FitnessApp/graphs/contributors" alt="Contributors">
+<img src="https://img.shields.io/github/contributors/CS510-001-HW/FitnessApp" /></a>
 
-<a href="https://github.com/VibhavDeo/FitnessApp/graphs/commit-activity" alt="commit activity">
-<img src="https://img.shields.io/github/commit-activity/w/VibhavDeo/FitnessApp" /></a>
+<a href="https://github.com/CS510-001-HW/FitnessApp/graphs/commit-activity" alt="commit activity">
+<img src="https://img.shields.io/github/commit-activity/w/CS510-001-HW/FitnessApp" /></a>
 
-<a href="https://img.shields.io/github/repo-size/VibhavDeo/FitnessApp" alt="repo size">
-<img src="https://img.shields.io/github/repo-size/VibhavDeo/FitnessApp" /></a>
+<a href="https://img.shields.io/github/repo-size/CS510-001-HW/FitnessApp" alt="repo size">
+<img src="https://img.shields.io/github/repo-size/CS510-001-HW/FitnessApp" /></a>
 
 # BurnOut
 
@@ -252,10 +251,10 @@ https://github.com/token1029/FitnessApp
 
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/WeizhiGao"><img src="https://avatars.githubusercontent.com/u/57804858?v=4" width="75px;" alt=""/><br /><sub><b>Weizhi Gao</b></sub></a><br /></td>
-    <td align="center"><a href="https://github.com/Itaru-Shin"><img src="https://avatars.githubusercontent.com/u/143905092?v=4" width="75px;" alt=""/><br /><sub><b>Fucheng Guo</b></sub></a><br /></td>
-    <td align="center"><a href="https://github.com/KingBanshou"><img src="https://avatars.githubusercontent.com/u/143905049?v=4" width="75px;" alt=""/><br /><sub><b>Zikang Wang</b></sub></a><br /></td>
-    <td align="center"><a href="https://github.com/token1029"><img src="https://avatars.githubusercontent.com/u/38797209?v=4" width="75px;" alt=""/><br /><sub><b>Dongming Wu</b></sub></a></td>
+    <td align="center"><a href="https://github.com/DeveshAjayVaidya"><img src="https://avatars.githubusercontent.com/u/158637611?v=4" width="75px;" alt=""/><br /><sub><b>Devesh Ajay Vaidya</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/ashwinramesh022"><img src="https://avatars.githubusercontent.com/u/117009209?v=4" width="75px;" alt=""/><br /><sub><b>Ashwin Ramesh Kannan</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/Aditi105"><img src="https://avatars.githubusercontent.com/u/120356039?v=4" width="75px;" alt=""/><br /><sub><b>aditi reddy</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/Bhuvankurra"><img src="https://avatars.githubusercontent.com/u/93917820?v=4" width="75px;" alt=""/><br /><sub><b>bhuvan chandra kurra</b></sub></a></td>
   </tr>
 </table>
 

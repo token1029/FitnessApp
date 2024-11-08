@@ -1,6 +1,6 @@
 
 """
-Copyright (c) 2023 Rajat Chandak, Shubham Saboo, Vibhav Deo, Chinmay Nayak
+Copyright (c) 2024 Devesh Ajay Vaidya, Ashwin Ramesh, Aditi Reddy, Bhuvan Chandra Kurra 
 This code is licensed under MIT license (see LICENSE for details)
 
 @author: Burnout
@@ -9,7 +9,7 @@ This code is licensed under MIT license (see LICENSE for details)
 This python file is used in and is part of the Burnout project.
 
 For more information about the Burnout project, visit:
-https://github.com/VibhavDeo/FitnessApp
+https://github.com/CS510-001-HW/FitnessApp
 
 """
 
@@ -20,7 +20,7 @@ from flask_mail import Mail
 
 
 class App:
-    """Sending emails to friends"""
+    """Initialize Flask app with MongoDB and Mail configuration"""
     def __init__(self):
         self.app = Flask(__name__)
         self.app.secret_key = 'secret'
@@ -33,3 +33,16 @@ class App:
         self.app.config['MAIL_USERNAME'] = "bogusdummy123@gmail.com"
         self.app.config['MAIL_PASSWORD'] = "helloworld123!"
         self.mail = Mail(self.app)
+
+
+    def get_app(self):
+        """Returns the Flask app instance"""
+        return self.app
+
+    def get_mongo(self):
+        """Returns the MongoDB instance"""
+        return self.mongo
+
+    def get_mail(self):
+        """Returns the Mail instance"""
+        return self.mail

@@ -1,43 +1,40 @@
-{% extends "layout.html" %} {% block content %}
-<div class="content-section d-flex vh-80">
-  <form
-    method="POST"
-    onSubmit="event.preventDefault(); return history(event)"
-    name="historyForm"
-  >
-    {{ form.hidden_tag() }}
-    <fieldset class="form-group">
-      <legend class="border-bottom mb-4">History</legend>
-      <div class="form-group">
-        <label class="form-control-label">Date</label>
-        <input type="date" name="date" required />
-      </div>
-    </fieldset>
-    <div class="form-group">
-      {{ form.submit(class="btn btn-outline-info") }}
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+    <header>
+        <h1 style="color: white;">About Us</h1>
+    </header>
+
+    <div class="main-content">
+        <div class="section">
+            <h2 style="color: #FFC107;">Our Mission</h2>
+            <p style="color: white;">At Your Fitness App, our mission is to promote mental well-being and a healthy lifestyle through mindfulness and fitness. We believe in the power of community and support to help individuals lead fulfilling lives.</p>
+        </div>
+
+        <div class="section">
+            <h2 style="color: #FFC107;">Meet Our Team</h2>
+            <ul style="list-style: none; padding: 0; color: white;">
+                <li><strong>Bhuvan Kurra</strong> - Member</li>
+                <li><strong>Aditi Reddy</strong> - Member</li>
+                <li><strong>Devesh Vaidya</strong> - Member</li>
+                <li><strong>Ashwin Ramesh</strong> - Member</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 style="color: #FFC107;">Our Values</h2>
+            <p style="color: white;">We value integrity, compassion, and growth. Our team is dedicated to creating a supportive environment where everyone can thrive and achieve their personal wellness goals.</p>
+        </div>
     </div>
-  </form>
+
+    <footer>
+        <p style="color: white;">&copy; 2024 Your Fitness App. All rights reserved.</p>
+    </footer>
 </div>
-<div id="history-data card">
-  <h5 class="card-header" style="color: white">History</h5>
-  <div class="card-body">
-    <p class="border-bottom mb-4 h6" style="color: white" id="date_legend"></p>
-    <p class="card-text" style="color: white" id="date"></p>
-    <br />
-    <p
-      class="border-bottom mb-4 h6"
-      style="color: white"
-      id="calories_legend"
-    ></p>
-    <p class="card-text" id="calories" style="color: white"></p>
-    <br />
-    <p
-      class="border-bottom mb-4 h6"
-      style="color: white"
-      id="burnout_legend"
-    ></p>
-    <p class="card-text" id="burnout" style="color: white"></p>
-    <br />
-  </div>
-</div>
+
+<style>
+    .section {
+        margin: 20px 0;
+    }
+</style>
 {% endblock content %}

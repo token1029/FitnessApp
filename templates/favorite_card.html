@@ -1,8 +1,12 @@
-<div class="col-4">
-    <div class="card"><img class="img-thumbnail" src="{{ exercise.image }}">
+<div class="col-4" data-id="{{ exercise.id }}">
+    <div class="card" style="width: 400px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); text-align: center;">
+        <img class="img-thumbnail" src="{{ exercise.image }}" />
         <div class="card-body">
             <h4 class="card-title">{{ exercise.name }}</h4>
-            <p class="card-text"><br>&nbsp;{{ exercise.description }}<br><br></p>
+            
+            <p class="card-text">
+                <br />&nbsp;{{ exercise.description }}<br /><br />
+            </p>
             <a class="btn btn-secondary btn-sm" href="{{ exercise.href }}" role="button">More info</a>
             <a class="btn btn-secondary btn-sm" href="{{ exercise.video_link }}" role="button">Tutorial</a>
         </div>

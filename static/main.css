@@ -4,14 +4,24 @@
   color: #bde2bd;
 }
 
-body {
-  background: #343434;
-  color: #333333;
+/*body {
+  background: #571b1b;
+  color: #212020;
   margin-top: 5rem;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
+*/
+body {
+  background: linear-gradient(135deg, #571b1b, #ff6347, #ffc107);
+  color: #212020;
+  margin-top: 5rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 
 footer {
   margin-top: auto;

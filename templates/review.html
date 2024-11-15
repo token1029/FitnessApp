@@ -4,7 +4,7 @@
     <form method="POST" action="{{ url_for('submit_reviews') }}" name="ReviewForm()">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
-            <legend class="border-bottom mb-4">Submit a Review</legend>
+            <legend class="border-bottom mb-4">Share Your Thoughts</legend>
             <div class="form-group">
                 {{ form.name.label(class="form-control-label") }} (Your Name)
                 {% if form.name.errors %}
@@ -31,38 +31,99 @@
             </div>
         </fieldset>
         <div class="form-group">
-            {{ form.submit(class="btn btn-outline-info") }}
+            {{ form.submit(class="btn btn-gradient btn-lg btn-block") }}
         </div>
     </form>
 
     <!-- Display Existing Reviews -->
     <div id="existing-reviews">
-        <h2>Existing Reviews:</h2>
+        <h2>User Reviews</h2>
         <ul>
             {% for review in existing_reviews %}
                 <li class="quote">
                     <blockquote>&ldquo;{{ review.review }}&rdquo;</blockquote>
-                    <cite>{{ review.name }}</cite>
+                    <cite>— {{ review.name }}</cite>
                 </li>
             {% endfor %}
         </ul>
     </div>
 </div>
+
 <style>
-    /* CSS Styles for Existing Reviews */
+    /* Background and Content Section */
+    .content-section {
+        background-image: linear-gradient(to right, #ffafbd, #ffc3a0);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        color: #333;
+    }
+    
+    /* Form Styling */
+    form {
+        background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        margin-bottom: 30px;
+    }
+    legend {
+        color: #FF6347;
+        font-size: 1.8em;
+        font-weight: bold;
+        text-align: center;
+    }
+    .form-control-label {
+        font-weight: bold;
+        color: #444;
+    }
+    .form-control {
+        background-color: #f0f8ff;
+    }
+    .btn-gradient {
+        background: linear-gradient(to right, #ff7e5f, #feb47b);
+        color: #fff;
+        font-weight: bold;
+        border: none;
+        transition: background 0.3s ease;
+    }
+    .btn-gradient:hover {
+        background: linear-gradient(to right, #feb47b, #ff7e5f);
+        color: #fff;
+    }
+
+    /* Review Section Styling */
+    #existing-reviews {
+        background-color: rgba(0, 0, 0, 0.8);
+        padding: 25px;
+        border-radius: 10px;
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    #existing-reviews h2 {
+        color: #FFD700;
+        text-align: center;
+        font-size: 1.8em;
+    }
     .quote {
-        background-color: #f9f9f9;
-        border-left: 10px solid #ccc;
-        margin: 10px 0;
-        padding: 10px 20px;
+        background: linear-gradient(to right, #ff9a9e, #fad0c4);
+        border-left: 5px solid #FFD700;
+        margin: 20px 0;
+        padding: 20px 25px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     }
     blockquote {
         font-style: italic;
+        color: #333;
     }
     cite {
-        text-align: right;
         display: block;
         margin-top: 10px;
+        font-size: 1em;
+        color: #555;
+        text-align: right;
+        font-weight: bold;
     }
 </style>
 {% endblock content %}

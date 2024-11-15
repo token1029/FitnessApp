@@ -1,69 +1,146 @@
 {% extends "layout.html" %}
 {% block content %}
-<html></html>
 <head>
     <meta charset="UTF-8">
     <title>Your Data</title>
+    <style>
+        /* Body background */
+        body {
+            background: linear-gradient(to right, #4e54c8, #8f94fb);
+            font-family: Arial, sans-serif;
+            color: #fff;
+            margin: 0;
+        }
+        
+        /* Container and card styling */
+        .container.site-section {
+            padding: 30px 20px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #eee;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-title {
+            color: #ffd700;
+            font-size: 1.5em;
+        }
+
+        .card-text {
+            font-size: 1.1em;
+            color: #f0f0f0;
+        }
+
+        /* Table styling */
+        .table {
+            color: #f9f9f9;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .table th, .table td {
+            padding: 12px;
+            border-bottom: 1px solid #666;
+        }
+
+        .table th {
+            background-color: #333;
+            color: #ffd700;
+        }
+
+        .table tbody tr {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Button styling */
+        .btn-primary {
+            background-color: #ff6347;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .btn-primary:hover {
+            background-color: #ff4500;
+        }
+    </style>
 </head>
 <body>
-    <h1 style="color: white;">Your Data</h1>
+    <h1 style="text-align: center; color: #ffd700; font-size: 2.5em; padding: 20px 0;">Your Data</h1>
 
-</body>
-<section class="container-fluid ">
-    <div class="container site-section" id="yoga-1">
-        <div class="row">
-            <div class="col-4">
-                <div class="card"><img class="img-thumbnail img-fluid" src="../static/img/height.jpg">
-                    <div class="card-body">
-                        <h4 class="card-title">Your Height</h4>
-                        <p class="card-text">{{ user_data.height }} cms<br><br></p>
+    <section class="container-fluid">
+        <div class="container site-section" id="yoga-1">
+            <div class="row">
+                <div class="col-4">
+                    <div class="card"><img class="img-thumbnail img-fluid" src="../static/img/height.jpg">
+                        <div class="card-body">
+                            <h4 class="card-title">Your Height</h4>
+                            <p class="card-text">{{ user_data.height }} cms<br><br></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card"><img class="img-thumbnail img-fluid" src="../static/img/weight.png">
+                        <div class="card-body">
+                            <h4 class="card-title">Your Weight</h4>
+                            <p class="card-text">{{ user_data.weight }} kgs<br><br></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card"><img class="img-thumbnail img-fluid" src="../static/img/weightgoal.jpg">
+                        <div class="card-body">
+                            <h4 class="card-title">Your Target Weight</h4>
+                            <p class="card-text">{{ user_data.target_weight }} kgs<br><br></p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-4">
-                <div class="card"><img class="img-thumbnail img-fluid" src="../static/img/weight.png">
-                    <div class="card-body">
-                        <h4 class="card-title">Your Weight</h4>
-                        <p class="card-text">{{ user_data.weight }} kgs<br><br></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="card"><img class="img-thumbnail img-fluid" src="../static/img/weightgoal.jpg"></a>
-                    <div class="card-body">
-                        <h4 class="card-title">Your Target Weight</h4>
-                        <p class="card-text">{{ user_data.target_weight }} Kgs<br><br></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div>
-            {{ graph_html|safe }}
 
-            <h2 style="color: white;">Last 10 Entries</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th style="color: white;">Date</th>
-                        <th style="color: white;">Weight</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for entry in last_10_entries %}
+            <div>
+                {{ graph_html|safe }}
+                
+                <h2 style="color: #ffd700; font-size: 2em; margin-top: 20px; text-align: center;">Last 10 Entries</h2>
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td style="color: white;">{{ entry['date'] }}</td>
-                            <td style="color: white;">{{ entry['weight'] }}</td>
+                            <th>Date</th>
+                            <th>Weight</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {% for entry in last_10_entries %}
+                            <tr>
+                                <td>{{ entry['date'] }}</td>
+                                <td>{{ entry['weight'] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-</section>
-<section class="container-fluid">
-    <div class="container site-section" id="yoga-1">
-        <a href="{{ url_for('user_profile') }}" class="btn btn-primary">Update Data</a>
-    </div>
-</section>
-</html>
+    </section>
+
+    <section class="container-fluid">
+        <div class="container site-section" id="yoga-1" style="text-align: center;">
+            <a href="{{ url_for('user_profile') }}" class="btn btn-primary">Update Data</a>
+        </div>
+    </section>
+</body>
 {% endblock content %}

@@ -19,13 +19,13 @@ import plotly.graph_objects as go
 from bson import ObjectId
 import bcrypt
 import smtplib
-from flask import json,jsonify,Flask
+from flask import json, jsonify, Flask
 from flask import render_template, session, url_for, flash, redirect, request, Flask
 from flask_mail import Mail, Message
 from flask_pymongo import PyMongo
 from tabulate import tabulate
-from forms import HistoryForm, RegistrationForm, LoginForm, CalorieForm, UserProfileForm, EnrollForm,ReviewForm
-from insert_db_data import insertfooddata,insertexercisedata
+from forms import HistoryForm, RegistrationForm, LoginForm, CalorieForm, UserProfileForm, EnrollForm, ReviewForm
+from insert_db_data import insertfooddata, insertexercisedata
 import schedule
 from threading import Thread
 import time
@@ -56,7 +56,7 @@ mail = Mail(app)
 #             print('in send mail')
 #             recipientlst = list(mongo.db.user.distinct('email'))
 #             print(recipientlst)
-            
+
 #             server = smtplib.SMTP_SSL("smtp.gmail.com",465)
 #             sender_email = "burnoutapp2023@gmail.com"
 #             sender_password = "jgny mtda gguq shnw"
@@ -65,8 +65,8 @@ mail = Mail(app)
 #             message = 'Subject: Daily Reminder to Exercise'
 #             for e in recipientlst:
 #                 print(e)
-#                 server.sendmail(sender_email,e,message)                
-#             server.quit()        
+#                 server.sendmail(sender_email,e,message)
+#             server.quit()
 #         except KeyboardInterrupt:
 #             print("Thread interrupted")
 
@@ -79,7 +79,7 @@ mail = Mail(app)
 #         time.sleep(10)
 
 # Thread(target=schedule_process).start()
-  
+
 
 @app.route("/")
 @app.route("/home")
@@ -109,7 +109,7 @@ def login():
         form = LoginForm()
         if form.validate_on_submit():
             temp = mongo.db.user.find_one({'email': form.email.data}, {
-                'email', 'pwd','name'})
+                'email', 'pwd', 'name'})
             if temp is not None and temp['email'] == form.email.data and (
                 bcrypt.checkpw(
                     form.password.data.encode("utf-8"),
@@ -117,8 +117,8 @@ def login():
                 flash('You have been logged in!', 'success')
                 print(temp)
                 session['email'] = temp['email']
-                session['name']=temp['name']
-                #session['login_type'] = form.type.data
+                session['name'] = temp['name']
+                # session['login_type'] = form.type.data
                 return redirect(url_for('dashboard'))
             else:
                 flash(
@@ -165,18 +165,19 @@ def register():
 
                 mongo.db.user.insert({'name': username, 'email': email, 'pwd': bcrypt.hashpw(
                     password.encode("utf-8"), bcrypt.gensalt())})
-                
+
                 weight = request.form.get('weight')
                 height = request.form.get('height')
                 goal = request.form.get('goal')
                 target_weight = request.form.get('target_weight')
-                temp = mongo.db.profile.find_one({'email': email, 'date': now}, {'height', 'weight', 'goal', 'target_weight'})
+                temp = mongo.db.profile.find_one({'email': email, 'date': now}, {
+                                                 'height', 'weight', 'goal', 'target_weight'})
                 mongo.db.profile.insert({'email': email,
-                                             'date': now,
-                                             'height': height,
-                                             'weight': weight,
-                                             'goal': goal,
-                                             'target_weight': target_weight})
+                                         'date': now,
+                                         'height': height,
+                                         'weight': weight,
+                                         'goal': goal,
+                                         'target_weight': target_weight})
             flash(f'Account created for {form.username.data}!', 'success')
             return redirect(url_for('home'))
     else:
@@ -207,11 +208,14 @@ def calories():
                 cals = int(cals[-1][1:-1])
                 burn = request.form.get('burnout')
 
-                temp = mongo.db.calories.find_one({'email': email}, {'email', 'calories', 'burnout', 'date'})
-                if temp is not None and temp['date']==str(now):
-                    mongo.db.calories.update_many({'email': email}, {'$set': {'calories': temp['calories'] + cals, 'burnout': temp['burnout'] + int(burn)}})
+                temp = mongo.db.calories.find_one(
+                    {'email': email}, {'email', 'calories', 'burnout', 'date'})
+                if temp is not None and temp['date'] == str(now):
+                    mongo.db.calories.update_many({'email': email}, {'$set': {
+                                                  'calories': temp['calories'] + cals, 'burnout': temp['burnout'] + int(burn)}})
                 else:
-                    mongo.db.calories.insert({'date': now, 'email': email, 'calories': cals, 'burnout': int(burn)})
+                    mongo.db.calories.insert(
+                        {'date': now, 'email': email, 'calories': cals, 'burnout': int(burn)})
                 flash(f'Successfully updated the data', 'success')
                 return redirect(url_for('calories'))
     else:
@@ -230,7 +234,7 @@ def display_profile():
     if session.get('email'):
         email = session.get('email')
         user_data = mongo.db.profile.find_one({'email': email})
-        target_weight=float(user_data['target_weight'])
+        target_weight = float(user_data['target_weight'])
         user_data_hist = list(mongo.db.profile.find({'email': email}))
 
         for entry in user_data_hist:
@@ -241,11 +245,14 @@ def display_profile():
         dates = [entry['date'] for entry in sorted_user_data_hist]
         weights = [float(entry['weight']) for entry in sorted_user_data_hist]
 
-        # Plotting Graph 
-        fig = px.line(x=dates, y=weights, labels={'x': 'Date', 'y': 'Weight'}, title='Progress',markers=True,line_shape='spline')
-        fig.add_trace(go.Scatter(x=dates, y=[target_weight] * len(dates),mode='lines', line=dict(color='green', width=1, dash='dot'), name='Target Weight'))
-        fig.update_yaxes(range=[min(min(weights),target_weight) - 5, max(max(weights),target_weight) + 5])
-        fig.update_xaxes(range=[min(dates),now]) 
+        # Plotting Graph
+        fig = px.line(x=dates, y=weights, labels={
+                      'x': 'Date', 'y': 'Weight'}, title='Progress', markers=True, line_shape='spline')
+        fig.add_trace(go.Scatter(x=dates, y=[target_weight] * len(dates), mode='lines', line=dict(
+            color='green', width=1, dash='dot'), name='Target Weight'))
+        fig.update_yaxes(
+            range=[min(min(weights), target_weight) - 5, max(max(weights), target_weight) + 5])
+        fig.update_xaxes(range=[min(dates), now])
         # Converting to JSON
         graph_html = fig.to_html(full_html=False)
 
@@ -254,7 +261,7 @@ def display_profile():
         return render_template('display_profile.html', status=True, user_data=user_data, graph_html=graph_html, last_10_entries=last_10_entries)
     else:
         return redirect(url_for('login'))
-    #return render_template('user_profile.html', status=True, form=form)#
+    # return render_template('user_profile.html', status=True, form=form)#
 
 
 @app.route("/user_profile", methods=['GET', 'POST'])
@@ -280,14 +287,15 @@ def user_profile():
                 height = request.form.get('height')
                 goal = request.form.get('goal')
                 target_weight = request.form.get('target_weight')
-                temp = mongo.db.profile.find_one({'email': email, 'date': now}, {'height', 'weight', 'goal', 'target_weight'})
+                temp = mongo.db.profile.find_one({'email': email, 'date': now}, {
+                                                 'height', 'weight', 'goal', 'target_weight'})
                 if temp is not None:
                     mongo.db.profile.update_one({'email': email, 'date': now},
-                                            {'$set': {
-                                                'weight': weight,
-                                                'height': height,
-                                                'goal': goal,
-                                                'target_weight':target_weight}})
+                                                {'$set': {
+                                                    'weight': weight,
+                                                    'height': height,
+                                                    'goal': goal,
+                                                    'target_weight': target_weight}})
                 else:
                     mongo.db.profile.insert({'email': email,
                                              'date': now,
@@ -295,7 +303,7 @@ def user_profile():
                                              'weight': weight,
                                              'goal': goal,
                                              'target_weight': target_weight})
-                
+
                 flash(f'User Profile Updated', 'success')
 
                 return redirect(url_for('display_profile'))
@@ -317,7 +325,6 @@ def history():
     if get_session is not None:
         form = HistoryForm()
     return render_template('history.html', form=form)
-
 
 
 @app.route("/ajaxhistory", methods=['POST'])
@@ -384,21 +391,24 @@ def friends():
     return render_template('friends.html', allUsers=allUsers, pendingRequests=pendingRequests, active=email,
                            pendingReceivers=pendingReceivers, pendingApproves=pendingApproves, myFriends=myFriends, myFriendsList=myFriendsList)
 
+
 @app.route('/bmi_calc', methods=['GET', 'POST'])
 def bmi_calci():
     bmi = ''
     bmi_category = ''
-    
+
     if request.method == 'POST' and 'weight' in request.form:
         weight = float(request.form.get('weight'))
         height = float(request.form.get('height'))
         bmi = calc_bmi(weight, height)
         bmi_category = get_bmi_category(bmi)
-    
+
     return render_template("bmi_cal.html", bmi=bmi, bmi_category=bmi_category)
+
 
 def calc_bmi(weight, height):
     return round((weight / ((height / 100) ** 2)), 2)
+
 
 def get_bmi_category(bmi):
     if bmi < 18.5:
@@ -411,7 +421,7 @@ def get_bmi_category(bmi):
         return 'Obese'
 
 
-@app.route("/send_email", methods=['GET','POST'])
+@app.route("/send_email", methods=['GET', 'POST'])
 def send_email():
     # ############################
     # send_email() function shares Calorie History with friend's email
@@ -421,37 +431,41 @@ def send_email():
     # ##########################
     email = session.get('email')
     temp = mongo.db.user.find_one({'email': email}, {'name'})
-    data = list(mongo.db.calories.find({'email': email}, {'date','email','calories','burnout'}))
-    table = [['Date','Email ID','Calories','Burnout']]
+    data = list(mongo.db.calories.find({'email': email}, {
+                'date', 'email', 'calories', 'burnout'}))
+    table = [['Date', 'Email ID', 'Calories', 'Burnout']]
     for a in data:
-        tmp = [a['date'],a['email'],a['calories'],a['burnout']] 
-        table.append(tmp) 
-    
+        tmp = [a['date'], a['email'], a['calories'], a['burnout']]
+        table.append(tmp)
+
     friend_email = str(request.form.get('share')).strip()
     friend_email = str(friend_email).split(',')
-    server = smtplib.SMTP_SSL("smtp.gmail.com",465)
-    #Storing sender's email address and password
+    server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+    # Storing sender's email address and password
     sender_email = "burnoutapp2023@gmail.com"
     sender_password = "jgny mtda gguq shnw"
-    
-    #Logging in with sender details
-    server.login(sender_email,sender_password)
-    message = 'Subject: Calorie History\n\n Your Friend '+str(temp['name'])+' has shared their calorie history with you!\n {}'.format(tabulate(table))
+
+    # Logging in with sender details
+    server.login(sender_email, sender_password)
+    message = 'Subject: Calorie History\n\n Your Friend ' + \
+        str(temp['name']) + \
+        ' has shared their calorie history with you!\n {}'.format(
+            tabulate(table))
     for e in friend_email:
         print(e)
-        server.sendmail(sender_email,e,message)
-        
+        server.sendmail(sender_email, e, message)
+
     server.quit()
-    
+
     myFriends = list(mongo.db.friends.find(
         {'sender': email, 'accept': True}, {'sender', 'receiver', 'accept'}))
     myFriendsList = list()
-    
+
     for f in myFriends:
         myFriendsList.append(f['receiver'])
 
     allUsers = list(mongo.db.user.find({}, {'name', 'email'}))
-    
+
     pendingRequests = list(mongo.db.friends.find(
         {'sender': email, 'accept': False}, {'sender', 'receiver', 'accept'}))
     pendingReceivers = list()
@@ -463,10 +477,9 @@ def send_email():
         {'receiver': email, 'accept': False}, {'sender', 'receiver', 'accept'}))
     for p in pendingApprovals:
         pendingApproves.append(p['sender'])
-        
+
     return render_template('friends.html', allUsers=allUsers, pendingRequests=pendingRequests, active=email,
                            pendingReceivers=pendingReceivers, pendingApproves=pendingApproves, myFriends=myFriends, myFriendsList=myFriendsList)
-
 
 
 @app.route("/ajaxsendrequest", methods=['POST'])
@@ -546,7 +559,7 @@ def dashboard():
     exercises = [
         {"id": 1, "name": "Yoga"},
         {"id": 2, "name": "Swimming"},
-        ]
+    ]
     return render_template('dashboard.html', title='Dashboard', exercises=exercises)
 
 
@@ -558,13 +571,14 @@ def add_favorite():
         exercise_id = data.get('exercise_id')
         print(exercise_id)
         action = data.get('action')
-        exercise = mongo.db.your_exercise_collection.find_one({"exercise_id": exercise_id})
+        exercise = mongo.db.your_exercise_collection.find_one(
+            {"exercise_id": exercise_id})
         print(exercise)
         if exercise:
-            if action=="add":
-            # Create a new document in the favorites schema (you can customize this schema)
+            if action == "add":
+                # Create a new document in the favorites schema (you can customize this schema)
                 favorite = {
-                    "exercise_id":exercise.get("exercise_id"),
+                    "exercise_id": exercise.get("exercise_id"),
                     "email": email,
                     "image": exercise.get("image"),
                     "video_link": exercise.get("video_link"),
@@ -576,12 +590,12 @@ def add_favorite():
             # Insert the exercise into the favorites collection
                 mongo.db.favorites.insert_one(favorite)
                 return jsonify({"status": "success"})
-            elif action=="remove":
+            elif action == "remove":
                 print(exercise.get("exercise_id"))
                 print("iamhere1")
-                mongo.db.favorites.delete_one({"email": email, "exercise_id": exercise.get("exercise_id")})
+                mongo.db.favorites.delete_one(
+                    {"email": email, "exercise_id": exercise.get("exercise_id")})
                 return jsonify({"status": "success"})
-
 
         else:
             return jsonify({"status": "error", "message": "Exercise not found"})
@@ -591,6 +605,7 @@ def add_favorite():
     return json.dumps({'status': False}), 500, {
         'ContentType:': 'application/json'
     }
+
 
 @app.route('/favorites')
 def favorites():
@@ -603,7 +618,7 @@ def favorites():
     favorite_exercises = mongo.db.favorites.find({"email": email})
 
     return render_template('favorites.html', favorite_exercises=favorite_exercises)
-    
+
 
 @app.route("/yoga", methods=['GET', 'POST'])
 def yoga():
@@ -758,6 +773,7 @@ def gym():
         return redirect(url_for('dashboard'))
     return render_template('gym.html', title='Gym', form=form)
 
+
 @app.route("/walk", methods=['GET', 'POST'])
 def walk():
     # ############################
@@ -783,6 +799,7 @@ def walk():
         return redirect(url_for('dashboard'))
     return render_template('walk.html', title='Walk', form=form)
 
+
 @app.route("/dance", methods=['GET', 'POST'])
 def dance():
     # ############################
@@ -807,6 +824,7 @@ def dance():
     else:
         return redirect(url_for('dashboard'))
     return render_template('dance.html', title='Dance', form=form)
+
 
 @app.route("/hrx", methods=['GET', 'POST'])
 def hrx():
@@ -855,6 +873,7 @@ def hrx():
 #                 return json.dumps({'email': "", 'Status': ""}), 200, {
 #                     'ContentType': 'application/json'}
 
+
 @app.route("/review", methods=['GET', 'POST'])
 def submit_reviews():
     # ############################
@@ -867,7 +886,8 @@ def submit_reviews():
     existing_reviews = mongo.db.reviews.find()
     if session.get('email'):
         if request.method == 'POST':  # Check if it's a POST request
-            form = ReviewForm(request.form)  # Initialize the form with form data
+            # Initialize the form with form data
+            form = ReviewForm(request.form)
             if form.validate_on_submit():
                 email = session.get('email')
                 user = mongo.db.user.find_one({'email': email})
@@ -880,6 +900,7 @@ def submit_reviews():
         return render_template('review.html', form=form, existing_reviews=existing_reviews)
     else:
         return "User not logged in"
-    
+
+
 if __name__ == '__main__':
     app.run(debug=True)

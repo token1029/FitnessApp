@@ -1,87 +1,176 @@
-{% extends "layout.html" %} {% block content %}
-<h1 style="color: white">Manange Friends</h1>
-<details>
-  <summary style="color: white">My Friends</summary>
-  {% for friend in myFriends %}
-  <div>
-    <span style="color: white"> {{friend.receiver}}</span>
-  </div>
-  <br />
-  {% endfor %}
-</details>
-<br />
-<details>
-  <summary style="color: white">Add Friends</summary>
-  {% for friend in allUsers %} {% if friend.email != active and friend.email not
-  in pendingReceivers and friend.email not in pendingApproves and friend.email
-  not in myFriendsList %}
-  <details style="margin: 5px; background: white">
-    <summary style="color: black">{{friend.name}}</summary>
-    <p class="article-content" name="friend" style="color: black">
-      {{friend.email}}
-    </p>
-    <button
-      type="button"
-      class="btn btn-primary"
-      onclick="return sendRequest(event,this.id)"
-      id="{{friend.email}}"
-    >
-      Send Request
-    </button>
-  </details>
-  {% endif %} {% endfor %}
-</details>
-<br />
-<details>
-  <summary style="color: white">Sent Requests</summary>
-  {% for req in pendingRequests %}
-  <div>
-    <span style="color: white">{{req.receiver}}</span>
-    <button
-      onclick="return cancelRequest(event,this.id)"
-      id="{{req.receiver}}"
-      class="btn btn-danger inline ml-5"
-    >
-      Cancel Request
-    </button>
-  </div>
-  <br />
-  {% endfor %}
-</details>
+{% extends "layout.html" %}
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    background-color: #2b2d42;
+    font-family: 'Roboto', sans-serif;
+    color: #edf2f4;
+    line-height: 1.6;
+  }
+  h1 {
+    text-align: center;
+    color: hsl(350, 25%, 95%);
+    padding: 20px;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ef233c;
+  }
+  details {
+    margin: 15px 0;
+    background: #8d99ae;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  summary {
+    font-size: 1.3em;
+    color: #edf2f4;
+    cursor: pointer;
+    padding: 10px;
+  }
+  details[open] {
+    background: #ef233c;
+    color: #edf2f4;
+  }
+  .friend-list div, .request-list div {
+    background: #00a6fb;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 6px;
+    color: #edf2f4;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .friend-list div span, .request-list div span {
+    font-size: 1.1em;
+  }
+  button {
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .btn-primary {
+    background-color: #00897b;
+    color: #edf2f4;
+  }
+  .btn-primary:hover {
+    background-color: #00796b;
+  }
+  .btn-danger {
+    background-color: #d32f2f;
+    color: #edf2f4;
+  }
+  .btn-danger:hover {
+    background-color: #c62828;
+  }
+  .btn-success {
+    background-color: #388e3c;
+    color: #edf2f4;
+  }
+  .btn-success:hover {
+    background-color: #2e7d32;
+  }
+  form textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 10px;
+    border: 1px solid #adb5bd;
+    background-color: #edf2f4;
+    color: #2b2d42;
+  }
+  .inline {
+    display: inline-block;
+    margin-top: 5px;
+  }
+</style>
 
-<br />
+<h1>Manage Friends</h1>
 <details>
-  <summary style="color: white">Pending Approvals</summary>
-  {% for req in pendingApproves %}
-  <div>
-    <span style="color: white">{{req}}</span>
-    <button
-      onclick="return approveRequest(event,this.id)"
-      id="{{req}}"
-      class="btn btn-success inline ml-5"
-    >
-      Approve
-    </button>
+  <summary>My Friends</summary>
+  <div class="friend-list">
+    {% for friend in myFriends %}
+    <div>
+      <span>{{friend.receiver}}</span>
+    </div>
+    {% endfor %}
   </div>
-  <br />
-  {% endfor %}
 </details>
-<br />
 <details>
-  <summary style="color: white">
-    Share data with Friends (Type friend's email ID comma separated)
-  </summary>
-
+  <summary>Add Friends</summary>
+  <div class="friend-list">
+    {% for friend in allUsers %}
+    {% if friend.email != active and friend.email not in pendingReceivers and friend.email not in pendingApproves and friend.email not in myFriendsList %}
+    <details>
+      <summary>{{friend.name}}</summary>
+      <p class="article-content" style="color: black">
+        {{friend.email}}
+      </p>
+      <button
+        type="button"
+        class="btn btn-primary"
+        onclick="return sendRequest(event, this.id)"
+        id="{{friend.email}}"
+      >
+        Send Request
+      </button>
+    </details>
+    {% endif %}
+    {% endfor %}
+  </div>
+</details>
+<details>
+  <summary>Sent Requests</summary>
+  <div class="request-list">
+    {% for req in pendingRequests %}
+    <div>
+      <span>{{req.receiver}}</span>
+      <button
+        onclick="return cancelRequest(event, this.id)"
+        id="{{req.receiver}}"
+        class="btn btn-danger"
+      >
+        Cancel Request
+      </button>
+    </div>
+    {% endfor %}
+  </div>
+</details>
+<details>
+  <summary>Pending Approvals</summary>
+  <div class="request-list">
+    {% for req in pendingApproves %}
+    <div>
+      <span>{{req}}</span>
+      <button
+        onclick="return approveRequest(event, this.id)"
+        id="{{req}}"
+        class="btn btn-success"
+      >
+        Approve
+      </button>
+    </div>
+    {% endfor %}
+  </div>
+</details>
+<details>
+  <summary>Share Data with Friends</summary>
   <div>
     <form method="POST" action="/send_email">
-      <textarea id="share" name="share" rows="4" cols="50"></textarea>
-      <button type="submit" class="btn btn-success inline ml-5">
+      <textarea
+        id="share"
+        name="share"
+        rows="4"
+        placeholder="Type friends' email IDs, separated by commas..."
+      ></textarea>
+      <button type="submit" class="btn btn-success">
         Share Calorie History with Friends
       </button>
     </form>
   </div>
-  <br />
 </details>
-<br />
-
 {% endblock content %}

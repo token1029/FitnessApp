@@ -1,0 +1,60 @@
+{% extends "layout.html" %} {% block content %}
+<div class="image-container" style="display: flex; justify-content: center; align-items: center;">
+    <img class="img-fluid" src="../static/img/min.jpg" width="550px" style="padding: 5px 10px;">
+
+</div>
+<div class="container">
+    <h1 style="color: white" style="width: 200px;">Sleep tracker</h1>
+    <div class="main-content">
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <form method="POST" action="/sleep" style="display: flex; align-items: center;">
+                <input type="number" name="intake" placeholder="Enter number of hours of sleep" required
+                       style="padding: 5px; margin-right: 15px; width: 250px;">
+                <button type="submit"
+                        style="padding: 5px 10px; background-color: #f8f8f8; border: 1px solid #ccc; cursor: pointer;">
+                    Record Sleep Duration
+                </button>
+            </form>
+        </div>
+
+        <h2 style="color: white"><strong style="font-size: 25px;color: #FFC107;">Sleep Duration Record</strong></h2>
+        <ul>
+            {% for record in records %}
+            <li style="margin-bottom: 5px; color: white;">
+                {{ record['intake'] }} hours at
+                {{ record['time'].strftime('%Y-%m-%d %H:%M:%S') }}
+            </li>
+            <hr style="color: white;">
+            {% endfor %}
+        </ul>
+        <h2 style="color: white"><strong style="font-size: 25px;color: #FFC107;">Total Sleep Duration</strong></h2>
+        <ul>
+            <li style="margin-bottom: 5px; color: white;">{{ total_intake }} hours</li>
+        </ul>
+        <h2 style="color: white"><strong style="font-size: 25px;color: #FFC107;">Average Sleep Duration</strong></h2>
+        <ul>
+            <li style="margin-bottom: 5px; color: white;">
+                {{ average_intake|round(2) }} hours
+                {% if average_intake < 7 %}
+                - You need more sleep! Please sleep more than 7 hours!
+                {% endif %}
+                {% if average_intake > 9 %}
+                - Please sleep less than 9 hours!
+                {% endif %}
+
+
+            </li>
+        </ul>
+        <form method="POST" action="/clear-intake">
+            <button type="submit" style="padding: 5px 10px; background-color: #f44336; border: 1px solid #ccc; cursor: pointer; color: white; margin-top: 10px;">
+                Clear Records
+            </button>
+        </form>
+        <hr>
+        <div class="image-container" style="display: flex; justify-content: center; align-items: center;">
+            <img class="img-fluid" src="../static/img/good.jpg" width="550px" style="padding: 5px 10px;">
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

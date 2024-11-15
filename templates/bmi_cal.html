@@ -1,55 +1,144 @@
-{% extends "layout.html" %} {% block content %}
-<div class="container">
-  <h1 style="color: white">BMI Calculator</h1>
-  <div class="main-content">
-    <p style="color: white">
-      Body Mass Index (BMI) is a measure of body fat based on your weight and
-      height. It is a simple and useful tool to estimate whether you are
-      underweight, at a healthy weight, overweight, or obese.
-    </p>
-    <p style="color: white">
-      To calculate your BMI, enter your weight (in kilograms) and height (in
-      centimeters) below:
-    </p>
-
-    <div class="content-section">
-      <form class="pure-form" method="POST" action="/bmi_calc" id="bmi-form">
-        Weight in kgs:<br />
-        <input type="text" name="weight" id="weight" /><br />
-        Height in cms:<br />
-        <input type="text" name="height" id="height" /><br />
-        <button
-          type="submit"
-          class="pure-button pure-button-primary"
-          value="Submit"
-        >
-          Calculate BMI
-        </button>
-      </form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        p {
+            color: #555;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: #ff6f61;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background: #ff4b3e;
+        }
+        .result {
+            font-size: 1.5em;
+            margin-top: 20px;
+            color: #333;
+            text-align: center;
+        }
+        .underweight {
+            color: #3498db;
+        }
+        .normal {
+            color: #27ae60;
+        }
+        .overweight {
+            color: #f39c12;
+        }
+        .obese {
+            color: #e74c3c;
+        }
+        .btn-back-home {
+            background: #3498db;
+            color: #fff;
+            text-align: center;
+            display: block;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        .btn-back-home:hover {
+            background: #2980b9;
+        }
+    </style>
+    <title>BMI Calculator</title>
+</head>
+<body>
+    <div class="container">
+        <button class="btn-back-home" onclick="window.location.href='http://127.0.0.1:5000/dashboard'">Back to Homepage</button>
+        <h1>BMI Calculator</h1>
+        <div class="main-content">
+            <p>
+                Body Mass Index (BMI) is a measure of body fat based on your weight and
+                height. It is a simple and useful tool to estimate whether you are
+                underweight, at a healthy weight, overweight, or obese.
+            </p>
+            <p>
+                To calculate your BMI, enter your weight (in kilograms) and height (in
+                centimeters) below:
+            </p>
+            <div class="content-section">
+                <form method="POST" action="/bmi_calc" id="bmi-form">
+                    <div class="form-group">
+                        <label for="weight">Weight in kgs:</label>
+                        <input type="text" name="weight" id="weight" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="height">Height in cms:</label>
+                        <input type="text" name="height" id="height" class="form-control"/>
+                    </div>
+                    <button type="submit" class="btn">Calculate BMI</button>
+                </form>
+            </div>
+            <div class="result">
+                <p>Your BMI is {{ bmi }}.</p>
+                <p>You are 
+                    {% if bmi_category == 'Underweight' %}
+                        <span class="underweight">{{ bmi_category }}</span>
+                    {% elif bmi_category == 'Normal Weight' %}
+                        <span class="normal">{{ bmi_category }}</span>
+                    {% elif bmi_category == 'Overweight' %}
+                        <span class="overweight">{{ bmi_category }}</span>
+                    {% elif bmi_category == 'Obese' %}
+                        <span class="obese">{{ bmi_category }}</span>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
     </div>
-    <p style="color: white; text-align: center" class="display-4">
-      Your BMI is {{ bmi }}.
-    </p>
-    <p style="color: white; text-align: center" class="display-6">You are</p>
-    <p style="color: white; text-align: center" style="color: white">
-      {% if bmi_category == 'Underweight' %}
-      <span class="underweight display-6; text-align: center"
-        >{{ bmi_category }}</span
-      >
-      {% elif bmi_category == 'Normal Weight' %}
-      <span class="normal display-6; text-align: center"
-        >{{ bmi_category }}</span
-      >
-      {% elif bmi_category == 'Overweight' %}
-      <span class="overweight display-6; text-align: center"
-        >{{ bmi_category }}</span
-      >
-      {% elif bmi_category == 'Obese' %}
-      <span class="obese display-6; text-align: center display-6"
-        >{{ bmi_category }}</span
-      >
-      {% endif %}
-    </p>
-  </div>
-</div>
-{% endblock content %}
+</body>
+</html>

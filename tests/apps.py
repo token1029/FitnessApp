@@ -15,13 +15,14 @@ https://github.com/VibhavDeo/FitnessApp
 """
 
 """Importing flask to connect to the database"""
+from flask_mail import Mail
 from flask import Flask
 from flask_pymongo import PyMongo
-from flask_mail import Mail
 
 
 class App:
     """Sending emails to friends"""
+
     def __init__(self):
         self.app = Flask(__name__)
         self.app.secret_key = 'secret'

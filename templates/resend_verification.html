@@ -1,0 +1,20 @@
+<!-- templates/resend_verification.html -->
+{% extends "layout.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resend Verification Email</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h2>Resend Verification Email</h2>
+    <form method="POST">
+        <label for="email">Enter your email address:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+        <button type="submit">Resend Verification Email</button>
+    </form>
+    <a href="{{ url_for('login') }}">Back to Login</a>
+</body>
+</html>

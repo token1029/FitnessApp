@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+    body {
+        background-color: #2C3E50;
+        font-family: Arial, sans-serif;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    h2 {
+        color: #FFC107;
+        text-align: center;
+        font-size: 28px;
+    }
+
+    p {
+        color: #FFFFFF;
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+
+    li {
+        padding: 20px;
+        border: 1px solid #444;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        background-color: #34495E;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .feature-title {
+        font-size: 22px;
+        color: #FFC107;
+    }
+
+    .image-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .img-fluid {
+        border-radius: 8px;
+        max-width: 100%;
+    }
+</style>
+
+<div class="container">
+    <ul>
+        <li>
+            <h2>Why You Should Join BurnOut Today</h2>
+            <p class="feature-title">1. Personalized Workouts:</p>
+            <p>BurnOut features a variety of workout programs tailored to your goals and interests. These programs range from yoga, dance, swimming, and many more.</p>
+
+            <p class="feature-title">2. Convenience and Flexibility:</p>
+            <p>With our app, you can work out anywhere, anytime, whether you’re traveling or have a busy schedule. Many exercises can be done at home or the gym, fitting easily into any routine.</p>
+
+            <p class="feature-title">3. Goal Tracking and Progress Monitoring:</p>
+            <p>Our app tracks your workouts, nutrition, steps, and sleep, allowing you to monitor your progress over time and stay motivated.</p>
+
+            <p class="feature-title">4. Community and Motivation:</p>
+            <p>Connect with other users, share progress, and stay motivated with BurnOut's community feature.</p>
+
+            <div class="image-container">
+                <img class="img-fluid" src="../static/img/Group.jpg" alt="Group of people exercising">
+            </div>
+
+            <p class="feature-title">5. Affordability:</p>
+            <p>BurnOut is more affordable than in-person trainers and gym memberships.</p>
+
+            <p class="feature-title">6. Accountability and Consistency:</p>
+            <p>With reminders and habit-tracking features, BurnOut helps you stay consistent and make working out a regular part of your routine.</p>
+
+            <p class="feature-title">7. Workout Gear Shop:</p>
+            <p>BurnOut offers a shop with a variety of exercise gear to complement your workout routine.</p>
+
+            <p>We hope these reasons encourage you to sign up and enjoy the benefits of a healthier mind and body.</p>
+        </li>
+    </ul>
+
+    <div class="image-container">
+        <img class="img-fluid" src="../static/img/groupexercise.jpg" alt="Group exercise">
+    </div>
+</div>
+{% endblock content %}

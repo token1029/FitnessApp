@@ -21,7 +21,7 @@ mongo = app.mongo
 
 def insertfooddata():
     """Inserting the food data from CSV file to MongoDB"""
-    #with open("food_data/calories.csv", "r", encoding="ISO-8859-1") as file:
+    # with open("food_data/calories.csv", "r", encoding="ISO-8859-1") as file:
     f = open("food_data/calories.csv", "r", encoding="ISO-8859-1")
     l = f.readlines()
 

@@ -47,6 +47,7 @@ function history(e){
     })
 }
 
+
 function sendRequest(e,clickedId){
     $.ajax({
         type: "POST",
@@ -104,4 +105,37 @@ function dashboard(e, email){
             $("#enroll").empty().append(resdata.enroll)
         }
     })
+}
+
+function removeFromFavorites(exerciseId) {
+    // Get the CSRF token if applicable
+    const csrfToken = document.querySelector('input[name="csrf_token"]')?.value;
+
+    $.ajax({
+        type: "POST",
+        url: "/remove_favorite",
+        contentType: "application/json", // Specify JSON content type
+        data: JSON.stringify({ 
+            "exercise_id": exerciseId,
+            "csrf_token": csrfToken // Include if CSRF token is needed
+        }),
+        success: function(response) {
+            if (response.status === 'success') { // Check for success in the response
+                console.log("Favorite removed successfully");
+                // Remove the card from the page
+                const card = document.querySelector(`[data-exercise-id='${exerciseId}']`);
+                if (card) {
+                    card.remove(); // Remove the specific exercise card from the DOM
+                }
+            } else {
+                alert("Failed to remove the favorite.");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+            console.error("Status:", status);
+            console.error("XHR:", xhr);
+            alert("An error occurred while trying to remove the favorite.");
+        }
+    });
 }
